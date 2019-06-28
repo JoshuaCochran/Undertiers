@@ -3,7 +3,7 @@ from django.core.validators import int_list_validator, MinValueValidator, MaxVal
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
-# Create your models here.
+# The model describing a unit. TODO: Add tags for sorting.
 class Unit(models.Model):
     name = models.CharField(max_length=200) # Unit name
     icon_url = models.URLField() # Stores the URL to the img for unit icons
@@ -12,6 +12,7 @@ class Unit(models.Model):
     def __str__(self):
         return self.name
 
+# The model describing the map. TODO: Add tags for sorting.
 class Map(models.Model):
     name = models.CharField(max_length=200) # User-set map name
     user = models.ForeignKey(
@@ -34,6 +35,7 @@ class UnitLoc(models.Model):
     pos = models.IntegerField(validators=[MinValueValidator(0, "Value must be non-negative"),
                                           MaxValueValidator(31, "Value must be below 32")])
 
+# The model describing an alliance.
 class Alliance(models.Model):
     name = models.CharField(max_length=200) # Alliance name
     min_units = models.IntegerField() # Minimum number of units required to activate one rank of alliance
