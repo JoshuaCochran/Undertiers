@@ -28,6 +28,7 @@ class App extends Component {
 					{item.alliances.map(alliance => (
 						<div key={alliance.id}>
 							<h4>{alliance.name}</h4>
+							<img src={alliance.icon_url}/>
 						</div>
 					))}
 				</div>
