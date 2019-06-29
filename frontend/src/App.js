@@ -23,12 +23,11 @@ class App extends Component {
 			{this.state.units.map(item => (
 				<div key={item.id}>
 					<h1>{item.name}</h1>
-					<span>{item.icon_url}</span>
-					<span>{item.tile_url}</span>
+					<img src={item.icon_url} alt="{item.name} icon"/>
 					{item.alliances.map(alliance => (
 						<div key={alliance.id}>
 							<h4>{alliance.name}</h4>
-							<img src={alliance.icon_url}/>
+							<img src={alliance.icon_url} alt="{alliance.name} icon"/>
 						</div>
 					))}
 				</div>

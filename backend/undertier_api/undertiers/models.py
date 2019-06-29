@@ -6,8 +6,11 @@ from django.core.exceptions import ValidationError
 # The model describing a unit. TODO: Add tags for sorting.
 class Unit(models.Model):
     name = models.CharField(max_length=200) # Unit name
-    icon_url = models.URLField() # Stores the URL to the img for unit icons
+    icon_url = models.URLField(default="http://localhost:8000/static/unit_icons/axe.png") # Stores the URL to the img for unit icons
     tile_url = models.URLField() # Stores the URL to the img for the unit representation on map
+    # Stores the Tier (and hence gold cost) of the unit
+    tier = models.IntegerField(validators=[MinValueValidator(1, "Value must be between 1 and 5"),
+                                           MaxValueValidator(5, "Value must be between 1 and 5")])
 
     def __str__(self):
         return self.name
@@ -41,7 +44,7 @@ class Alliance(models.Model):
     min_units = models.IntegerField() # Minimum number of units required to activate one rank of alliance
     max_units = models.IntegerField() # Maximum number of units that can contribute to alliance
                                       # Used to calculate number of tiers of alliance (max_units/min_units)
-    icon_url = models.URLField() # URL to the img for alliance icon
+    icon_url = models.URLField(default="http://localhost:8000/static/alliance_icons/brawny.png") # URL to the img for alliance icon
     description = models.CharField(max_length=200, default="") # Description of Alliance bonus
     units = models.ManyToManyField(Unit) # Intermediary join table representing M:N relationship
                                          # between alliances and units

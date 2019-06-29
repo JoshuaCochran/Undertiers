@@ -26,6 +26,7 @@ class UnitSerializer(serializers.ModelSerializer):
             'name',
             'icon_url',
             'tile_url',
+            'tier',
             'alliances',
         )
         model = Unit
