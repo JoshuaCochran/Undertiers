@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import NavBar from './NavBar'
 
-class App extends Component {
+class Units extends Component {
 	state = {
 		units: []
 	};
@@ -17,17 +18,26 @@ class App extends Component {
 		}
 	}
 	
+	onAllianceClick(id) {
+		this.props.history.push('/alliances/' + id)
+	}
+	
+	onUnitClick(id) {
+		this.props.history.push('/units/' + id)
+	}
+	
 	render() {
 		return (
 			<div>
+			<NavBar/>
 			{this.state.units.map(item => (
 				<div key={item.id}>
 					<h1>{item.name}</h1>
-					<img src={item.icon_url} alt="{item.name} icon"/>
+					<img src={item.icon_url} onClick={() => this.onUnitClick(item.id)}alt="{item.name} icon"/>
 					{item.alliances.map(alliance => (
 						<div key={alliance.id}>
 							<h4>{alliance.name}</h4>
-							<img src={alliance.icon_url} alt="{alliance.name} icon"/>
+							<img src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance.id)} alt="{alliance.name} icon"/>
 						</div>
 					))}
 				</div>
@@ -37,4 +47,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default Units;
