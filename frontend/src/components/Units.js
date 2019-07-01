@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import NavBar from './NavBar'
 
 class Units extends Component {
 	state = {
@@ -29,7 +28,6 @@ class Units extends Component {
 	render() {
 		return (
 			<div>
-			<NavBar/>
 			{this.state.units.map(item => (
 				<div key={item.id}>
 					<h1>{item.name}</h1>
