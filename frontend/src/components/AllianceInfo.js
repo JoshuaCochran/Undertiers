@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 
 class AllianceInfo extends Component {
-	state = {
-		alliance: {}
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			id: props.id,
+			alliance: {}
+		};
+	}
 	
 	async componentDidMount() {
-		const { match: { params } } = this.props;
-		const url = 'http://127.0.0.1:8000/alliances/' + params.allianceId;
+		const url = 'http://127.0.0.1:8000/alliances/' + this.state.id;
 		
 		try {
 			const res = await fetch(url);

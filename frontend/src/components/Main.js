@@ -3,13 +3,16 @@ import { Switch, Route } from 'react-router-dom'
 import Units from './Units'
 import UnitInfo from './UnitInfo'
 import AllianceInfo from './AllianceInfo'
+import UnitInfoTest from './UnitInfo'
 
 const Main = () => (
 	<main>
 		<Switch>
 			<Route exact path='/units' component={Units}/>
-			<Route path="/units/:unitId" exact component={UnitInfo}/>
-			<Route path="/alliances/:allianceId" exact component={AllianceInfo}/>
+			<Route path="/units/:id" 
+			render={(props) => <UnitInfo id={props.match.params.id}/>}/>
+			<Route path="/alliances/:id" 
+			render={(props) => <AllianceInfo id={props.match.params.id}/>}/>
 		</Switch>
 	</main>
 )

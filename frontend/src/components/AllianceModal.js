@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import UnitInfo from './UnitInfo';
+import AllianceInfo from './AllianceInfo';
 import Dialog from '@material-ui/core/Dialog';
 
-class UnitModal extends Component {
+class AllianceModal extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -44,7 +44,7 @@ class UnitModal extends Component {
 					fullWidth
 				>
 					<div>
-						<UnitInfo id={this.state.id}/>
+						<AllianceInfo id={this.state.id}/>
 					</div>
 				</Dialog>
 			</div>
@@ -52,4 +52,4 @@ class UnitModal extends Component {
 	}
 }
 
-export default UnitModal;
+export default AllianceModal;

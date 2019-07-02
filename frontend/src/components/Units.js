@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
 import UnitModal from './UnitModal';
+import AllianceModal from './AllianceModal';
 
 class Units extends Component {
-	state = {
-		units: []
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			showAlliance: false,
+			showUnit: false,
+			unitId: 1,
+			allianceId: 1,
+			units: []
+		};
+		
+		this.onUnitClick = this.onUnitClick.bind(this);
+	}
 	
 	async componentDidMount() {
 		try {
@@ -19,17 +29,18 @@ class Units extends Component {
 	}
 	
 	onAllianceClick(id) {
-		this.props.history.push('/alliances/' + id)
+		this.setState({showAlliance: true, showUnit: false, allianceId: id})
 	}
 	
 	onUnitClick(id) {
-		//<UnitModal show={true} unitId={id}/>
-		this.props.history.push('/units/' + id)
+		this.setState({showUnit: true, showAlliance: false, unitId: id})
 	}
 	
-	
+	render() {
 		return (
 			<div>
+			<UnitModal show={this.state.showUnit} id={this.state.unitId}/>
+			<AllianceModal show={this.state.showAlliance} id={this.state.allianceId}/>
 			{this.state.units.map(item => (
 				<div key={item.id}>
 					<h1>{item.name}</h1>
@@ -44,7 +55,7 @@ class Units extends Component {
 			))}
 			</div>
 		);
-	
+	}
 }
 
 export default Units;

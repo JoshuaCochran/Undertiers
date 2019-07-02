@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
+import AllianceModal from './AllianceModal';
 
 class UnitInfo extends Component {
-	state = {
-		unit: {alliances: []}
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			id: props.id,
+			showAlliance: false,
+			allianceId: 1,
+			unit: { alliances: [] }
+		};
+	}
 	
 	async componentDidMount() {
-		const { match: { params } } = this.props;
-		const url = 'http://127.0.0.1:8000/units/' + params.unitId;
+		const url = 'http://127.0.0.1:8000/units/' + this.state.id;
 		
 		try {
 			const res = await fetch(url);
@@ -21,12 +27,13 @@ class UnitInfo extends Component {
 	}
 	
 	onAllianceClick(id) {
-		this.props.history.push('/alliances/' + id)
+		this.setState({showAlliance: true, allianceId: id})
 	}
 	
 	render() {
 		return (
 			<div>
+				<AllianceModal show={this.state.showAlliance} id={this.state.allianceId}/>
 				<h1>{this.state.unit.name}</h1>
 				<img src={this.state.unit.icon_url} alt='{this.state.unit.name} icon'/>
 				{this.state.unit.alliances.map(alliance =>
