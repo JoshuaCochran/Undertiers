@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UnitModal from './UnitModal';
 
 class Units extends Component {
 	state = {
@@ -22,10 +23,11 @@ class Units extends Component {
 	}
 	
 	onUnitClick(id) {
+		//<UnitModal show={true} unitId={id}/>
 		this.props.history.push('/units/' + id)
 	}
 	
-	render() {
+	
 		return (
 			<div>
 			{this.state.units.map(item => (
@@ -42,7 +44,7 @@ class Units extends Component {
 			))}
 			</div>
 		);
-	}
+	
 }
 
 export default Units;
