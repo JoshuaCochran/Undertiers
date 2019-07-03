@@ -3,7 +3,6 @@ import { Switch, Route } from 'react-router-dom'
 import Units from './Units'
 import UnitInfo from './UnitInfo'
 import AllianceInfo from './AllianceInfo'
-import UnitInfoTest from './UnitInfo'
 
 const Main = () => (
 	<main>

@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
-import UnitInfo from './UnitInfo';
+import UnitInfoTest from './UnitInfoTest';
 import Dialog from '@material-ui/core/Dialog';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+	dialogPaper: {
+		minHeight: '125px',
+		maxHeight: '125px',
+		minWidth: '83px',
+		maxWidth: '83px',
+	},
+});
 
 class UnitModal extends Component {
 	constructor(props) {
@@ -10,7 +20,6 @@ class UnitModal extends Component {
 			id: props.id,
 		};
 	}
-
 	
 	handleOpen = () => {
 		this.setState({
@@ -34,6 +43,7 @@ class UnitModal extends Component {
 	}
 	
 	render() {
+		const {classes}=this.props;
 		return (
 			<div>
 				<Dialog
@@ -41,15 +51,16 @@ class UnitModal extends Component {
 					aria-describedby="simple-modal-description"
 					open={this.state.open}
 					onClose={this.handleClose}
-					fullWidth
+					modal={true}
+					fullWidth={false}
+					maxWidth={'md'}
+					classes={{ paper: classes.dialogPaper }}
 				>
-					<div>
-						<UnitInfo id={this.state.id}/>
-					</div>
+					<UnitInfoTest id={this.state.id}/>
 				</Dialog>
 			</div>
 		);
 	}
 }
 
-export default UnitModal;
+export default withStyles(styles)(UnitModal);
