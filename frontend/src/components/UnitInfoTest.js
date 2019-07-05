@@ -1,12 +1,36 @@
 import React, { Component } from 'react';
 import AllianceModal from './AllianceModal';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
 	root: {
 		flexGrow: 1,
+		position: 'relative',
+	},
+	center: {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		width: '84px',
+		height: '84px',
+		marginTop: '-42px',
+		marginLeft: '-42px',
+	},
+	parent: {
+		position: 'relative',
+	},
+	image: {
+		position: 'absolute',
+		top: 90,
+		width: '35px',
+		height: 'auto',
+
+	},
+	unitName: {
+		position: 'absolute',
+		left: '40%', 
+		color: 'white',
 	},
 	paper: {
 		padding: theme.spacing(2),
@@ -14,20 +38,6 @@ const styles = theme => ({
 		margin: 'auto',
 		color: theme.palette.text.secondary,
 	},
-	image: {
-		width: '82px',
-		height: '82px',
-	},
-	img: {
-		margin: 'auto',
-		display: 'block',
-		maxWidth: '100%',
-		maxHeight: '100%',
-	},
-	ali: {
-		width: '10px',
-		height: '5px',
-	}
 });
 
 class UnitInfoTest extends Component {
@@ -61,26 +71,19 @@ class UnitInfoTest extends Component {
 	
 	render() {
 		const { classes } = this.props;
-		const style = {
-			backgroundImage: "url("+this.state.unit.icon_url+")",
-			backgroundSize: 'contain',
-			backgroundPosition: 'center',
-			backgroundRepeat: 'no-repeat',
-		}
 		return (
 			<div className={classes.root}>
 				<AllianceModal show={this.state.showAlliance} id={this.state.allianceId}/>
-				<Grid container direction="row"  alignItems="center" spacing={1}>
-					<Grid item  className={classes.image} xs={2} sm={2}>
-						<img src={this.state.unit.icon_url}/>
+				<span className={classes.unitName}>{this.state.unit.name}</span>
+				<img className={classes.center} src={this.state.unit.icon_url}/>
+				<Grid container direction="row" justify="space-between" alignItems="flex-start">
+				{this.state.unit.alliances.map(alliance =>
+					<Grid item xm={4} sm={3} style={{marginRight: '3px'}} >
+					<div key={alliance.id}>
+						<img className={classes.image} src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance.id)} alt='{alliance.name} icon'/>
+					</div>
 					</Grid>
-				</Grid>
-				<Grid container direction="row"  alignItems="center" spacing={2}>
-					{this.state.unit.alliances.map(alliance =>
-					<Grid item className={classes.ali} key={alliance.id} xs={6} sm={5}>
-						<img src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance.id)} alt='{alliance.name} icon'/>
-					</Grid>
-					)}
+				)}	
 				</Grid>
 			</div>
 		);

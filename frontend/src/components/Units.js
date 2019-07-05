@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import UnitModal from './UnitModal';
 import AllianceModal from './AllianceModal';
+import UnitPopOver from './UnitPopOver';
 
 class Units extends Component {
 	constructor(props) {
@@ -40,6 +41,7 @@ class Units extends Component {
 		return (
 			<div>
 			<UnitModal show={this.state.showUnit} id={this.state.unitId}/>
+			<UnitPopOver id={this.state.unitId}/>
 			<AllianceModal show={this.state.showAlliance} id={this.state.allianceId}/>
 			{this.state.units.map(item => (
 				<div key={item.id}>

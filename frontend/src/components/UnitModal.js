@@ -7,8 +7,11 @@ const styles = theme => ({
 	dialogPaper: {
 		minHeight: '125px',
 		maxHeight: '125px',
-		minWidth: '83px',
-		maxWidth: '83px',
+		minWidth: '125px',
+		maxWidth: '125px',
+		backgroundColor: 'rgba(35, 35, 35)',
+		overflow: "hidden",
+		height: "100%",
 	},
 });
 
@@ -52,8 +55,6 @@ class UnitModal extends Component {
 					open={this.state.open}
 					onClose={this.handleClose}
 					modal={true}
-					fullWidth={false}
-					maxWidth={'md'}
 					classes={{ paper: classes.dialogPaper }}
 				>
 					<UnitInfoTest id={this.state.id}/>
