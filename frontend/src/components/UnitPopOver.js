@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import UnitInfoTest from './UnitInfoTest';
+import UnitInfo from './UnitInfo';
 
 const useStyles = makeStyles(theme => ({
   popover: {
@@ -62,7 +62,7 @@ export default function MouseOverPopover(props) {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-		<UnitInfoTest id={id}/>
+		<UnitInfo id={id}/>
       </Popover>
     </div>
   );

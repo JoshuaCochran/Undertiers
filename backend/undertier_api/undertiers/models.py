@@ -46,5 +46,8 @@ class Alliance(models.Model):
                                       # Used to calculate number of tiers of alliance (max_units/min_units)
     icon_url = models.URLField(default="http://localhost:8000/static/alliance_icons/brawny.png") # URL to the img for alliance icon
     description = models.CharField(max_length=200, default="") # Description of Alliance bonus
+    synergy_1 = models.CharField(max_length=200, default="")
+    synergy_2 = models.CharField(max_length=200, default="")
+    synergy_3 = models.CharField(max_length=200, default="")
     units = models.ManyToManyField(Unit) # Intermediary join table representing M:N relationship
                                          # between alliances and units

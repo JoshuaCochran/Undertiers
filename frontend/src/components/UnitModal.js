@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UnitInfoTest from './UnitInfoTest';
+import UnitInfo from './UnitInfo';
 import Dialog from '@material-ui/core/Dialog';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -57,7 +57,7 @@ class UnitModal extends Component {
 					modal={true}
 					classes={{ paper: classes.dialogPaper }}
 				>
-					<UnitInfoTest id={this.state.id}/>
+					<UnitInfo id={this.state.id}/>
 				</Dialog>
 			</div>
 		);
