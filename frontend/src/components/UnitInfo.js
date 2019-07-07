@@ -44,43 +44,34 @@ class UnitInfo extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			id: props.id,
 			showAlliance: false,
-			allianceId: 1,
-			unit: { alliances: [] }
+			alliance: null,
+			unit: props.unit,
 		};
 	}
 	
-	async componentDidMount() {
-		const url = 'http://127.0.0.1:8000/units/' + this.state.id;
-		
-		try {
-			const res = await fetch(url);
-			const unit = await res.json();
-			this.setState({
-				unit
-			});
-		} catch (e) {
-			console.log(e);
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.unit !== this.state.unit) {
+			this.setState({unit: nextProps.unit});
 		}
 	}
 	
-	onAllianceClick(id) {
-		this.setState({showAlliance: true, allianceId: id})
+	onAllianceClick(alliance) {
+		this.setState({showAlliance: true, alliance: alliance})
 	}
 	
 	render() {
 		const { classes } = this.props;
 		return (
 			<div className={classes.root}>
-				<AllianceModal show={this.state.showAlliance} id={this.state.allianceId}/>
+				<AllianceModal show={this.state.showAlliance} alliance={this.state.alliance}/>
 				<span className={classes.unitName}>{this.state.unit.name}</span>
 				<img className={classes.center} src={this.state.unit.icon_url}/>
 				<Grid container direction="row" justify="space-between" alignItems="flex-start">
 				{this.state.unit.alliances.map(alliance =>
-					<Grid item xm={4} sm={3} style={{marginRight: '3px'}} >
-					<div key={alliance.id}>
-						<img className={classes.image} src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance.id)} alt='{alliance.name} icon'/>
+					<Grid key={alliance.name} item xm={4} sm={3} style={{marginRight: '3px'}} >
+					<div>
+						<img className={classes.image} src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance)} alt='{alliance.name} icon'/>
 					</div>
 					</Grid>
 				)}	

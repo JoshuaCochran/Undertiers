@@ -4,23 +4,8 @@ class AllianceInfo extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			id: props.id,
-			alliance: { synergies: [] }
+			alliance: props.alliance,
 		};
-	}
-	
-	async componentDidMount() {
-		const url = 'http://127.0.0.1:8000/alliances/' + this.state.id;
-		
-		try {
-			const res = await fetch(url);
-			const alliance = await res.json();
-			this.setState({
-				alliance
-			});
-		} catch(e) {
-			console.log(e);
-		}
 	}
 	
 	render() {
@@ -29,7 +14,7 @@ class AllianceInfo extends Component {
 				<h1>{this.state.alliance.name}</h1>
 				<img src={this.state.alliance.icon_url} alt='{this.state.alliance.name} icon'/>
 				{this.state.alliance.synergies.map(synergy =>
-					<div>{synergy}</div>
+					<div key={this.state.alliance.name}>{synergy}</div>
 				)}
 			</div>
 		);

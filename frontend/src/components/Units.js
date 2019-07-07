@@ -9,7 +9,7 @@ class Units extends Component {
 		this.state = {
 			showAlliance: false,
 			showUnit: false,
-			unitId: 1,
+			unit: { alliance: [] },
 			allianceId: 1,
 			units: []
 		};
@@ -33,26 +33,20 @@ class Units extends Component {
 		this.setState({showAlliance: true, showUnit: false, allianceId: id})
 	}
 	
-	onUnitClick(id) {
-		this.setState({showUnit: true, showAlliance: false, unitId: id})
+	onUnitClick(unit) {
+		this.setState({showUnit: true, showAlliance: false, unit: unit})
 	}
 	
 	render() {
 		return (
 			<div>
-			<UnitModal show={this.state.showUnit} id={this.state.unitId}/>
+			<UnitModal show={this.state.showUnit} unit={this.state.unit}/>
 			<UnitPopOver id={this.state.unitId}/>
 			<AllianceModal show={this.state.showAlliance} id={this.state.allianceId}/>
 			{this.state.units.map(item => (
 				<div key={item.id}>
 					<h1>{item.name}</h1>
-					<img src={item.icon_url} onClick={() => this.onUnitClick(item.id)}alt="{item.name} icon"/>
-					{item.alliances.map(alliance => (
-						<div key={alliance.id}>
-							<h4>{alliance.name}</h4>
-							<img src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance.id)} alt="{alliance.name} icon"/>
-						</div>
-					))}
+					<img src={item.icon_url} onClick={() => this.onUnitClick(item)}alt="{item.name} icon"/>
 				</div>
 			))}
 			</div>

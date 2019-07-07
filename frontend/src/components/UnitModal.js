@@ -20,7 +20,7 @@ class UnitModal extends Component {
 		super(props);
 		this.state = {
 			open: props.show,
-			id: props.id,
+			unit: { alliance: [] },
 		};
 	}
 	
@@ -40,8 +40,8 @@ class UnitModal extends Component {
 		if (nextProps.show !== this.state.open) {
 			this.setState({open: nextProps.show});
 		}
-		if (nextProps.id !== this.state.id) {
-			this.setState({id: nextProps.id});
+		if (nextProps.unit !== this.state.unit) {
+			this.setState({unit: nextProps.unit});
 		}
 	}
 	
@@ -57,7 +57,7 @@ class UnitModal extends Component {
 					modal={true}
 					classes={{ paper: classes.dialogPaper }}
 				>
-					<UnitInfo id={this.state.id}/>
+					<UnitInfo unit={this.state.unit}/>
 				</Dialog>
 			</div>
 		);

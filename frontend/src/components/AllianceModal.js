@@ -7,7 +7,7 @@ class AllianceModal extends Component {
 		super(props);
 		this.state = {
 			open: props.show,
-			id: props.id,
+			alliance: null,
 		};
 	}
 
@@ -28,8 +28,8 @@ class AllianceModal extends Component {
 		if (nextProps.show !== this.state.open) {
 			this.setState({open: nextProps.show});
 		}
-		if (nextProps.id !== this.state.id) {
-			this.setState({id: nextProps.id});
+		if (nextProps.alliance !== this.state.alliance) {
+			this.setState({alliance: nextProps.alliance});
 		}
 	}
 	
@@ -44,7 +44,7 @@ class AllianceModal extends Component {
 					fullWidth
 				>
 					<div>
-						<AllianceInfo id={this.state.id}/>
+						<AllianceInfo alliance={this.state.alliance}/>
 					</div>
 				</Dialog>
 			</div>
