@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'undertiers',
+
+    'django_better_admin_arrayfield.apps.DjangoBetterAdminArrayfieldConfig',
 ]
 
 MIDDLEWARE = [
