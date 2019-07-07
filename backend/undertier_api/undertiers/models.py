@@ -2,12 +2,13 @@ from django.db import models
 from django.core.validators import int_list_validator, MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.contrib.postgres.fields import ArrayField
 
 # The model describing a unit. TODO: Add tags for sorting.
 class Unit(models.Model):
     name = models.CharField(max_length=200) # Unit name
     icon_url = models.URLField(default="http://localhost:8000/static/unit_icons/axe.png") # Stores the URL to the img for unit icons
-    tile_url = models.URLField() # Stores the URL to the img for the unit representation on map
+    tile_url = models.URLField(default="http://localhost:8000/static/unit_icons/axe.png") # Stores the URL to the img for the unit representation on map
     # Stores the Tier (and hence gold cost) of the unit
     tier = models.IntegerField(validators=[MinValueValidator(1, "Value must be between 1 and 5"),
                                            MaxValueValidator(5, "Value must be between 1 and 5")])
@@ -46,8 +47,6 @@ class Alliance(models.Model):
                                       # Used to calculate number of tiers of alliance (max_units/min_units)
     icon_url = models.URLField(default="http://localhost:8000/static/alliance_icons/brawny.png") # URL to the img for alliance icon
     description = models.CharField(max_length=200, default="") # Description of Alliance bonus
-    synergy_1 = models.CharField(max_length=200, default="")
-    synergy_2 = models.CharField(max_length=200, default="")
-    synergy_3 = models.CharField(max_length=200, default="")
+    synergies = ArrayField(models.CharField(max_length=200, blank=True), null=True, default=list)
     units = models.ManyToManyField(Unit) # Intermediary join table representing M:N relationship
                                          # between alliances and units

@@ -11,9 +11,7 @@ class AllianceSerializer(serializers.ModelSerializer):
             'max_units',
             'icon_url',
             'description',
-            'synergy_1',
-            'synergy_2',
-            'synergy_3',
+            'synergies',
         )
 
         model = Alliance
