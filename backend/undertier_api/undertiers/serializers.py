@@ -10,7 +10,6 @@ class AllianceSerializer(serializers.ModelSerializer):
             'min_units',
             'max_units',
             'icon_url',
-            'description',
             'synergies',
         )
 

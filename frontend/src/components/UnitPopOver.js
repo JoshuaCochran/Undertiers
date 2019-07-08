@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 export default function MouseOverPopover(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [id, setId] = React.useState(null);
+  const [unit, setUnit] = React.useState(null);
 
   function handlePopoverOpen(event) {
     setAnchorEl(event.currentTarget);
@@ -27,7 +27,7 @@ export default function MouseOverPopover(props) {
   }
 	
 	useEffect(() => {
-		setId(props.id);
+		setUnit(props.unit);
 	}, [props]
 	);
 	
@@ -62,7 +62,7 @@ export default function MouseOverPopover(props) {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-		<UnitInfo id={id}/>
+		<UnitInfo unit={unit}/>
       </Popover>
     </div>
   );
