@@ -48,6 +48,7 @@ class UnitInfo extends Component {
 			alliance: null,
 			unit: props.unit,
 		};
+		this.handleAllianceClose = this.handleAllianceClose.bind(this);
 	}
 	
 	componentWillReceiveProps(nextProps) {
@@ -60,11 +61,15 @@ class UnitInfo extends Component {
 		this.setState({showAlliance: true, alliance: alliance})
 	}
 	
+	handleAllianceClose() {
+		this.setState({showAlliance: false})
+	}
+	
 	render() {
 		const { classes } = this.props;
 		return (
 			<div className={classes.root}>
-				<AllianceModal show={this.state.showAlliance} alliance={this.state.alliance}/>
+				<AllianceModal show={this.state.showAlliance} alliance={this.state.alliance} handleAllianceClose={() => this.handleAllianceClose()}/>
 				<span className={classes.unitName}>{this.state.unit.name}</span>
 				<img className={classes.center} src={this.state.unit.icon_url}/>
 				<Grid container direction="row" justify="space-between" alignItems="flex-start">

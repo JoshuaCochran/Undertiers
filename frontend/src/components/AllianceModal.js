@@ -40,7 +40,7 @@ class AllianceModal extends Component {
 					aria-labelledby="simple-modal-title"
 					aria-describedby="simple-modal-description"
 					open={this.state.open}
-					onClose={this.handleClose}
+					onClose={this.props.handleAllianceClose}
 					fullWidth
 				>
 					<div>

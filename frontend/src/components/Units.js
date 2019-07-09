@@ -17,10 +17,8 @@ class Units extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showAlliance: false,
 			showUnit: false,
 			unit: { alliance: [] },
-			allianceId: 1,
 			units: [],
 			anchorEl: null,
 		};
@@ -61,10 +59,6 @@ class Units extends Component {
 		this.setState({units: myData});
 	}
 	
-	onAllianceClick(id) {
-		this.setState({showAlliance: true, showUnit: false, allianceId: id})
-	}
-	
 	onUnitClick(unit) {
 		this.setState({showUnit: true, showAlliance: false, unit: unit})
 	}
@@ -95,7 +89,6 @@ class Units extends Component {
 					<MenuItem onClick={this.sortAlphabetically}>Alphabetically</MenuItem>
 				</Menu>
 				<UnitModal show={this.state.showUnit} unit={this.state.unit}/>
-				<AllianceModal show={this.state.showAlliance} id={this.state.allianceId}/>
 				{this.state.units.map(item => (
 					<div key={item.id}>
 						<h1>{item.name}</h1>
