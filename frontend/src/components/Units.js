@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import UnitModal from './UnitModal';
-import AllianceModal from './AllianceModal';
-import UnitPopOver from './UnitPopOver';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
