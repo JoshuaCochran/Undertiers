@@ -10,19 +10,6 @@ class AllianceModal extends Component {
 			alliance: null,
 		};
 	}
-
-	
-	handleOpen = () => {
-		this.setState({
-			open: true,
-		});
-	};
-	
-	handleClose = () => {
-		this.setState({
-			open: false,
-		});
-	};
 	
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.show !== this.state.open) {

@@ -24,6 +24,7 @@ class Units extends Component {
 		};
 		
 		this.onUnitClick = this.onUnitClick.bind(this);
+		this.handleUnitClose = this.handleUnitClose.bind(this);
 		this.handleMenuClick = this.handleMenuClick.bind(this);
 		this.handleMenuClose = this.handleMenuClose.bind(this);
 		this.sortByTier = this.sortByTier.bind(this);
@@ -32,7 +33,7 @@ class Units extends Component {
 	
 	async componentDidMount() {
 		try {
-			const res = await fetch('http://127.0.0.1:8000/units/');
+			const res = await fetch('http://47.34.191.46:80/units/');
 			const units = await res.json();
 			this.setState({
 				units
@@ -63,6 +64,10 @@ class Units extends Component {
 		this.setState({showUnit: true, showAlliance: false, unit: unit})
 	}
 	
+	handleUnitClose() {
+		this.setState({showUnit: false})
+	}
+	
 	handleMenuClick(event) {
 		this.setState({anchorEl: event.currentTarget});
 	}
@@ -88,7 +93,7 @@ class Units extends Component {
 					<MenuItem onClick={this.sortByTier}>Tier</MenuItem>
 					<MenuItem onClick={this.sortAlphabetically}>Alphabetically</MenuItem>
 				</Menu>
-				<UnitModal show={this.state.showUnit} unit={this.state.unit}/>
+				<UnitModal show={this.state.showUnit} handleUnitClose={() => this.handleUnitClose()} unit={this.state.unit}/>
 				{this.state.units.map(item => (
 					<div key={item.id}>
 						<h1>{item.name}</h1>

@@ -24,18 +24,6 @@ class UnitModal extends Component {
 		};
 	}
 	
-	handleOpen = () => {
-		this.setState({
-			open: true,
-		});
-	};
-	
-	handleClose = () => {
-		this.setState({
-			open: false,
-		});
-	};
-	
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.show !== this.state.open) {
 			this.setState({open: nextProps.show});
@@ -53,7 +41,7 @@ class UnitModal extends Component {
 					aria-labelledby="simple-modal-title"
 					aria-describedby="simple-modal-description"
 					open={this.state.open}
-					onClose={this.handleClose}
+					onClose={this.props.handleUnitClose}
 					modal={true}
 					classes={{ paper: classes.dialogPaper }}
 				>

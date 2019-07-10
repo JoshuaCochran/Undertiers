@@ -22,7 +22,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '192.168.1.100',
+    '47.34.191.46',
+    'www.undertiers.com',
+]
 
 
 # Application definition
@@ -56,7 +60,9 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
-    'http://127.0.0.1:3000'
+    'http://127.0.0.1:3000',
+    'http://192.168.1.100:3000',
+    'http://47.34.191.46:3000',
 ]
 
 ROOT_URLCONF = 'undertier_api.urls'
