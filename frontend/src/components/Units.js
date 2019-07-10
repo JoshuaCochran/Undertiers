@@ -4,11 +4,17 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
+import Grid from ‘@material-ui/core/Grid’;
+import Paper from ‘@material-ui/core/Paper’;
 
 const styles = theme => ({
 	toolbar: {
 		marginTop: '35px',
+                flexGrow: 1,
 	},
+        root: {
+            flexGrow: 1,
+        },
 });
 
 class Units extends Component {
@@ -87,12 +93,14 @@ class Units extends Component {
 					<MenuItem onClick={this.sortAlphabetically}>Alphabetically</MenuItem>
 				</Menu>
 				<UnitModal show={this.state.showUnit} unit={this.state.unit}/>
-				{this.state.units.map(item => (
-					<div key={item.id}>
+				<Grid container spacing={3}>
+                                {this.state.units.map(item => (
+					<Grid item xs={6} key={item.id}>
 						<h1>{item.name}</h1>
 						<img src={item.icon_url} onClick={() => this.onUnitClick(item)}alt="{item.name} icon"/>
-					</div>
+					</Grid>
 				))}
+                                </Grid>
 			</div>
 		);
 	}
