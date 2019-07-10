@@ -26,6 +26,8 @@ ALLOWED_HOSTS = [
     '192.168.1.100',
     '47.34.191.46',
     'www.undertiers.com',
+    'localhost',
+    '127.0.0.1',
 ]
 
 

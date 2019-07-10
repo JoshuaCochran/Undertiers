@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import UnitModal from './UnitModal';
-import AllianceModal from './AllianceModal';
-import UnitPopOver from './UnitPopOver';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
 	toolbar: {
 		marginTop: '35px',
+        flexGrow: 1,
 	},
 });
 
@@ -33,7 +34,7 @@ class Units extends Component {
 	
 	async componentDidMount() {
 		try {
-			const res = await fetch('http://47.34.191.46:80/units/');
+			const res = await fetch('http://localhost:8000/units/');
 			const units = await res.json();
 			this.setState({
 				units
@@ -94,12 +95,13 @@ class Units extends Component {
 					<MenuItem onClick={this.sortAlphabetically}>Alphabetically</MenuItem>
 				</Menu>
 				<UnitModal show={this.state.showUnit} handleUnitClose={() => this.handleUnitClose()} unit={this.state.unit}/>
-				{this.state.units.map(item => (
-					<div key={item.id}>
-						<h1>{item.name}</h1>
+				<Grid container spacing={1}>
+					{this.state.units.map(item => (
+					<Grid item xs={1} key={item.id}>
 						<img src={item.icon_url} onClick={() => this.onUnitClick(item)}alt="{item.name} icon"/>
-					</div>
+					</Grid>
 				))}
+                </Grid>
 			</div>
 		);
 	}
