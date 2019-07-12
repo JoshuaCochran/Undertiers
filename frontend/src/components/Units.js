@@ -11,7 +11,6 @@ import UnitInfo from './UnitInfo';
 const styles = theme => ({
 	toolbar: {
 		marginTop: '35px',
-        flexGrow: 1,
 	},
 	popover: {
 		pointerEvents: 'none',
@@ -51,12 +50,11 @@ class Units extends Component {
 	
 	async componentDidMount() {
 		try {
-			const res = await fetch('http://localhost:8000/units/');
+			const res = await fetch('http://www.undertiers.com:8000/units/');
 			const units = await res.json();
 			this.setState({
 				units
 			});
-			this.setState({loaded: true});
 		} catch (e) {
 			console.log(e);
 		}
@@ -138,7 +136,7 @@ class Units extends Component {
 					disableRestoreFocus
 					classes={{ paper: classes.dialogPaper }}
 				>
-					<UnitInfo unit={this.state.unit}/>
+					<UnitInfo unit={this.state.unit} isPopover={true}/>
 				</Popover>
 				<Grid container spacing={1}>
 					{this.state.units.map(item => (

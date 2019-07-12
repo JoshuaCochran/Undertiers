@@ -5,9 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import './css/unitinfo.css';
 
 const styles = theme => ({
-	root: {
-		flexGrow: 1,
-	},
 	center: {
 		position: 'absolute',
 		top: '50%',
@@ -17,20 +14,13 @@ const styles = theme => ({
 		marginTop: '-42px',
 		marginLeft: '-42px',
 	},
-	parent: {
-		position: 'relative',
+	popoverImage: {
+		marginTop: 'calc(5% + 60px)',
+		transform: 'scale(0.83)',
 	},
-	image: {
-		position: 'absolute',
-		top: 90,
-		width: '35px',
-		height: 'auto',
-	},
-	paper: {
-		padding: theme.spacing(2),
-		textAlign: 'center',
-		margin: 'auto',
-		color: theme.palette.text.secondary,
+	modalImage: {
+		marginTop: '-10%',
+		transform: 'scale(0.83)',
 	},
 });
 
@@ -41,6 +31,7 @@ class UnitInfo extends Component {
 			showAlliance: false,
 			alliance: null,
 			unit: props.unit,
+			isPopover: props.isPopover,
 		};
 		this.handleAllianceClose = this.handleAllianceClose.bind(this);
 	}
@@ -62,20 +53,23 @@ class UnitInfo extends Component {
 	render() {
 		const { classes } = this.props;
 		return (
-			<div className={classes.root}>
+			<div>
 				<AllianceModal show={this.state.showAlliance} alliance={this.state.alliance} handleAllianceClose={() => this.handleAllianceClose()}/>
 				<div id="unitName">{this.state.unit.name}</div>
 				<table id="wrapper">
 					<tr>
-						<td><img className={classes.center} src={this.state.unit.icon_url}/></td>
+						<td>
+							<img className={classes.center} src={this.state.unit.icon_url}/>
+						</td>
 					</tr>
 				</table>
-				<Grid container direction="row" justify="space-between" alignItems="flex-start">
+				<Grid container direction="row" justify="center" alignItems="center">
 				{this.state.unit.alliances.map(alliance =>
-					<Grid key={alliance.name} item xm={4} sm={3} style={{marginRight: '3px'}} >
-					<div>
-						<img className={classes.image} src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance)} alt='{alliance.name} icon'/>
-					</div>
+					<Grid
+						key={alliance.name} 
+						item xm={4} sm={3} 
+						style={{marginLeft: 'auto', marginRight: 'auto',}} >
+						<img className={this.state.isPopover ? classes.popoverImage : classes.modalImage} src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance)} alt='{alliance.name} icon'/>
 					</Grid>
 				)}	
 				</Grid>

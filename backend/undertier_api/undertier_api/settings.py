@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [
     'www.undertiers.com',
     'localhost',
     '127.0.0.1',
+    'undertiers.com',
 ]
 
 
@@ -66,6 +67,8 @@ CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:3000',
     'http://192.168.1.100:3000',
     'http://47.34.191.46:3000',
+    'http://www.undertiers.com:3000',
+    'http://undertiers.com:3000',
 ]
 
 ROOT_URLCONF = 'undertier_api.urls'
