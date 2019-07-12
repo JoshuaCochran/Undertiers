@@ -9,3 +9,9 @@ html, body, #wrapper {
    vertical-align: middle;
    text-align: center;
 }
+
+#unitName {
+	text-align: center;
+	margin: auto;
+	color: white;
+}

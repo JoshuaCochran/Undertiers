@@ -28,8 +28,7 @@ const styles = theme => ({
 		height: 'auto',
 	},
 	unitName: {
-		position: 'absolute',
-		left: '40%', 
+		textAlign: 'center',
 		color: 'white',
 	},
 	paper: {
@@ -70,7 +69,7 @@ class UnitInfo extends Component {
 		return (
 			<div>
 				<AllianceModal show={this.state.showAlliance} alliance={this.state.alliance} handleAllianceClose={() => this.handleAllianceClose()}/>
-				<span className={classes.unitName}>{this.state.unit.name}</span>
+				<div id="unitName">{this.state.unit.name}</div>
 				<table id="wrapper">
 					<tr>
 						<td><img className={classes.center} src={this.state.unit.icon_url}/></td>
