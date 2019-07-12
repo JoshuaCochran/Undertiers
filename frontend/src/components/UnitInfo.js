@@ -7,7 +7,6 @@ import './css/unitinfo.css';
 const styles = theme => ({
 	root: {
 		flexGrow: 1,
-		position: 'relative',
 	},
 	center: {
 		position: 'absolute',
@@ -26,10 +25,6 @@ const styles = theme => ({
 		top: 90,
 		width: '35px',
 		height: 'auto',
-	},
-	unitName: {
-		textAlign: 'center',
-		color: 'white',
 	},
 	paper: {
 		padding: theme.spacing(2),
@@ -67,7 +62,7 @@ class UnitInfo extends Component {
 	render() {
 		const { classes } = this.props;
 		return (
-			<div>
+			<div className={classes.root}>
 				<AllianceModal show={this.state.showAlliance} alliance={this.state.alliance} handleAllianceClose={() => this.handleAllianceClose()}/>
 				<div id="unitName">{this.state.unit.name}</div>
 				<table id="wrapper">
