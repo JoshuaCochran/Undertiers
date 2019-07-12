@@ -5,8 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
 	dialogPaper: {
-		minHeight: '145px',
-		maxHeight: '145px',
+		minHeight: '125px',
+		maxHeight: '125px',
 		minWidth: '145px',
 		maxWidth: '145px',
 		backgroundColor: 'rgba(35, 35, 35)',

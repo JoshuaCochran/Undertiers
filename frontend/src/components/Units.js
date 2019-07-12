@@ -16,8 +16,8 @@ const styles = theme => ({
 		pointerEvents: 'none',
 	},
 	dialogPaper: {
-		minHeight: '145px',
-		maxHeight: '145px',
+		minHeight: '125px',
+		maxHeight: '125px',
 		minWidth: '145px',
 		maxWidth: '145px',
 		backgroundColor: 'rgba(35, 35, 35)',
@@ -136,7 +136,7 @@ class Units extends Component {
 					disableRestoreFocus
 					classes={{ paper: classes.dialogPaper }}
 				>
-					<UnitInfo unit={this.state.unit} isPopover={true}/>
+					<UnitInfo unit={this.state.unit}/>
 				</Popover>
 				<Grid container spacing={1}>
 					{this.state.units.map(item => (
