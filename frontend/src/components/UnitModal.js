@@ -42,7 +42,6 @@ class UnitModal extends Component {
 					aria-describedby="simple-modal-description"
 					open={this.state.open}
 					onClose={this.props.handleUnitClose}
-					modal={true}
 					classes={{ paper: classes.dialogPaper }}
 				>
 					<UnitInfo unit={this.state.unit}/>

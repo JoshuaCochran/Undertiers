@@ -5,12 +5,25 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import Popover from '@material-ui/core/Popover';
+import UnitInfo from './UnitInfo';
 
 const styles = theme => ({
 	toolbar: {
 		marginTop: '35px',
         flexGrow: 1,
+	},
+	popover: {
+		pointerEvents: 'none',
+	},
+	dialogPaper: {
+		minHeight: '125px',
+		maxHeight: '125px',
+		minWidth: '125px',
+		maxWidth: '125px',
+		backgroundColor: 'rgba(35, 35, 35)',
+		overflow: "hidden",
+		height: "100%",
 	},
 });
 
@@ -22,6 +35,8 @@ class Units extends Component {
 			unit: { alliance: [] },
 			units: [],
 			anchorEl: null,
+			showPopover: false,
+			showMenu: false,
 		};
 		
 		this.onUnitClick = this.onUnitClick.bind(this);
@@ -30,6 +45,8 @@ class Units extends Component {
 		this.handleMenuClose = this.handleMenuClose.bind(this);
 		this.sortByTier = this.sortByTier.bind(this);
 		this.sortAlphabetically = this.sortAlphabetically.bind(this);
+		this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
+		this.handlePopoverClose = this.handlePopoverClose.bind(this);
 	}
 	
 	async componentDidMount() {
@@ -39,6 +56,7 @@ class Units extends Component {
 			this.setState({
 				units
 			});
+			this.setState({loaded: true});
 		} catch (e) {
 			console.log(e);
 		}
@@ -70,13 +88,21 @@ class Units extends Component {
 	}
 	
 	handleMenuClick(event) {
-		this.setState({anchorEl: event.currentTarget});
+		this.setState({anchorEl: event.currentTarget, showMenu: true});
 	}
 	
 	handleMenuClose() {
-		this.setState({anchorEl: null})
+		this.setState({anchorEl: null, showMenu: false})
 	}
-
+	
+	handlePopoverOpen(event, unit) {
+		this.setState({showPopover: true, unit: unit, anchorEl: event.currentTarget});
+	}
+	
+	handlePopoverClose() {
+		this.setState({anchorEl: null, showPopover: false});
+	}
+	
 	render() {
 		const {classes} = this.props;
 		return (
@@ -88,17 +114,42 @@ class Units extends Component {
 					id="simple-menu"
 					anchorEl={this.state.anchorEl}
 					keepMounted
-					open={Boolean(this.state.anchorEl)}
+					open={this.state.showMenu}
 					onClose={this.handleMenuClose}
 				>
 					<MenuItem onClick={this.sortByTier}>Tier</MenuItem>
 					<MenuItem onClick={this.sortAlphabetically}>Alphabetically</MenuItem>
 				</Menu>
 				<UnitModal show={this.state.showUnit} handleUnitClose={() => this.handleUnitClose()} unit={this.state.unit}/>
+				<Popover
+					id="mouse-over-popover"
+					open={this.state.showPopover}
+					className={classes.popover}
+					anchorEl={this.state.anchorEl}
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'center',
+					}}
+					transformOrigin={{
+						vertical: 'top',
+						horizontal: 'center',
+					}}
+					onClose={this.handlePopoverClose}
+					disableRestoreFocus
+					classes={{ paper: classes.dialogPaper }}
+				>
+					<UnitInfo unit={this.state.unit}/>
+				</Popover>
 				<Grid container spacing={1}>
 					{this.state.units.map(item => (
-					<Grid item xs={1} key={item.id}>
-						<img src={item.icon_url} onClick={() => this.onUnitClick(item)}alt="{item.name} icon"/>
+					<Grid item key={item.id}>
+						<img src={item.icon_url} 
+							onClick={() => this.onUnitClick(item)}
+							alt="{item.name} icon"
+							aria-owns={this.state.showPopover ? 'mouse-over-popover' : undefined}
+							aria-haspopup="true"
+							onMouseEnter={(e) => this.handlePopoverOpen(e, item)}
+							onMouseLeave={this.handlePopoverClose}/>
 					</Grid>
 				))}
                 </Grid>

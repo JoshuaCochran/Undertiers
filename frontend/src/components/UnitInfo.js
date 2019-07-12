@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AllianceModal from './AllianceModal';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import './css/unitinfo.css';
 
 const styles = theme => ({
 	root: {
@@ -25,7 +26,6 @@ const styles = theme => ({
 		top: 90,
 		width: '35px',
 		height: 'auto',
-
 	},
 	unitName: {
 		position: 'absolute',
@@ -68,10 +68,14 @@ class UnitInfo extends Component {
 	render() {
 		const { classes } = this.props;
 		return (
-			<div className={classes.root}>
+			<div>
 				<AllianceModal show={this.state.showAlliance} alliance={this.state.alliance} handleAllianceClose={() => this.handleAllianceClose()}/>
 				<span className={classes.unitName}>{this.state.unit.name}</span>
-				<img className={classes.center} src={this.state.unit.icon_url}/>
+				<table id="wrapper">
+					<tr>
+						<td><img className={classes.center} src={this.state.unit.icon_url}/></td>
+					</tr>
+				</table>
 				<Grid container direction="row" justify="space-between" alignItems="flex-start">
 				{this.state.unit.alliances.map(alliance =>
 					<Grid key={alliance.name} item xm={4} sm={3} style={{marginRight: '3px'}} >
