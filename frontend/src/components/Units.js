@@ -9,8 +9,10 @@ import Popover from '@material-ui/core/Popover';
 import UnitInfo from './UnitInfo';
 
 const styles = theme => ({
-	toolbar: {
+	root: {
 		marginTop: '35px',
+	},
+	toolbar: {
 	},
 	popover: {
 		pointerEvents: 'none',
@@ -36,6 +38,8 @@ class Units extends Component {
 			anchorEl: null,
 			showPopover: false,
 			showMenu: false,
+			sortedAlphabetically: false,
+			sortedByTier: false,
 		};
 		
 		this.onUnitClick = this.onUnitClick.bind(this);
@@ -61,20 +65,22 @@ class Units extends Component {
 	}
 	
 	sortByTier() {
-		const myData = this.state.units.sort((a,b) => a.tier - b.tier);
-		this.setState({units: myData});
+		const sortedByTier = this.state.sortedByTier;
+		const myData = this.state.units.sort((a,b) => sortedByTier ? a.tier - b.tier : b.tier - a.tier);
+		this.setState({units: myData, sortedByTier: !sortedByTier});
 	}
 	
 	sortAlphabetically() {
+		const alphabetical = this.state.sortedAlphabetically;
 		const myData = this.state.units.sort(function(a,b){
 			var nameA=a.name.toLowerCase(), nameB=b.name.toLowerCase();
 			if (nameA < nameB)
-				return -1;
+				return alphabetical ? 1 : -1;
 			if (nameA > nameB)
-				return 1;
+				return alphabetical ? -1 : 1;
 			return 0;
 		});
-		this.setState({units: myData});
+		this.setState({units: myData, sortedAlphabetically: !this.state.sortedAlphabetically});
 	}
 	
 	onUnitClick(unit) {
@@ -104,9 +110,9 @@ class Units extends Component {
 	render() {
 		const {classes} = this.props;
 		return (
-			<div className={classes.toolbar}>
-				<Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleMenuClick}>
-					Sort by
+			<div className={classes.root}>
+				<Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleMenuClick} style={{color: 'white'}}>
+					Sort
 				</Button>
 				<Menu
 					id="simple-menu"
@@ -115,7 +121,7 @@ class Units extends Component {
 					open={this.state.showMenu}
 					onClose={this.handleMenuClose}
 				>
-					<MenuItem onClick={this.sortByTier}>Tier</MenuItem>
+					<MenuItem onClick={this.sortByTier}>By Tier</MenuItem>
 					<MenuItem onClick={this.sortAlphabetically}>Alphabetically</MenuItem>
 				</Menu>
 				<UnitModal show={this.state.showUnit} handleUnitClose={() => this.handleUnitClose()} unit={this.state.unit}/>

@@ -60,7 +60,8 @@ class UnitInfo extends Component {
 					<Grid
 						key={alliance.name} 
 						item xm={4} sm={4} 
-						style={{marginLeft: 'auto', marginRight: 'auto'}} >
+						style={{marginLeft: 'auto', marginRight: 'auto'}}
+					>
 						<img className={classes.popoverImage} src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance)} alt={alliance.name + ' icon'}/>	
 					</Grid>
 				)}	
