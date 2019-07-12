@@ -57,19 +57,21 @@ class UnitInfo extends Component {
 				<AllianceModal show={this.state.showAlliance} alliance={this.state.alliance} handleAllianceClose={() => this.handleAllianceClose()}/>
 				<div id="unitName">{this.state.unit.name}</div>
 				<table id="wrapper">
-					<tr>
-						<td>
-							<img className={classes.center} src={this.state.unit.icon_url}/>
-						</td>
-					</tr>
+					<tbody>
+						<tr>
+							<td>
+								<img className={classes.center} src={this.state.unit.icon_url} alt={this.state.unit.name + ' icon'}/>
+							</td>
+						</tr>
+					</tbody>
 				</table>
 				<Grid container direction="row" justify="center" alignItems="center">
 				{this.state.unit.alliances.map(alliance =>
 					<Grid
 						key={alliance.name} 
-						item xm={4} sm={3} 
+						item xm={4} sm={4} 
 						style={{marginLeft: 'auto', marginRight: 'auto',}} >
-						<img className={this.state.isPopover ? classes.popoverImage : classes.modalImage} src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance)} alt='{alliance.name} icon'/>
+						<img className={this.state.isPopover ? classes.popoverImage : classes.modalImage} src={alliance.icon_url} onClick={() => this.onAllianceClick(alliance)} alt={alliance.name + ' icon'}/>	
 					</Grid>
 				)}	
 				</Grid>
