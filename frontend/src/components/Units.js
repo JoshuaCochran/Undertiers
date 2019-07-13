@@ -9,11 +9,6 @@ import Popover from '@material-ui/core/Popover';
 import UnitInfo from './UnitInfo';
 
 const styles = theme => ({
-	root: {
-		marginTop: '35px',
-	},
-	toolbar: {
-	},
 	popover: {
 		pointerEvents: 'none',
 	},
@@ -110,7 +105,7 @@ class Units extends Component {
 	render() {
 		const {classes} = this.props;
 		return (
-			<div className={classes.root}>
+			<div style={{position: 'fixed', height: '100%', backgroundColor: 'rgba(35, 35, 35)'}}>
 				<Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleMenuClick} style={{color: 'white'}}>
 					Sort
 				</Button>
