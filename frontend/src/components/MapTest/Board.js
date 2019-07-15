@@ -9,23 +9,9 @@ class Board extends Component {
     super(props);
     this.state = {
       knightPosition: [0, 0],
-      squares: []
     };
     this.handleSquareClick = this.handleSquareClick.bind(this);
   }
-
-  componentDidMount() {
-    this.updateSquares();
-    this.intervalUpdate = setInterval(this.updatePosition, 500);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.intervalUpdate);
-  }
-
-  updatePosition = () => {
-    this.updateSquares();
-  };
 
   renderSquare(i) {
     const x = i % 8;
@@ -54,15 +40,16 @@ class Board extends Component {
     this.setState({ knightPosition: [toX, toY] });
   }
 
-  updateSquares = () => {
+  renderSquares = () => {
     const squareData = [];
     for (let i = 0; i < 64; i++) {
       squareData.push(this.renderSquare(i));
-      this.setState({ squares: squareData });
     }
+    return squareData;
   };
 
   render() {
+    const squareData = this.renderSquares();
 
     return (
       <DndProvider backend={HTML5Backend}>
@@ -75,7 +62,7 @@ class Board extends Component {
             position: "absolute"
           }}
         >
-          {this.state.squares}
+          {squareData}
         </div>
       </DndProvider>
     );

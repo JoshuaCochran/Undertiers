@@ -33,7 +33,7 @@ export default function BoardSquare({ x, y, handleSquareClick, children }) {
                 width: '100%',
                 zIndex: 1,
                 opacity: 0.5,
-                backgroundColor: 'yellow',
+                backgroundColor: 'blue',
             }}
         />
       )}
