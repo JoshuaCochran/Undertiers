@@ -60,7 +60,6 @@ class UnitLocSerializer(serializers.ModelSerializer):
         fields = (
             'unit',
             'map',
-            'pos',
             'posx',
             'posy',
         )

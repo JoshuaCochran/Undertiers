@@ -36,8 +36,6 @@ class UnitLoc(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE) # Unit ID of the unit on map
     map = models.ForeignKey(Map, on_delete=models.CASCADE) # Map ID of map
     #Position Coordinate of unit on the map. Validates unit is between 0 and 31 because the map has an area of 32 tiles
-    pos = ArrayField(models.IntegerField(validators=[MinValueValidator(0, "Value must be non-negative"),
-                                          MaxValueValidator(8, "Value must be below 32")]))
     posx = models.IntegerField(validators=[MinValueValidator(0, "Value must be non-negative"),
                                           MaxValueValidator(8, "Value must be below 32")], default=0)
     posy = models.IntegerField(validators=[MinValueValidator(0, "Value must be non-negative"),

@@ -1,16 +1,19 @@
 import React from "react";
 import Square from "./Square";
+import Overlay from "./Overlay";
 import { ItemTypes } from "./DragTypes";
 import { useDrop } from "react-dnd";
 
-export default function BoardSquare({ x, y, handleSquareClick, children }) {
+export default function BoardSquare({ x, y, canMovePiece, movePiece, children }) {
   const black = (x + y) % 2 === 1;
-  const [{ isOver }, drop] = useDrop({
-    accept: ItemTypes.KNIGHT,
-    drop: () => handleSquareClick(x, y),
+  const [{ isOver, canDrop }, drop] = useDrop({
+    accept: ItemTypes.UNIT,
+    canDrop: () => canMovePiece(x, y),
+    drop: () => movePiece(x, y),
     collect: monitor => ({
-      isOver: !!monitor.isOver()
-    })
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+    }),
   });
 
   return (
@@ -23,20 +26,8 @@ export default function BoardSquare({ x, y, handleSquareClick, children }) {
       }}
     >
       <Square black={black}>{children}</Square>
-      {isOver && (
-        <div
-            style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                height: '100%',
-                width: '100%',
-                zIndex: 1,
-                opacity: 0.5,
-                backgroundColor: 'blue',
-            }}
-        />
-      )}
+      {isOver && canDrop && <Overlay color="blue"/>}
+      {isOver && !canDrop && <Overlay color="red"/>}
     </div>
   )
 }

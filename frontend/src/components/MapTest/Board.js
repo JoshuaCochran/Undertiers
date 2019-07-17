@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import BoardSquare from "./BoardSquare";
-import Knight from "./Knight";
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import UnitPiece from "./UnitPiece";
@@ -9,13 +8,12 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      knightPosition: [0, 0],
-      maps: [{ unit: {}, map: {}, posx: 0, posy: 0 }],
+      maps: [{ unit: {}, map: {}, posx: 0, posy: 0, piece_id: 0 }],
       data: false,
       draggingId: 0
     };
-    this.handleSquareClick = this.handleSquareClick.bind(this);
     this.movePiece = this.movePiece.bind(this);
+    this.canMovePiece = this.canMovePiece.bind(this);
     this.draggingPiece = this.draggingPiece.bind(this);
   }
 
@@ -23,6 +21,9 @@ class Board extends Component {
     try {
       const res = await fetch("http://www.undertiers.com:8000/maps/2");
       const maps = await res.json();
+      maps.map((item, i) => {
+        item.piece_id = i;
+      });
       this.setState({
         maps
       });
@@ -40,20 +41,17 @@ class Board extends Component {
       <div
         key={i}
         style={{ width: "12.5%", height: "12.5%" }}
-        onClick={() => this.handleSquareClick(x, y)}
       >
-        <BoardSquare x={x} y={y} handleSquareClick={() => this.movePiece(x, y)}>
-          {this.renderPiece(x, y, this.state.knightPosition)}
+        <BoardSquare
+          x={x}
+          y={y}
+          movePiece={() => this.movePiece(x, y)}
+          canMovePiece={() => this.canMovePiece(x, y)}
+        >
           {this.renderUnit(x, y)}
         </BoardSquare>
       </div>
     );
-  }
-
-  renderPiece(x, y, [knightX, knightY]) {
-    if (x === knightX && y === knightY) {
-      return <Knight />;
-    }
   }
 
   renderUnit(x, y) {
@@ -63,7 +61,7 @@ class Board extends Component {
           return (
             <div key={i}>
               <UnitPiece
-                id={item.unit.id}
+                id={item.piece_id}
                 image={item.unit.icon_url}
                 draggingPiece={id => this.draggingPiece(id)}
               />
@@ -80,16 +78,26 @@ class Board extends Component {
   movePiece(toX, toY) {
     const maps = this.state.maps.slice();
     this.state.maps.map(item => {
-      if (this.state.draggingId === item.unit.id) {
+      if (this.state.draggingId === item.piece_id) {
         item.posx = toX;
         item.posy = toY;
       }
     });
-    this.setState({maps: maps});
+    this.setState({ maps: maps });
   }
 
-  handleSquareClick(toX, toY) {
-    this.setState({ knightPosition: [toX, toY] });
+  canMovePiece(toX, toY) {
+    for (let i = 0; i < this.state.maps.length; i++)
+    {
+      if (
+        this.state.draggingId !== this.state.maps[i].piece_id &&
+        this.state.maps[i].posy === toY &&
+        this.state.maps[i].posx === toX
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 
   renderSquares = () => {
