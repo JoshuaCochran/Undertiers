@@ -9,7 +9,7 @@ class Board extends Component {
     super(props);
     this.state = {
       maps: [{ unit: {}, map: {}, posx: 0, posy: 0, piece_id: 0 }],
-      data: false,
+      loaded: false,
       draggingId: 0
     };
     this.movePiece = this.movePiece.bind(this);
@@ -27,7 +27,7 @@ class Board extends Component {
       this.setState({
         maps
       });
-      this.setState({ data: true });
+      this.setState({ loaded: true });
     } catch (e) {
       console.log(e);
     }
@@ -40,7 +40,10 @@ class Board extends Component {
     return (
       <div
         key={i}
-        style={{ width: "12.5%", height: "12.5%" }}
+        style={{
+          width: "12.5%",
+          height: "12.5%"
+        }}
       >
         <BoardSquare
           x={x}
@@ -55,7 +58,7 @@ class Board extends Component {
   }
 
   renderUnit(x, y) {
-    if (this.state.data) {
+    if (this.state.loaded) {
       return this.state.maps.map((item, i) => {
         if (x === item.posx && y === item.posy)
           return (
@@ -87,8 +90,7 @@ class Board extends Component {
   }
 
   canMovePiece(toX, toY) {
-    for (let i = 0; i < this.state.maps.length; i++)
-    {
+    for (let i = 0; i < this.state.maps.length; i++) {
       if (
         this.state.draggingId !== this.state.maps[i].piece_id &&
         this.state.maps[i].posy === toY &&

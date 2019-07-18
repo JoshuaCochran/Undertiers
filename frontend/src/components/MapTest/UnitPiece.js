@@ -16,10 +16,22 @@ export default function UnitPiece({ id, image, draggingPiece }) {
       ref={drag}
       style={{
         opacity: isDragging ? 0.5 : 1,
-        cursor: "move"
+        cursor: "move",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "12.5vw",
+        height: "12.5vh"
       }}
     >
-      <img src={image} alt="test" style={{ width: "50%", height: "50%" }} />
+      <img
+        src={image}
+        alt="test"
+        style={{
+          maxWidth: "100%",
+          maxHeight: "100%"
+        }}
+      />
     </div>
   );
 }
