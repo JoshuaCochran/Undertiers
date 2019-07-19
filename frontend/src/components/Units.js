@@ -1,32 +1,14 @@
 import React, { Component } from "react";
 import UnitModal from "./UnitModal";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
-import Popover from "@material-ui/core/Popover";
-import UnitInfo from "./UnitInfo";
 import { GridListTile, GridListTileBar } from "@material-ui/core";
+import UnitSortMenu from "./UnitSortMenu";
+import UnitPopover from "./UnitPopover";
 
 const styles = theme => ({
   root: {
     position: "absolute",
-    height: "100%",
-  },
-  button: {
-	  color: "white",
-  },
-  popover: {
-    pointerEvents: "none"
-  },
-  dialogPaper: {
-    minHeight: "125px",
-    maxHeight: "125px",
-    minWidth: "145px",
-    maxWidth: "145px",
-    backgroundColor: "rgba(35, 35, 35)",
-    overflow: "hidden",
     height: "100%"
   }
 });
@@ -123,50 +105,26 @@ class Units extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Button
-          aria-controls="simple-menu"
-          aria-haspopup="true"
-          onClick={this.handleMenuClick}
-          className={classes.button}
-        >
-          Sort
-        </Button>
-        <Menu
-          id="simple-menu"
+        <UnitSortMenu
           anchorEl={this.state.anchorEl}
-          keepMounted
-          open={this.state.showMenu}
-          onClose={this.handleMenuClose}
-        >
-          <MenuItem onClick={this.sortByTier}>By Tier</MenuItem>
-          <MenuItem onClick={this.sortAlphabetically}>
-            {this.state.sortedAlphabetically ? "Z-A" : "A-Z"}
-          </MenuItem>
-        </Menu>
+          showMenu={this.state.showMenu}
+          handleMenuClick={this.handleMenuClick}
+          handleMenuClose={this.handleMenuClose}
+          sortByTier={this.sortByTier}
+          sortAlphabetically={this.sortAlphabetically}
+          sortedAlphabetically={this.state.sortedAlphabetically}
+        />
         <UnitModal
           show={this.state.showUnit}
           handleUnitClose={() => this.handleUnitClose()}
           unit={this.state.unit}
         />
-        <Popover
-          id="mouse-over-popover"
+        <UnitPopover
           open={this.state.showPopover}
-          className={classes.popover}
           anchorEl={this.state.anchorEl}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center"
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center"
-          }}
-          onClose={this.handlePopoverClose}
-          disableRestoreFocus
-          classes={{ paper: classes.dialogPaper }}
-        >
-          <UnitInfo unit={this.state.unit} />
-        </Popover>
+          handlePopoverClose={this.handlePopoverClose}
+          unit={this.state.unit}
+        />
         <GridList cellHeight={80} cols={15}>
           {this.state.units.map(item => (
             <GridListTile key={item.id} cols={1}>
@@ -181,7 +139,7 @@ class Units extends Component {
                 onMouseEnter={e => this.handlePopoverOpen(e, item)}
                 onMouseLeave={this.handlePopoverClose}
               />
-			  <GridListTileBar title={item.name}/>
+              <GridListTileBar title={item.name} />
             </GridListTile>
           ))}
         </GridList>
