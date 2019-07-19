@@ -119,8 +119,9 @@ class Board extends Component {
           style={{
             marginLeft: "25%",
             marginRight: "25%",
-            width: "50%",
-            height: "50%",
+            marginTop: "3%",
+            width: "40%",
+            height: "40%",
             display: "flex",
             flexWrap: "wrap",
             position: "absolute",
