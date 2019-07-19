@@ -42,7 +42,7 @@ class Board extends Component {
         key={i}
         style={{
           width: "12.5%",
-          height: "12.5%"
+          height: "25%"
         }}
       >
         <BoardSquare
@@ -104,7 +104,7 @@ class Board extends Component {
 
   renderSquares = () => {
     const squareData = [];
-    for (let i = 0; i < 64; i++) {
+    for (let i = 0; i < 32; i++) {
       squareData.push(this.renderSquare(i));
     }
     return squareData;
@@ -117,11 +117,13 @@ class Board extends Component {
       <DndProvider backend={HTML5Backend}>
         <div
           style={{
-            width: "100%",
-            height: "100%",
+            marginLeft: "25%",
+            marginRight: "25%",
+            width: "50%",
+            height: "50%",
             display: "flex",
             flexWrap: "wrap",
-            position: "absolute"
+            position: "absolute",
           }}
         >
           {squareData}

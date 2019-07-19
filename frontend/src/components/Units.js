@@ -4,9 +4,10 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import GridList from '@material-ui/core/GridList';
 import Popover from '@material-ui/core/Popover';
 import UnitInfo from './UnitInfo';
+import { GridListTile } from '@material-ui/core';
 
 const styles = theme => ({
 	popover: {
@@ -54,6 +55,7 @@ class Units extends Component {
 			this.setState({
 				units
 			});
+			this.sortAlphabetically();
 		} catch (e) {
 			console.log(e);
 		}
@@ -117,7 +119,7 @@ class Units extends Component {
 					onClose={this.handleMenuClose}
 				>
 					<MenuItem onClick={this.sortByTier}>By Tier</MenuItem>
-					<MenuItem onClick={this.sortAlphabetically}>Alphabetically</MenuItem>
+					<MenuItem onClick={this.sortAlphabetically}>{this.state.sortedAlphabetically ? "Z-A" : "A-Z"}</MenuItem>
 				</Menu>
 				<UnitModal show={this.state.showUnit} handleUnitClose={() => this.handleUnitClose()} unit={this.state.unit}/>
 				<Popover
@@ -139,19 +141,22 @@ class Units extends Component {
 				>
 					<UnitInfo unit={this.state.unit}/>
 				</Popover>
-				<Grid container spacing={1}>
+				<GridList cellHeight={120} cols={20}>
 					{this.state.units.map(item => (
-					<Grid item key={item.id}>
+					<GridListTile key={item.id} cols={1}
+					style={{
+					}}>
 						<img src={item.icon_url} 
 							onClick={() => this.onUnitClick(item)}
 							alt="{item.name} icon"
 							aria-owns={this.state.showPopover ? 'mouse-over-popover' : undefined}
 							aria-haspopup="true"
 							onMouseEnter={(e) => this.handlePopoverOpen(e, item)}
-							onMouseLeave={this.handlePopoverClose}/>
-					</Grid>
+							onMouseLeave={this.handlePopoverClose}
+							/>
+					</GridListTile>
 				))}
-                </Grid>
+                </GridList>
 			</div>
 		);
 	}

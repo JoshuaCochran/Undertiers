@@ -20,8 +20,9 @@ export default function UnitPiece({ id, image, draggingPiece }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        width: "12.5vw",
-        height: "12.5vh"
+        width: "100%",
+        height: "100%",
+        position: "absolute",
       }}
     >
       <img
