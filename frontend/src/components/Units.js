@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import UnitModal from "./UnitModal";
 import { withStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
-import { GridListTile, GridListTileBar } from "@material-ui/core";
+import { GridListTile } from "@material-ui/core";
 import UnitSortMenu from "./UnitSortMenu";
 import UnitPopover from "./UnitPopover";
 
@@ -42,16 +42,12 @@ class Units extends Component {
   }
 
   async componentDidMount() {
-    try {
-      const res = await fetch("http://www.undertiers.com:8000/units/");
-      const units = await res.json();
-      this.setState({
-        units
-      });
-      this.sortAlphabetically();
-    } catch (e) {
-      console.log(e);
-    }
+	this.setState({units: this.props.units});
+  }
+
+  componentDidUpdate() {
+	  if (this.state.units !== this.props.units)
+	  	this.setState({units: this.props.units});
   }
 
   sortByTier() {

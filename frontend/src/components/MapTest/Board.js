@@ -8,6 +8,7 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      unitsOnMap: [{ unit: {}, map: {}, posx: 0, posy: 0 }],
       maps: [{ unit: {}, map: {}, posx: 0, posy: 0, piece_id: 0 }],
       loaded: false,
       draggingId: 0
@@ -17,19 +18,13 @@ class Board extends Component {
     this.draggingPiece = this.draggingPiece.bind(this);
   }
 
-  async componentDidMount() {
-    try {
-      const res = await fetch("http://www.undertiers.com:8000/maps/2");
-      const maps = await res.json();
+  componentDidUpdate() {
+    if (this.state.unitsOnMap !== this.props.unitsOnMap && !this.state.loaded) {
+      const maps = this.props.unitsOnMap;
       maps.map((item, i) => {
         item.piece_id = i;
       });
-      this.setState({
-        maps
-      });
-      this.setState({ loaded: true });
-    } catch (e) {
-      console.log(e);
+      this.setState({ unitsOnMap: this.props.unitsOnMap, maps: maps, loaded: true });
     }
   }
 
@@ -124,7 +119,7 @@ class Board extends Component {
             height: "40%",
             display: "flex",
             flexWrap: "wrap",
-            position: "absolute",
+            position: "absolute"
           }}
         >
           {squareData}
