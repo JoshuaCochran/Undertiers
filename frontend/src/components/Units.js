@@ -10,6 +10,10 @@ const styles = theme => ({
   root: {
     position: "absolute",
     height: "100%"
+  },
+  tileImage: {
+	  width: "100%",
+	  height: "auto",
   }
 });
 
@@ -138,8 +142,8 @@ class Units extends Component {
                 aria-haspopup="true"
                 onMouseEnter={e => this.handlePopoverOpen(e, item)}
                 onMouseLeave={this.handlePopoverClose}
-              />
-              <GridListTileBar title={item.name} />
+				className={classes.tileImage}
+			  />
             </GridListTile>
           ))}
         </GridList>

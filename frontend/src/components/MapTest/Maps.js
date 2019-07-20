@@ -12,11 +12,16 @@ const useStyles = makeStyles(theme => ({
   },
   units: {
     marginTop: "50vh",
+    position: "relative",
     display: "flex",
     flexWrap: "wrap",
-    position: "relative",
     overFlowY: "auto",
+    width: "90%",
+    marginLeft: "5%",
   },
+  board: {
+
+  }
 }));
 
 export default function Maps({}) {
@@ -24,7 +29,7 @@ export default function Maps({}) {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={4}>
+      <Grid container spacing={4} className={classes.board}>
         <Grid item xs={4}>
           <Board />
         </Grid>
