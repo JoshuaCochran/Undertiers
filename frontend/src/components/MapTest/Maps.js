@@ -27,7 +27,7 @@ class Maps extends Component {
         super(props);
         this.state = {
             units: [],
-            unitsOnMap: [{ unit: {}, map: {}, posx: 0, posy: 0, piece_id: 0}],
+            unitsOnMap: [{ unit: {}, map: {}, posx: 0, posy: 0,}],
             loadedMaps: false,
             loadedUnits: false,
         }
@@ -37,9 +37,6 @@ class Maps extends Component {
         try {
             const res = await fetch("http://www.undertiers.com:8000/maps/2");
             const maps = await res.json();
-            maps.map((item, i) => {
-              item.piece_id = i;
-            });
             this.setState({
               unitsOnMap: maps, loadedMaps: true
             });
@@ -70,7 +67,7 @@ class Maps extends Component {
         </Grid>
         <Grid container spacing={4} className={classes.units}>
           <Grid item xs={4}>
-            <Units units={this.state.units}/>
+            <Units units={this.state.units} maps={true}/>
           </Grid>
         </Grid>
       </div>

@@ -8,8 +8,7 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      unitsOnMap: [{ unit: {}, map: {}, posx: 0, posy: 0 }],
-      maps: [{ unit: {}, map: {}, posx: 0, posy: 0, piece_id: 0 }],
+      maps: [{ unit: {}, map: {}, posx: 0, posy: 0,}],
       loaded: false,
       draggingId: 0
     };
@@ -19,12 +18,8 @@ class Board extends Component {
   }
 
   componentDidUpdate() {
-    if (this.state.unitsOnMap !== this.props.unitsOnMap && !this.state.loaded) {
-      const maps = this.props.unitsOnMap;
-      maps.map((item, i) => {
-        item.piece_id = i;
-      });
-      this.setState({ unitsOnMap: this.props.unitsOnMap, maps: maps, loaded: true });
+    if (this.state.maps !== this.props.unitsOnMap && !this.state.loaded) {
+      this.setState({ maps: this.props.unitsOnMap, loaded: true });
     }
   }
 
@@ -59,7 +54,7 @@ class Board extends Component {
           return (
             <div key={i}>
               <UnitPiece
-                id={item.piece_id}
+                id={i}
                 image={item.unit.icon_url}
                 draggingPiece={id => this.draggingPiece(id)}
               />
@@ -75,19 +70,15 @@ class Board extends Component {
 
   movePiece(toX, toY) {
     const maps = this.state.maps.slice();
-    this.state.maps.map(item => {
-      if (this.state.draggingId === item.piece_id) {
-        item.posx = toX;
-        item.posy = toY;
-      }
-    });
+    maps[this.state.draggingId].posx = toX;
+    maps[this.state.draggingId].posy = toY;
     this.setState({ maps: maps });
   }
 
   canMovePiece(toX, toY) {
     for (let i = 0; i < this.state.maps.length; i++) {
       if (
-        this.state.draggingId !== this.state.maps[i].piece_id &&
+        this.state.draggingId !== i &&
         this.state.maps[i].posy === toY &&
         this.state.maps[i].posx === toX
       ) {

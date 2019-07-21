@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
   link: {
 	  color: "white",
 	  margin: theme.spacing(1),
+	  fontSize: "20px",
   }
 }));
 

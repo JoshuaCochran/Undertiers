@@ -12,8 +12,8 @@ const styles = theme => ({
     height: "100%"
   },
   tileImage: {
-	  width: "100%",
-	  height: "auto",
+    width: "100%",
+    height: "auto"
   }
 });
 
@@ -28,7 +28,8 @@ class Units extends Component {
       showPopover: false,
       showMenu: false,
       sortedAlphabetically: false,
-      sortedByTier: false
+      sortedByTier: false,
+      loadedUnits: false
     };
 
     this.onUnitClick = this.onUnitClick.bind(this);
@@ -42,12 +43,29 @@ class Units extends Component {
   }
 
   async componentDidMount() {
-	this.setState({units: this.props.units});
+    this.props.maps
+      ? this.setState({ units: this.props.units })
+      : this.fetchData();
   }
 
   componentDidUpdate() {
-	  if (this.state.units !== this.props.units)
-	  	this.setState({units: this.props.units});
+    if (this.props.maps)
+      if (this.state.units !== this.props.units)
+        this.setState({ units: this.props.units });
+  }
+
+  async fetchData() {
+    try {
+      const res = await fetch("http://www.undertiers.com:8000/units/");
+      const units = await res.json();
+      this.setState({
+        units: units,
+        loadedUnits: true
+      });
+      this.sortAlphabetically();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   sortByTier() {
@@ -138,8 +156,8 @@ class Units extends Component {
                 aria-haspopup="true"
                 onMouseEnter={e => this.handlePopoverOpen(e, item)}
                 onMouseLeave={this.handlePopoverClose}
-				className={classes.tileImage}
-			  />
+                className={classes.tileImage}
+              />
             </GridListTile>
           ))}
         </GridList>
