@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -10,16 +10,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UnitSortMenu({
-  anchorEl,
-  showMenu,
-  handleMenuClick,
-  handleMenuClose,
-  sortByTier,
-  sortAlphabetically,
-  sortedAlphabetically
-}) {
+export default function UnitSortMenu({ sortByTier, sortAlphabetically }) {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState();
+  const [open, setOpen] = useState();
+
+  function handleMenuClick(event) {
+    setAnchorEl(event.currentTarget);
+    setOpen(true);
+  }
+
+  function handleMenuClose() {
+    setAnchorEl(null);
+    setOpen(false);
+  }
 
   return (
     <div>
@@ -35,13 +39,11 @@ export default function UnitSortMenu({
         id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
-        open={showMenu}
+        open={open}
         onClose={handleMenuClose}
       >
         <MenuItem onClick={sortByTier}>By Tier</MenuItem>
-        <MenuItem onClick={sortAlphabetically}>
-          {sortedAlphabetically ? "Z-A" : "A-Z"}
-        </MenuItem>
+        <MenuItem onClick={sortAlphabetically}>Alphabetically</MenuItem>
       </Menu>
     </div>
   );
