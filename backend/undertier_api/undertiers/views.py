@@ -1,4 +1,6 @@
-from rest_framework import generics, response
+from rest_framework import generics, response, status
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
 
 from .models import Unit, UnitLoc, Map, Alliance
 from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer
@@ -9,10 +11,11 @@ class ListMaps(generics.ListCreateAPIView):
     serializer_class = UnitLocSerializer
 
 # The view giving a list of all units on a particular map and their positions.
-class DetailMap(generics.ListCreateAPIView):
+class DetailMap(ModelViewSet):
     # Returns all UnitLoc objects (units on a given map with position on map) given the private key in the url
     def get_queryset(self, *args, **kwargs):
         return UnitLoc.objects.filter(board__id=self.kwargs.get('pk'))
+
     serializer_class = UnitLocSerializer
 
 # The view giving a list of all alliances

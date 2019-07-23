@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, responsiveFontSizes } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Board from "./Board";
 import Units from "../Units";
@@ -39,6 +39,7 @@ class Maps extends Component {
     this.sortByTier = this.sortByTier.bind(this);
     this.draggingUnit = this.draggingUnit.bind(this);
     this.updateMap = this.updateMap.bind(this);
+    this.saveMap = this.saveMap.bind(this);
   }
 
   async componentDidMount() {
@@ -90,6 +91,25 @@ class Maps extends Component {
     this.setState({ unitsOnMap: maps });
   }
 
+  async saveMap() {
+    const new_data = {
+      name: "Test",
+      min_units: 1,
+      max_units: 3,
+      icon_url: "http://www.undertiers.com:8000/static/alliance_icons/mage.png",
+      synergies: ["test"]
+    };
+    const res = await fetch("http://www.undertiers.com:8000/alliances/", {
+      method: "POST",
+      body: JSON.stringify(new_data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    const data = await res.json();
+    console.log(data.result);
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -101,6 +121,7 @@ class Maps extends Component {
               maps={this.state.unitsOnMap}
               unitDragged={this.state.unitDragged}
               updateMap={this.updateMap}
+              saveMap={this.saveMap}
               loaded={this.state.loadedMaps}
             />
           </Grid>

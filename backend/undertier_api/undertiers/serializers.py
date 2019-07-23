@@ -54,14 +54,12 @@ class MapSerializer(serializers.ModelSerializer):
 # Serializer for unit locations. The UnitLoc model represents an intermediary JOIN table between units and maps.
 class UnitLocSerializer(serializers.ModelSerializer):
     unit = UnitSerializer() # Serializes all related units
-    board = MapSerializer() # Serializes all related maps
 
     class Meta:
         fields = (
             'unit',
-            'board',
             'posx',
             'posy',
         )
-
         model = UnitLoc
+

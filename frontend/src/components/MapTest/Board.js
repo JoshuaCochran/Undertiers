@@ -3,13 +3,13 @@ import BoardSquare from "./BoardSquare";
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import UnitPiece from "./UnitPiece";
+import SaveButton from "./SaveButton";
 
 class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
       draggingId: 0,
-      testData: [],
     };
     this.movePiece = this.movePiece.bind(this);
     this.canMovePiece = this.canMovePiece.bind(this);
@@ -72,8 +72,12 @@ class Board extends Component {
 
   createPiece(x, y) {
     const newData = this.props.maps.slice();
-    newData.push({unit: this.props.unitDragged, board: this.props.maps[0].board, posx: x, posy: y});
-    //this.setState({testData: newData});
+    newData.push({
+      unit: this.props.unitDragged,
+      board: this.props.maps[0].board,
+      posx: x,
+      posy: y
+    });
     this.props.updateMap(newData);
   }
 
@@ -116,6 +120,7 @@ class Board extends Component {
           }}
         >
           {squareData}
+          <SaveButton saveMap={this.props.saveMap}/>
         </div>
       </DndProvider>
     );
