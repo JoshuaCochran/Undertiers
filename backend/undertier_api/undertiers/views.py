@@ -12,7 +12,7 @@ class ListMaps(generics.ListCreateAPIView):
 class DetailMap(generics.ListCreateAPIView):
     # Returns all UnitLoc objects (units on a given map with position on map) given the private key in the url
     def get_queryset(self, *args, **kwargs):
-        return UnitLoc.objects.filter(map__id=self.kwargs.get('pk'))
+        return UnitLoc.objects.filter(board__id=self.kwargs.get('pk'))
     serializer_class = UnitLocSerializer
 
 # The view giving a list of all alliances

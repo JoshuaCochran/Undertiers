@@ -4,30 +4,42 @@ import Overlay from "./Overlay";
 import { ItemTypes } from "./DragTypes";
 import { useDrop } from "react-dnd";
 
-export default function BoardSquare({ x, y, canMovePiece, movePiece, children }) {
+export default function BoardSquare({
+  x,
+  y,
+  canMovePiece,
+  movePiece,
+  createPiece,
+  children
+}) {
   const black = (x + y) % 2 === 1;
-  const [{ isOver, canDrop }, drop] = useDrop({
-    accept: ItemTypes.UNIT,
+  const [{ isOver, canDrop, itemType, unit }, drop] = useDrop({
+    accept: [ItemTypes.BOARD_PIECE, ItemTypes.LIST_PIECE],
     canDrop: () => canMovePiece(x, y),
-    drop: () => movePiece(x, y),
+    drop: () =>
+      itemType === ItemTypes.BOARD_PIECE
+        ? movePiece(x, y)
+        : createPiece(x, y),
     collect: monitor => ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop(),
-    }),
+      itemType: monitor.getItemType(),
+      unit: monitor.getItem(),
+    })
   });
 
   return (
     <div
       ref={drop}
-      style={{
+      style={{  
         position: "relative",
         width: "100%",
         height: "100%"
       }}
     >
       <Square black={black}>{children}</Square>
-      {isOver && canDrop && <Overlay color="blue"/>}
-      {isOver && !canDrop && <Overlay color="red"/>}
+      {isOver && canDrop && <Overlay color="blue" />}
+      {isOver && !canDrop && <Overlay color="red" />}
     </div>
-  )
+  );
 }

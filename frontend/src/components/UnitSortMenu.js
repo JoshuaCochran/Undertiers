@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 export default function UnitSortMenu({ sortByTier, sortAlphabetically }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState();
-  const [open, setOpen] = useState();
+  const [open, setOpen] = useState(false);
 
   function handleMenuClick(event) {
     setAnchorEl(event.currentTarget);

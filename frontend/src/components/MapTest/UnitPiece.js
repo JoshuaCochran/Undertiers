@@ -4,7 +4,7 @@ import { useDrag } from "react-dnd";
 
 export default function UnitPiece({ id, image, draggingPiece }) {
   const [{ isDragging }, drag] = useDrag({
-    item: { type: ItemTypes.UNIT },
+    item: { type: ItemTypes.BOARD_PIECE },
     begin: () => draggingPiece(id),
     collect: monitor => ({
       isDragging: !!monitor.isDragging()

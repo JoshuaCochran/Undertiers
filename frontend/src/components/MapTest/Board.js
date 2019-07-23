@@ -8,19 +8,13 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      maps: [{ unit: {}, map: {}, posx: 0, posy: 0,}],
-      loaded: false,
-      draggingId: 0
+      draggingId: 0,
+      testData: [],
     };
     this.movePiece = this.movePiece.bind(this);
     this.canMovePiece = this.canMovePiece.bind(this);
     this.draggingPiece = this.draggingPiece.bind(this);
-  }
-
-  componentDidUpdate() {
-    if (this.state.maps !== this.props.unitsOnMap && !this.state.loaded) {
-      this.setState({ maps: this.props.unitsOnMap, loaded: true });
-    }
+    this.createPiece = this.createPiece.bind(this);
   }
 
   renderSquare(i) {
@@ -40,6 +34,7 @@ class Board extends Component {
           y={y}
           movePiece={() => this.movePiece(x, y)}
           canMovePiece={() => this.canMovePiece(x, y)}
+          createPiece={() => this.createPiece(x, y)}
         >
           {this.renderUnit(x, y)}
         </BoardSquare>
@@ -48,8 +43,8 @@ class Board extends Component {
   }
 
   renderUnit(x, y) {
-    if (this.state.loaded) {
-      return this.state.maps.map((item, i) => {
+    if (this.props.loaded) {
+      return this.props.maps.map((item, i) => {
         if (x === item.posx && y === item.posy)
           return (
             <div key={i}>
@@ -69,18 +64,25 @@ class Board extends Component {
   }
 
   movePiece(toX, toY) {
-    const maps = this.state.maps.slice();
+    const maps = this.props.maps.slice();
     maps[this.state.draggingId].posx = toX;
     maps[this.state.draggingId].posy = toY;
     this.setState({ maps: maps });
   }
 
+  createPiece(x, y) {
+    const newData = this.props.maps.slice();
+    newData.push({unit: this.props.unitDragged, board: this.props.maps[0].board, posx: x, posy: y});
+    //this.setState({testData: newData});
+    this.props.updateMap(newData);
+  }
+
   canMovePiece(toX, toY) {
-    for (let i = 0; i < this.state.maps.length; i++) {
+    for (let i = 0; i < this.props.maps.length; i++) {
       if (
         this.state.draggingId !== i &&
-        this.state.maps[i].posy === toY &&
-        this.state.maps[i].posx === toX
+        this.props.maps[i].posy === toY &&
+        this.props.maps[i].posx === toX
       ) {
         return false;
       }

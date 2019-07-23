@@ -5,6 +5,8 @@ import GridList from "@material-ui/core/GridList";
 import UnitSortMenu from "./UnitSortMenu";
 import UnitPopover from "./UnitPopover";
 import UnitListItem from "./UnitListItem";
+import { DndProvider } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 
 const styles = theme => ({
   root: {
@@ -20,7 +22,7 @@ class Units extends Component {
       showUnit: false,
       unit: { alliance: [] },
       anchorEl: null,
-      showPopover: false,
+      showPopover: false
     };
 
     this.onUnitClick = this.onUnitClick.bind(this);
@@ -52,35 +54,38 @@ class Units extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
-        <UnitSortMenu
-          sortByTier={this.props.sortByTier}
-          sortAlphabetically={this.props.sortAlphabetically}
-        />
-        <UnitModal
-          show={this.state.showUnit}
-          handleUnitClose={() => this.handleUnitClose()}
-          unit={this.state.unit}
-        />
-        <UnitPopover
-          open={this.state.showPopover}
-          anchorEl={this.state.anchorEl}
-          handlePopoverClose={this.handlePopoverClose}
-          unit={this.state.unit}
-        />
-        <GridList cellHeight={80} cols={15}>
-          {this.props.units.map((item, i) => (
-            <UnitListItem
-              key={i}
-              unit={item}
-              showPopover={this.state.showPopover}
-              onClick={this.onUnitClick}
-              handlePopoverOpen={this.handlePopoverOpen}
-              handlePopoverClose={this.handlePopoverClose}
-            />
-          ))}
-        </GridList>
-      </div>
+      <DndProvider backend={HTML5Backend}>
+        <div className={classes.root}>
+          <UnitSortMenu
+            sortByTier={this.props.sortByTier}
+            sortAlphabetically={this.props.sortAlphabetically}
+          />
+          <UnitModal
+            show={this.state.showUnit}
+            handleUnitClose={() => this.handleUnitClose()}
+            unit={this.state.unit}
+          />
+          <UnitPopover
+            open={this.state.showPopover}
+            anchorEl={this.state.anchorEl}
+            handlePopoverClose={this.handlePopoverClose}
+            unit={this.state.unit}
+          />
+          <GridList cellHeight={80} cols={15}>
+            {this.props.units.map((item, i) => (
+              <UnitListItem
+                key={i}
+                unit={item}
+                showPopover={this.state.showPopover}
+                onClick={this.onUnitClick}
+                handlePopoverOpen={this.handlePopoverOpen}
+				handlePopoverClose={this.handlePopoverClose}
+				draggingUnit={this.props.draggingUnit}
+              />
+            ))}
+          </GridList>
+        </div>
+      </DndProvider>
     );
   }
 }

@@ -1,3 +1,4 @@
 export const ItemTypes = {
-    UNIT: 'unit',
+    BOARD_PIECE: 'board_piece',
+    LIST_PIECE: 'list_piece',
 }

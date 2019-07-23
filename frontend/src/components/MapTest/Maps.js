@@ -28,14 +28,17 @@ class Maps extends Component {
     super(props);
     this.state = {
       units: [],
-      unitsOnMap: [{ unit: {}, map: {}, posx: 0, posy: 0 }],
+      unitsOnMap: [{ unit: {}, board: {}, posx: 0, posy: 0 }],
       loadedMaps: false,
       loadedUnits: false,
       sortedAlphabetically: false,
       sortedByTier: false,
+      unitDragged: null
     };
     this.sortAlphabetically = this.sortAlphabetically.bind(this);
     this.sortByTier = this.sortByTier.bind(this);
+    this.draggingUnit = this.draggingUnit.bind(this);
+    this.updateMap = this.updateMap.bind(this);
   }
 
   async componentDidMount() {
@@ -79,6 +82,14 @@ class Maps extends Component {
     });
   }
 
+  draggingUnit(unit) {
+    this.setState({ unitDragged: unit });
+  }
+
+  updateMap(maps) {
+    this.setState({ unitsOnMap: maps });
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -86,7 +97,12 @@ class Maps extends Component {
       <div className={classes.root}>
         <Grid container spacing={4} className={classes.board}>
           <Grid item xs={4}>
-            <Board unitsOnMap={this.state.unitsOnMap} />
+            <Board
+              maps={this.state.unitsOnMap}
+              unitDragged={this.state.unitDragged}
+              updateMap={this.updateMap}
+              loaded={this.state.loadedMaps}
+            />
           </Grid>
         </Grid>
         <Grid container spacing={4} className={classes.units}>
@@ -96,6 +112,7 @@ class Maps extends Component {
               maps={true}
               sortAlphabetically={this.sortAlphabetically}
               sortByTier={this.sortByTier}
+              draggingUnit={this.draggingUnit}
             />
           </Grid>
         </Grid>
