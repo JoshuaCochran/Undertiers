@@ -9,7 +9,7 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      draggingId: 0,
+      draggingId: 0
     };
     this.movePiece = this.movePiece.bind(this);
     this.canMovePiece = this.canMovePiece.bind(this);
@@ -120,8 +120,8 @@ class Board extends Component {
           }}
         >
           {squareData}
-          <CustomButton name={"Save"} func={this.props.saveMap}/>
-          <CustomButton name={"Clear"} func={this.props.resetMap}/>
+          <CustomButton name={"Save"} func={this.props.saveMap} />
+          <CustomButton name={"Clear"} func={this.props.resetMap} />
         </div>
       </DndProvider>
     );

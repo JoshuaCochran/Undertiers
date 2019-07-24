@@ -65,8 +65,7 @@ class Maps extends Component {
       );
       const maps = await res.json();
       var unit;
-      for (let i = 0; i < maps.length; i++)
-      {
+      for (let i = 0; i < maps.length; i++) {
         unit = this.state.units.filter(unit => unit.id === maps[i].unit);
         maps[i].unit = unit[0];
       }

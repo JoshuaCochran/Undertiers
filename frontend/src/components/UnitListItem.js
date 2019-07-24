@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridListTile from "@material-ui/core/GridListTile";
 import { ItemTypes } from "./MapTest/DragTypes";
-import { useDrag } from "react-dnd";
+import { useDrag, DragPreviewImage } from "react-dnd";
 
 const useStyles = makeStyles(theme => ({
   tileImage: {
@@ -17,24 +17,29 @@ export default function UnitListItem({
   onClick,
   handlePopoverOpen,
   handlePopoverClose,
-  draggingUnit,
+  draggingUnit
 }) {
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     item: { type: ItemTypes.LIST_PIECE },
     begin: () => draggingUnit(unit),
     collect: monitor => ({
-      isDragging: !!monitor.isDragging(),
+      isDragging: !!monitor.isDragging()
     })
   });
 
   const classes = useStyles();
   return (
-      <GridListTile key={unit.id} cols={1}
-      ref={drag}
-      style={{
-        opacity: isDragging ? 0.5 : 1,
-        cursor: "move",
-      }}>
+    <>
+      <DragPreviewImage connect={preview} src={unit.icon_url} />
+      <GridListTile
+        key={unit.id}
+        cols={1}
+        ref={drag}
+        style={{
+          opacity: isDragging ? 0.5 : 1,
+          cursor: "move"
+        }}
+      >
         <img
           src={unit.icon_url}
           onClick={() => onClick(unit)}
@@ -46,5 +51,6 @@ export default function UnitListItem({
           className={classes.tileImage}
         />
       </GridListTile>
+    </>
   );
 }
