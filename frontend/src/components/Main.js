@@ -15,6 +15,8 @@ const Main = () => (
 			<Route path="/alliances/:id" 
 			render={(props) => <AllianceInfo id={props.match.params.id}/>}/>
 			<Route path="/test" component={Maps}/>
+			<Route path="/boards/:id"
+			render={(props) => <Maps board_id={props.match.params.id}/>}/>
 		</Switch>
 	</main>
 )

@@ -3,7 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
 from .models import Unit, UnitLoc, Map, Alliance
-from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer
+from .serializers import UnitSerializer, UnitLocSerializer, UnitLocAddSerializer, MapSerializer, AllianceSerializer
 
 # The view giving a list of all units on all maps and their positions.
 class ListMaps(generics.ListCreateAPIView):
@@ -17,6 +17,24 @@ class DetailMap(ModelViewSet):
         return UnitLoc.objects.filter(board__id=self.kwargs.get('pk'))
 
     serializer_class = UnitLocSerializer
+
+class AddUnitToMap(generics.ListCreateAPIView):
+    def get_serializer(self, *args, **kwargs):
+        if "data" in kwargs:
+            data = kwargs["data"]
+
+        if isinstance(data, list):
+            kwargs["many"] = True
+
+        return super(AddUnitToMap, self).get_serializer(*args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        print(request.data[0]["board"])
+        UnitLoc.objects.filter(board__id=request.data[0]["board"]).delete()
+        return super(AddUnitToMap, self).create(request, *args, **kwargs)
+
+    queryset = UnitLoc.objects.all()
+    serializer_class = UnitLocAddSerializer
 
 # The view giving a list of all alliances
 class ListAlliances(generics.ListCreateAPIView):

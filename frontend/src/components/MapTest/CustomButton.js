@@ -8,15 +8,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SaveButton({ saveMap }) {
+export default function CustomButton({ name, func }) {
   const classes = useStyles();
-  const [text, setText] = useState("Save");
+  const [text, setText] = useState(name);
 
-  function test() {
-    setText("Saved!");
+  function changeText() {
+    setText(name.substring(0, name.length - 1) + "ed!");
   }
+
+  function clickHandler() {
+    func();
+    changeText();
+  }
+
   return (
-    <Button className={classes.button} onClick={saveMap}>
+    <Button className={classes.button} onClick={clickHandler}>
       {text}
     </Button>
   );

@@ -28,7 +28,7 @@ class Maps extends Component {
     super(props);
     this.state = {
       units: [],
-      unitsOnMap: [{ unit: {}, board: {}, posx: 0, posy: 0 }],
+      unitsOnMap: [{}],
       loadedMaps: false,
       loadedUnits: false,
       sortedAlphabetically: false,
@@ -40,19 +40,10 @@ class Maps extends Component {
     this.draggingUnit = this.draggingUnit.bind(this);
     this.updateMap = this.updateMap.bind(this);
     this.saveMap = this.saveMap.bind(this);
+    this.resetMap = this.resetMap.bind(this);
   }
 
   async componentDidMount() {
-    try {
-      const res = await fetch("http://www.undertiers.com:8000/maps/2");
-      const maps = await res.json();
-      this.setState({
-        unitsOnMap: maps,
-        loadedMaps: true
-      });
-    } catch (e) {
-      console.log(e);
-    }
     try {
       const res = await fetch("http://www.undertiers.com:8000/units/");
       const units = await res.json();
@@ -61,6 +52,28 @@ class Maps extends Component {
         loadedUnits: true
       });
       this.sortAlphabetically();
+    } catch (e) {
+      console.log(e);
+    }
+    this.loadMapData();
+  }
+
+  async loadMapData() {
+    try {
+      const res = await fetch(
+        "http://www.undertiers.com:8000/maps/" + this.props.board_id
+      );
+      const maps = await res.json();
+      var unit;
+      for (let i = 0; i < maps.length; i++)
+      {
+        unit = this.state.units.filter(unit => unit.id === maps[i].unit);
+        maps[i].unit = unit[0];
+      }
+      this.setState({
+        unitsOnMap: maps,
+        loadedMaps: true
+      });
     } catch (e) {
       console.log(e);
     }
@@ -91,23 +104,31 @@ class Maps extends Component {
     this.setState({ unitsOnMap: maps });
   }
 
+  resetMap() {
+    this.setState({ unitsOnMap: [] });
+  }
+
   async saveMap() {
-    const new_data = {
-      name: "Test",
-      min_units: 1,
-      max_units: 3,
-      icon_url: "http://www.undertiers.com:8000/static/alliance_icons/mage.png",
-      synergies: ["test"]
-    };
-    const res = await fetch("http://www.undertiers.com:8000/alliances/", {
+    var new_data = [];
+    var unit;
+    for (let i = 0; i < this.state.unitsOnMap.length; i++) {
+      unit = {
+        posx: this.state.unitsOnMap[i].posx,
+        posy: this.state.unitsOnMap[i].posy,
+        unit: this.state.unitsOnMap[i].unit.id,
+        board: this.props.board_id
+      };
+      new_data.push(unit);
+    }
+    await fetch("http://www.undertiers.com:8000/maps/add", {
       method: "POST",
       body: JSON.stringify(new_data),
       headers: {
         "Content-Type": "application/json"
       }
     });
-    const data = await res.json();
-    console.log(data.result);
+    console.log(JSON.stringify(new_data));
+    this.loadMapData();
   }
 
   render() {
@@ -118,10 +139,12 @@ class Maps extends Component {
         <Grid container spacing={4} className={classes.board}>
           <Grid item xs={4}>
             <Board
+              board_id={this.props.board_id}
               maps={this.state.unitsOnMap}
               unitDragged={this.state.unitDragged}
               updateMap={this.updateMap}
               saveMap={this.saveMap}
+              resetMap={this.resetMap}
               loaded={this.state.loadedMaps}
             />
           </Grid>

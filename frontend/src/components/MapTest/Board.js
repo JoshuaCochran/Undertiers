@@ -3,7 +3,7 @@ import BoardSquare from "./BoardSquare";
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import UnitPiece from "./UnitPiece";
-import SaveButton from "./SaveButton";
+import CustomButton from "./CustomButton";
 
 class Board extends Component {
   constructor(props) {
@@ -74,7 +74,7 @@ class Board extends Component {
     const newData = this.props.maps.slice();
     newData.push({
       unit: this.props.unitDragged,
-      board: this.props.maps[0].board,
+      board: this.props.board_id,
       posx: x,
       posy: y
     });
@@ -120,7 +120,8 @@ class Board extends Component {
           }}
         >
           {squareData}
-          <SaveButton saveMap={this.props.saveMap}/>
+          <CustomButton name={"Save"} func={this.props.saveMap}/>
+          <CustomButton name={"Clear"} func={this.props.resetMap}/>
         </div>
       </DndProvider>
     );
