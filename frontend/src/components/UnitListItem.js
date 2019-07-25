@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function UnitListItem({
   unit,
+  image,
   showPopover,
   onClick,
   handlePopoverOpen,
@@ -30,9 +31,8 @@ export default function UnitListItem({
   const classes = useStyles();
   return (
     <>
-      <DragPreviewImage connect={preview} src={unit.icon_url} />
+      <DragPreviewImage connect={preview} src={image} />
       <GridListTile
-        key={unit.id}
         cols={1}
         ref={drag}
         style={{
@@ -41,7 +41,7 @@ export default function UnitListItem({
         }}
       >
         <img
-          src={unit.icon_url}
+          src={image}
           onClick={() => onClick(unit)}
           alt="{unit.name} icon"
           aria-owns={showPopover ? "mouse-over-popover" : undefined}

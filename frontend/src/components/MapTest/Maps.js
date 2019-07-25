@@ -1,9 +1,15 @@
 import React, { Component } from "react";
-import { withStyles, responsiveFontSizes } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import { DndProvider } from "react-dnd";
+import TouchBackend from "react-dnd-touch-backend";
+import HTML5Backend from "react-dnd-html5-backend";
+import { MobileCheck } from "./MobileCheck";
+
 import Board from "./Board";
 import Units from "../Units";
 import { alphabeticalSort, tierSort } from "../sorting";
+import Abyss from "./Abyss";
 
 const styles = theme => ({
   root: {
@@ -33,14 +39,17 @@ class Maps extends Component {
       loadedUnits: false,
       sortedAlphabetically: false,
       sortedByTier: false,
-      unitDragged: null
+      unitDragged: null,
+      draggingId: null
     };
     this.sortAlphabetically = this.sortAlphabetically.bind(this);
     this.sortByTier = this.sortByTier.bind(this);
     this.draggingUnit = this.draggingUnit.bind(this);
+    this.draggingPiece = this.draggingPiece.bind(this);
     this.updateMap = this.updateMap.bind(this);
     this.saveMap = this.saveMap.bind(this);
     this.resetMap = this.resetMap.bind(this);
+    this.deleteUnit = this.deleteUnit.bind(this);
   }
 
   async componentDidMount() {
@@ -99,6 +108,10 @@ class Maps extends Component {
     this.setState({ unitDragged: unit });
   }
 
+  draggingPiece(id) {
+    this.setState({ draggingId: id });
+  }
+
   updateMap(maps) {
     this.setState({ unitsOnMap: maps });
   }
@@ -110,15 +123,24 @@ class Maps extends Component {
   async saveMap() {
     var new_data = [];
     var unit;
-    for (let i = 0; i < this.state.unitsOnMap.length; i++) {
+    if (this.state.unitsOnMap.length === 0) {
       unit = {
-        posx: this.state.unitsOnMap[i].posx,
-        posy: this.state.unitsOnMap[i].posy,
-        unit: this.state.unitsOnMap[i].unit.id,
+        posx: 0,
+        posy: 0,
+        unit: 0,
         board: this.props.board_id
       };
       new_data.push(unit);
-    }
+    } else
+      for (let i = 0; i < this.state.unitsOnMap.length; i++) {
+        unit = {
+          posx: this.state.unitsOnMap[i].posx,
+          posy: this.state.unitsOnMap[i].posy,
+          unit: this.state.unitsOnMap[i].unit.id,
+          board: this.props.board_id
+        };
+        new_data.push(unit);
+      }
     await fetch("http://www.undertiers.com:8000/maps/add", {
       method: "POST",
       body: JSON.stringify(new_data),
@@ -126,40 +148,51 @@ class Maps extends Component {
         "Content-Type": "application/json"
       }
     });
-    console.log(JSON.stringify(new_data));
     this.loadMapData();
+  }
+
+  deleteUnit(id) {
+    var units = this.state.unitsOnMap;
+    units.splice(id, 1);
+    this.setState({unitsOnMap: units})
   }
 
   render() {
     const { classes } = this.props;
 
     return (
-      <div className={classes.root}>
-        <Grid container spacing={4} className={classes.board}>
-          <Grid item xs={4}>
-            <Board
-              board_id={this.props.board_id}
-              maps={this.state.unitsOnMap}
-              unitDragged={this.state.unitDragged}
-              updateMap={this.updateMap}
-              saveMap={this.saveMap}
-              resetMap={this.resetMap}
-              loaded={this.state.loadedMaps}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={4} className={classes.units}>
-          <Grid item xs={4}>
-            <Units
-              units={this.state.units}
-              maps={true}
-              sortAlphabetically={this.sortAlphabetically}
-              sortByTier={this.sortByTier}
-              draggingUnit={this.draggingUnit}
-            />
-          </Grid>
-        </Grid>
-      </div>
+      <DndProvider backend={MobileCheck() ? TouchBackend : HTML5Backend}>
+        <div className={classes.root}>
+          <Abyss draggingId={this.state.draggingId} deleteUnit={this.deleteUnit}>
+            <Grid container spacing={4} className={classes.board}>
+              <Grid item xs={4}>
+                <Board
+                  board_id={this.props.board_id}
+                  maps={this.state.unitsOnMap}
+                  unitDragged={this.state.unitDragged}
+                  draggingPiece={this.draggingPiece}
+                  draggingId={this.state.draggingId}
+                  updateMap={this.updateMap}
+                  saveMap={this.saveMap}
+                  resetMap={this.resetMap}
+                  loaded={this.state.loadedMaps}
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={4} className={classes.units}>
+              <Grid item xs={4}>
+                <Units
+                  units={this.state.units}
+                  loaded={this.state.loadedUnits}
+                  sortAlphabetically={this.sortAlphabetically}
+                  sortByTier={this.sortByTier}
+                  draggingUnit={this.draggingUnit}
+                />
+              </Grid>
+            </Grid>
+          </Abyss>
+        </div>
+      </DndProvider>
     );
   }
 }

@@ -5,8 +5,6 @@ import GridList from "@material-ui/core/GridList";
 import UnitSortMenu from "./UnitSortMenu";
 import UnitPopover from "./UnitPopover";
 import UnitListItem from "./UnitListItem";
-import { DndProvider } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
 
 const styles = theme => ({
   root: {
@@ -54,7 +52,6 @@ class Units extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <DndProvider backend={HTML5Backend}>
         <div className={classes.root}>
           <UnitSortMenu
             sortByTier={this.props.sortByTier}
@@ -76,16 +73,16 @@ class Units extends Component {
               <UnitListItem
                 key={i}
                 unit={item}
+                image={item.icon_url}
                 showPopover={this.state.showPopover}
                 onClick={this.onUnitClick}
                 handlePopoverOpen={this.handlePopoverOpen}
-				handlePopoverClose={this.handlePopoverClose}
-				draggingUnit={this.props.draggingUnit}
+                handlePopoverClose={this.handlePopoverClose}
+                draggingUnit={this.props.draggingUnit}
               />
             ))}
           </GridList>
         </div>
-      </DndProvider>
     );
   }
 }

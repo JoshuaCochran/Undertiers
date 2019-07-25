@@ -1,19 +1,14 @@
 import React, { Component } from "react";
 import BoardSquare from "./BoardSquare";
-import { DndProvider } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
 import UnitPiece from "./UnitPiece";
 import CustomButton from "./CustomButton";
 
 class Board extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      draggingId: 0
-    };
+
     this.movePiece = this.movePiece.bind(this);
     this.canMovePiece = this.canMovePiece.bind(this);
-    this.draggingPiece = this.draggingPiece.bind(this);
     this.createPiece = this.createPiece.bind(this);
   }
 
@@ -51,22 +46,20 @@ class Board extends Component {
               <UnitPiece
                 id={i}
                 image={item.unit.icon_url}
-                draggingPiece={id => this.draggingPiece(id)}
+                draggingPiece={id => this.props.draggingPiece(id)}
               />
             </div>
           );
+        return null;
       });
     }
-  }
-
-  draggingPiece(id) {
-    this.setState({ draggingId: id });
+    return null;
   }
 
   movePiece(toX, toY) {
     const maps = this.props.maps.slice();
-    maps[this.state.draggingId].posx = toX;
-    maps[this.state.draggingId].posy = toY;
+    maps[this.props.draggingId].posx = toX;
+    maps[this.props.draggingId].posy = toY;
     this.setState({ maps: maps });
   }
 
@@ -84,7 +77,7 @@ class Board extends Component {
   canMovePiece(toX, toY) {
     for (let i = 0; i < this.props.maps.length; i++) {
       if (
-        this.state.draggingId !== i &&
+        this.props.draggingId !== i &&
         this.props.maps[i].posy === toY &&
         this.props.maps[i].posx === toX
       ) {
@@ -106,7 +99,6 @@ class Board extends Component {
     const squareData = this.renderSquares();
 
     return (
-      <DndProvider backend={HTML5Backend}>
         <div
           style={{
             marginLeft: "25%",
@@ -123,7 +115,6 @@ class Board extends Component {
           <CustomButton name={"Save"} func={this.props.saveMap} />
           <CustomButton name={"Clear"} func={this.props.resetMap} />
         </div>
-      </DndProvider>
     );
   }
 }
