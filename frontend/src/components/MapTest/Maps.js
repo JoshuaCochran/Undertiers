@@ -24,9 +24,13 @@ const styles = theme => ({
     flexWrap: "wrap",
     overFlowY: "auto",
     width: "90%",
-    marginLeft: "5%"
+    marginLeft: "5%",
+    backgroundColor: "rgba(35, 35, 35)"
   },
-  board: {}
+  title: {
+    color: "white",
+    textAlign: "center"
+  }
 });
 
 class Maps extends Component {
@@ -35,6 +39,7 @@ class Maps extends Component {
     this.state = {
       units: [],
       unitsOnMap: [{}],
+      mapInfo: ["description", "name", "id", "user"],
       loadedMaps: false,
       loadedUnits: false,
       sortedAlphabetically: false,
@@ -64,13 +69,24 @@ class Maps extends Component {
     } catch (e) {
       console.log(e);
     }
+    try {
+      const res = await fetch(
+        "http://www.undertiers.com:8000/maps/" + this.props.board_id
+      );
+      const mapInfo = await res.json();
+      this.setState({
+        mapInfo: mapInfo
+      });
+    } catch (e) {
+      console.log(e);
+    }
     this.loadMapData();
   }
 
   async loadMapData() {
     try {
       const res = await fetch(
-        "http://www.undertiers.com:8000/maps/" + this.props.board_id
+        "http://www.undertiers.com:8000/boards/" + this.props.board_id
       );
       const maps = await res.json();
       var unit;
@@ -141,7 +157,7 @@ class Maps extends Component {
         };
         new_data.push(unit);
       }
-    await fetch("http://www.undertiers.com:8000/maps/add", {
+    await fetch("http://www.undertiers.com:8000/boards/add/", {
       method: "POST",
       body: JSON.stringify(new_data),
       headers: {
@@ -154,7 +170,7 @@ class Maps extends Component {
   deleteUnit(id) {
     var units = this.state.unitsOnMap;
     units.splice(id, 1);
-    this.setState({unitsOnMap: units})
+    this.setState({ unitsOnMap: units });
   }
 
   render() {
@@ -163,7 +179,11 @@ class Maps extends Component {
     return (
       <DndProvider backend={MobileCheck() ? TouchBackend : HTML5Backend}>
         <div className={classes.root}>
-          <Abyss draggingId={this.state.draggingId} deleteUnit={this.deleteUnit}>
+          <Abyss
+            draggingId={this.state.draggingId}
+            deleteUnit={this.deleteUnit}
+          >
+            <div className={classes.title}>{this.state.mapInfo[0].name}</div>
             <Grid container spacing={4} className={classes.board}>
               <Grid item xs={4}>
                 <Board

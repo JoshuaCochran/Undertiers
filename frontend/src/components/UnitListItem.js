@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridListTile from "@material-ui/core/GridListTile";
 import { ItemTypes } from "./MapTest/DragTypes";
@@ -7,18 +7,17 @@ import { useDrag, DragPreviewImage } from "react-dnd";
 const useStyles = makeStyles(theme => ({
   tileImage: {
     width: "100%",
-    height: "auto",
+    height: "auto"
   }
 }));
 
 export default function UnitListItem({
-  id,
   unit,
   showPopover,
   onClick,
   handlePopoverOpen,
   handlePopoverClose,
-  draggingUnit,
+  draggingUnit
 }) {
   const [{ isDragging }, drag, preview] = useDrag({
     item: { type: ItemTypes.LIST_PIECE },

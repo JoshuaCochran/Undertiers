@@ -49,7 +49,6 @@ class Units extends Component {
     this.setState({ anchorEl: null, showPopover: false });
   }
 
-
   render() {
     const { classes } = this.props;
     return this.props.loaded ? (

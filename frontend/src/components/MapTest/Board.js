@@ -99,22 +99,25 @@ class Board extends Component {
     const squareData = this.renderSquares();
 
     return (
-        <div
-          style={{
-            marginLeft: "25%",
-            marginRight: "25%",
-            marginTop: "3%",
-            width: "40%",
-            height: "40%",
-            display: "flex",
-            flexWrap: "wrap",
-            position: "absolute"
-          }}
-        >
-          {squareData}
-          <CustomButton name={"Save"} func={this.props.saveMap} />
-          <CustomButton name={"Clear"} func={this.props.resetMap} />
+      <div
+        style={{
+          marginLeft: "30%",
+          marginRight: "25%",
+          marginTop: "3%",
+          width: "40%",
+          height: "40%",
+          display: "flex",
+          flexWrap: "wrap",
+          position: "absolute"
+        }}
+      >
+        {squareData}
+        <CustomButton name={"Save"} func={this.props.saveMap} />
+        <CustomButton name={"Clear"} func={this.props.resetMap} />
+        <div style={{ color: "white", textAlign: "center" }}>
+          Units on Board: {this.props.maps.length}
         </div>
+      </div>
     );
   }
 }

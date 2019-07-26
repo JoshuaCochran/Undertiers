@@ -6,19 +6,19 @@ from .models import Unit, UnitLoc, Map, Alliance
 from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer
 
 # The view giving a list of all units on all maps and their positions.
-class ListMaps(generics.ListCreateAPIView):
+class ListBoards(generics.ListCreateAPIView):
     queryset = UnitLoc.objects.all()
     serializer_class = UnitLocSerializer
 
 # The view giving a list of all units on a particular map and their positions.
-class DetailMap(ModelViewSet):
+class DetailBoard(ModelViewSet):
     # Returns all UnitLoc objects (units on a given map with position on map) given the private key in the url
     def get_queryset(self, *args, **kwargs):
         return UnitLoc.objects.filter(board__id=self.kwargs.get('pk'))
 
     serializer_class = UnitLocSerializer
 
-class AddUnitToMap(generics.ListCreateAPIView):
+class AddUnitToBoard(generics.ListCreateAPIView):
     def get_serializer(self, *args, **kwargs):
         if "data" in kwargs:
             data = kwargs["data"]
@@ -26,14 +26,20 @@ class AddUnitToMap(generics.ListCreateAPIView):
         if isinstance(data, list):
             kwargs["many"] = True
 
-        return super(AddUnitToMap, self).get_serializer(*args, **kwargs)
+        return super(AddUnitToBoard, self).get_serializer(*args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         UnitLoc.objects.filter(board__id=request.data[0]["board"]).delete()
-        return super(AddUnitToMap, self).create(request, *args, **kwargs)
+        return super(AddUnitToBoard, self).create(request, *args, **kwargs)
 
     queryset = UnitLoc.objects.all()
     serializer_class = UnitLocSerializer
+
+class DetailMap(generics.ListCreateAPIView):
+    def get_queryset(self, *args, **kwargs):
+        return Map.objects.filter(id=self.kwargs.get('pk'))
+
+    serializer_class = MapSerializer
 
 # The view giving a list of all alliances
 class ListAlliances(generics.ListCreateAPIView):
