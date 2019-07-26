@@ -49,41 +49,42 @@ class Units extends Component {
     this.setState({ anchorEl: null, showPopover: false });
   }
 
+
   render() {
     const { classes } = this.props;
-    return (
-        <div className={classes.root}>
-          <UnitSortMenu
-            sortByTier={this.props.sortByTier}
-            sortAlphabetically={this.props.sortAlphabetically}
-          />
-          <UnitModal
-            show={this.state.showUnit}
-            handleUnitClose={() => this.handleUnitClose()}
-            unit={this.state.unit}
-          />
-          <UnitPopover
-            open={this.state.showPopover}
-            anchorEl={this.state.anchorEl}
-            handlePopoverClose={this.handlePopoverClose}
-            unit={this.state.unit}
-          />
-          <GridList cellHeight={80} cols={15}>
-            {this.props.units.map((item, i) => (
-              <UnitListItem
-                key={i}
-                unit={item}
-                image={item.icon_url}
-                showPopover={this.state.showPopover}
-                onClick={this.onUnitClick}
-                handlePopoverOpen={this.handlePopoverOpen}
-                handlePopoverClose={this.handlePopoverClose}
-                draggingUnit={this.props.draggingUnit}
-              />
-            ))}
-          </GridList>
-        </div>
-    );
+    return this.props.loaded ? (
+      <div className={classes.root}>
+        <UnitSortMenu
+          sortByTier={this.props.sortByTier}
+          sortAlphabetically={this.props.sortAlphabetically}
+        />
+        <UnitModal
+          show={this.state.showUnit}
+          handleUnitClose={() => this.handleUnitClose()}
+          unit={this.state.unit}
+        />
+        <UnitPopover
+          open={this.state.showPopover}
+          anchorEl={this.state.anchorEl}
+          handlePopoverClose={this.handlePopoverClose}
+          unit={this.state.unit}
+        />
+        <GridList cellHeight={80} cols={15}>
+          {this.props.units.map((item, i) => (
+            <UnitListItem
+              id={i}
+              key={i}
+              unit={item}
+              showPopover={this.state.showPopover}
+              onClick={this.onUnitClick}
+              handlePopoverOpen={this.handlePopoverOpen}
+              handlePopoverClose={this.handlePopoverClose}
+              draggingUnit={this.props.draggingUnit}
+            />
+          ))}
+        </GridList>
+      </div>
+    ) : null;
   }
 }
 
