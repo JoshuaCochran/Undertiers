@@ -164,7 +164,6 @@ class Maps extends Component {
         "Content-Type": "application/json"
       }
     });
-    this.loadMapData();
   }
 
   deleteUnit(id) {

@@ -58,8 +58,16 @@ class Board extends Component {
 
   movePiece(toX, toY) {
     const maps = this.props.maps.slice();
-    maps[this.props.draggingId].posx = toX;
-    maps[this.props.draggingId].posy = toY;
+    const id = this.props.draggingId;
+    maps.map((unit, i) => {
+      if (unit.posx === toX && unit.posy === toY)
+      {
+        maps[i].posx = maps[id].posx;
+        maps[i].posy = maps[id].posy;
+      }
+    });
+    maps[id].posx = toX;
+    maps[id].posy = toY;
     this.setState({ maps: maps });
   }
 
@@ -77,7 +85,6 @@ class Board extends Component {
   canMovePiece(toX, toY) {
     for (let i = 0; i < this.props.maps.length; i++) {
       if (
-        this.props.draggingId !== i &&
         this.props.maps[i].posy === toY &&
         this.props.maps[i].posx === toX
       ) {
