@@ -8,7 +8,7 @@ import { MobileCheck } from "./MobileCheck";
 
 import Board from "./Board";
 import Units from "../Units";
-import { alphabeticalSort, tierSort } from "../sorting";
+import { alphabeticalSort, tierSort, tierFilter } from "../sorting";
 import Abyss from "./Abyss";
 
 const styles = theme => ({
@@ -38,6 +38,7 @@ class Maps extends Component {
     super(props);
     this.state = {
       units: [],
+      unitList: [],
       unitsOnMap: [{}],
       mapInfo: ["description", "name", "id", "user"],
       loadedMaps: false,
@@ -49,6 +50,7 @@ class Maps extends Component {
     };
     this.sortAlphabetically = this.sortAlphabetically.bind(this);
     this.sortByTier = this.sortByTier.bind(this);
+    this.filterTier = this.filterTier.bind(this);
     this.draggingUnit = this.draggingUnit.bind(this);
     this.draggingPiece = this.draggingPiece.bind(this);
     this.updateMap = this.updateMap.bind(this);
@@ -63,6 +65,7 @@ class Maps extends Component {
       const units = await res.json();
       this.setState({
         units: units,
+        unitList: units,
         loadedUnits: true
       });
       this.sortAlphabetically();
@@ -118,6 +121,10 @@ class Maps extends Component {
       units: tierSort(this.state.units.slice(), this.state.sortedByTier),
       sortedByTier: !this.state.sortedByTier
     });
+  }
+
+  filterTier(tier) {
+    this.setState({ unitList: tierFilter(this.state.units, tier) });
   }
 
   draggingUnit(unit) {
@@ -194,6 +201,7 @@ class Maps extends Component {
                   updateMap={this.updateMap}
                   saveMap={this.saveMap}
                   resetMap={this.resetMap}
+                  filterTier={this.filterTier}
                   loaded={this.state.loadedMaps}
                 />
               </Grid>
@@ -201,7 +209,7 @@ class Maps extends Component {
             <Grid container spacing={4} className={classes.units}>
               <Grid item xs={4}>
                 <Units
-                  units={this.state.units}
+                  units={this.state.unitList}
                   loaded={this.state.loadedUnits}
                   sortAlphabetically={this.sortAlphabetically}
                   sortByTier={this.sortByTier}

@@ -15,3 +15,8 @@ export function tierSort(data, alreadySorted) {
   );
   return sortedData;
 }
+
+export function tierFilter(data, tier) {
+  const filteredData = data.filter(unit => unit.tier === tier);
+  return filteredData;
+}
