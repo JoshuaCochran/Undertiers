@@ -1,9 +1,15 @@
 from rest_framework import generics, response, status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.authentication import BasicAuthentication
+
+from knox.views import LoginView as KnoxLoginView
 
 from .models import Unit, UnitLoc, Map, Alliance
 from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer
+
+class LoginView(KnoxLoginView):
+    authentication_classes = [BasicAuthentication]
 
 # The view giving a list of all units on all maps and their positions.
 class ListBoards(generics.ListCreateAPIView):

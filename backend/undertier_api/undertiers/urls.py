@@ -1,8 +1,14 @@
-from django.urls import path
+from django.urls import path, re_path, include
 
 from . import views
+from knox import views as knox_views
 
 urlpatterns = [
+    path('auth/login/', views.LoginView.as_view(), name='knox_login'),
+    path('auth/logout/', knox_views.LogoutView.as_view(), name='knox_logout'),
+    path('auth/logoutall/', knox_views.LogoutAllView.as_view(), name='knox_loutout_all'),
+    path('account/', include('djoser.urls')),
+    path('account/', include('djoser.urls.authtoken')),
     path('boards/', views.ListBoards.as_view()), # Gives a list of all maps (TODO: Add sorting options)
     path('boards/add/', views.AddUnitToBoard.as_view()),
     path('boards/<int:pk>/', views.DetailBoard.as_view({'get': 'list', 'put': 'update', 'post': 'create'})),# Gives a detailed list of all items on a single map

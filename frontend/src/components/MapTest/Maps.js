@@ -18,7 +18,7 @@ const styles = theme => ({
     height: "100vh"
   },
   units: {
-    marginTop: "50vh",
+    marginTop: "55vh",
     position: "relative",
     display: "flex",
     flexWrap: "wrap",
@@ -46,7 +46,8 @@ class Maps extends Component {
       sortedAlphabetically: false,
       sortedByTier: false,
       unitDragged: null,
-      draggingId: null
+      draggingId: null,
+      userToken: null
     };
     this.sortAlphabetically = this.sortAlphabetically.bind(this);
     this.sortByTier = this.sortByTier.bind(this);
@@ -61,25 +62,17 @@ class Maps extends Component {
 
   async componentDidMount() {
     try {
-      const res = await fetch("http://www.undertiers.com:8000/units/");
-      const units = await res.json();
-      this.setState({
-        units: units,
-        unitList: units,
-        loadedUnits: true
+      const credentials = btoa("test:hunter21");
+      const res = await fetch("http://www.undertiers.com:8000/auth/login/", {
+        method: "POST",
+        body: JSON.stringify({}),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Basic " + credentials
+        }
       });
-      this.sortAlphabetically();
-    } catch (e) {
-      console.log(e);
-    }
-    try {
-      const res = await fetch(
-        "http://www.undertiers.com:8000/maps/" + this.props.board_id
-      );
-      const mapInfo = await res.json();
-      this.setState({
-        mapInfo: mapInfo
-      });
+      const token = await res.json();
+      this.setState({ userToken: token.token });
     } catch (e) {
       console.log(e);
     }
@@ -89,7 +82,12 @@ class Maps extends Component {
   async loadMapData() {
     try {
       const res = await fetch(
-        "http://www.undertiers.com:8000/boards/" + this.props.board_id
+        "http://www.undertiers.com:8000/boards/" + this.props.board_id, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Token " + this.state.userToken
+          }
+        }
       );
       const maps = await res.json();
       var unit;
@@ -103,6 +101,47 @@ class Maps extends Component {
       });
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  async loadBoard() {
+    try {
+      const res = await fetch(
+        "http://www.undertiers.com:8000/maps/" + this.props.board_id, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Token " + this.state.userToken
+          }
+        }
+      );
+      const mapInfo = await res.json();
+      this.setState({
+        mapInfo: mapInfo
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async loadUnits() {
+    if (this.state.userToken !== null) {
+      try {
+        const res = await fetch("http://www.undertiers.com:8000/units/", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Token " + this.state.userToken
+          }
+        });
+        const units = await res.json();
+        this.setState({
+          units: units,
+          unitList: units,
+          loadedUnits: true
+        });
+        this.sortAlphabetically();
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
@@ -124,7 +163,12 @@ class Maps extends Component {
   }
 
   filterTier(tier) {
-    this.setState({ unitList: tierFilter(this.state.units, tier) });
+    if (this.state.userToken !== null) {
+      this.loadUnits();
+      this.loadBoard();
+      this.loadMapData();
+    }
+    //this.setState({ unitList: tierFilter(this.state.units, tier) });
   }
 
   draggingUnit(unit) {
