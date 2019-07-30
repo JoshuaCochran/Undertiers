@@ -32,7 +32,7 @@ class Board extends Component {
           canMovePiece={() => this.canMovePiece(x, y)}
           createPiece={() => this.createPiece(x, y)}
         >
-          {this.renderUnit(x, y)}
+          {this.props.maps.length > 0 ? this.renderUnit(x, y) : null}
         </BoardSquare>
       </div>
     );
@@ -100,7 +100,6 @@ class Board extends Component {
   };
 
   render() {
-    if (Array.isArray(this.props.maps) && this.props.maps[0]) {
       const squareData = this.renderSquares();
 
       return (
@@ -131,7 +130,6 @@ class Board extends Component {
         </div>
       );
     }
-  }
 }
 
 export default Board;

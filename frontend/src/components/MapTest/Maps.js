@@ -239,8 +239,7 @@ class Maps extends Component {
     if (
       !this.state.isLoading &&
       this.state.mapInfo.length > 0 &&
-      this.state.units.length > 0 &&
-      this.state.unitsOnMap.length > 0
+      this.state.units.length > 0
     )
       return (
         <DndProvider backend={MobileCheck() ? TouchBackend : HTML5Backend}>
