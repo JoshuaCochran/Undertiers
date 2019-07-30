@@ -1,5 +1,8 @@
+import Cookies from 'universal-cookie';
+
 export function LogIn(username, password, setToken, setLogin) {
   const axios = require("axios");
+  const cookies = new Cookies();
   const credentials = btoa(username + ":" + password);
   axios({
     method: "post",
@@ -12,7 +15,9 @@ export function LogIn(username, password, setToken, setLogin) {
     .then(function(response) {
       setToken(response.data.token);
       setLogin(response.data.token !== undefined);
-      console.log(response.data.token);
+      cookies.set('token expire', response.data.expiry);
+      cookies.set('token', response.data.token);
+      console.log(response.data.expiry);
     })
     .catch(function(error) {
       console.log(error);

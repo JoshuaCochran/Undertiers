@@ -66,7 +66,6 @@ class Maps extends Component {
     this.getMapInfo = this.getMapInfo.bind(this);
     this.getUnits = this.getUnits.bind(this);
     this.getUnitsOnMap = this.getUnitsOnMap.bind(this);
-    this.test = this.test.bind(this);
   }
 
   async componentDidMount() {
@@ -137,18 +136,6 @@ class Maps extends Component {
       .catch(function(error) {
         console.log(error);
       });
-  }
-
-  test(maps) {
-    var unit;
-    for (let i = 0; i < maps.length; i++) {
-      unit = this.state.units.filter(unit => unit.id === maps[i].unit);
-      maps[i].unit = unit[0];
-    }
-    this.setState({
-      unitsOnMap: maps,
-      loadedMaps: true
-    });
   }
 
   sortAlphabetically() {
@@ -233,7 +220,7 @@ class Maps extends Component {
     if (this.state.isLoading && this.state.units.length > 0) {
       axios
         .all([this.getUnitsOnMap()])
-        .then(response => this.setState({ isLoading: false }));
+        .then((response) => this.setState({ isLoading: false }));
     }
 
     if (

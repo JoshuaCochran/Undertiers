@@ -30,7 +30,7 @@ function Main() {
         <Route
           path="/signin"
           render={() =>
-            contextValue.token !== null ? <Redirect to="/boards/2" /> : <SignIn />
+            contextValue.loggedIn ? <Redirect to="/boards/2" /> : <SignIn />
           }
         />
       </Switch>
