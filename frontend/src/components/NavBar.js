@@ -31,11 +31,8 @@ export default function NavBar() {
         <Toolbar>
           <Typography variant="h4" color="inherit" className={classes.title}>
             Undertiers
-            <Link component={RouterLink} to="/units" className={classes.link}>
-              Units
-            </Link>
-            <Link component={RouterLink} to="/test" className={classes.link}>
-              Test
+            <Link component={RouterLink} to="/signin" className={classes.link}>
+              Sign In
             </Link>
           </Typography>
         </Toolbar>

@@ -39,7 +39,7 @@ class Board extends Component {
   }
 
   renderUnit(x, y) {
-    if (this.props.loaded) {
+    if (this.props.loaded && this.props.maps[0].unit) {
       return this.props.maps.map((item, i) => {
         if (x === item.posx && y === item.posy)
           return (
@@ -61,8 +61,7 @@ class Board extends Component {
     const maps = this.props.maps.slice();
     const id = this.props.draggingId;
     maps.map((unit, i) => {
-      if (unit.posx === toX && unit.posy === toY)
-      {
+      if (unit.posx === toX && unit.posy === toY) {
         maps[i].posx = maps[id].posx;
         maps[i].posy = maps[id].posy;
       }
@@ -85,10 +84,7 @@ class Board extends Component {
 
   canMovePiece(toX, toY) {
     for (let i = 0; i < this.props.maps.length; i++) {
-      if (
-        this.props.maps[i].posy === toY &&
-        this.props.maps[i].posx === toX
-      ) {
+      if (this.props.maps[i].posy === toY && this.props.maps[i].posx === toX) {
         return false;
       }
     }
@@ -104,35 +100,37 @@ class Board extends Component {
   };
 
   render() {
-    const squareData = this.renderSquares();
+    if (Array.isArray(this.props.maps) && this.props.maps[0]) {
+      const squareData = this.renderSquares();
 
-    return (
-      <div
-        style={{
-          marginLeft: "30%",
-          marginRight: "25%",
-          marginTop: "3%",
-          width: "40%",
-          height: "40%",
-          display: "flex",
-          flexWrap: "wrap",
-          position: "absolute"
-        }}
-      >
-        {squareData}
-        <CustomButton name={"Save"} func={this.props.saveMap} />
-        <CustomButton name={"Clear"} func={this.props.resetMap} />
-        <TierFilterButton tier={5} func={this.props.filterTier}/>
-        <TierFilterButton tier={4} func={this.props.filterTier}/>
-        <TierFilterButton tier={3} func={this.props.filterTier}/>
-        <TierFilterButton tier={2} func={this.props.filterTier}/>
-        <TierFilterButton tier={1} func={this.props.filterTier}/>
-        <TierFilterButton tier={0} func={this.props.filterTier}/>
-        <div style={{ color: "white", textAlign: "center" }}>
-          Units on Board: {this.props.maps.length}
+      return (
+        <div
+          style={{
+            marginLeft: "30%",
+            marginRight: "25%",
+            marginTop: "3%",
+            width: "40%",
+            height: "40%",
+            display: "flex",
+            flexWrap: "wrap",
+            position: "absolute"
+          }}
+        >
+          {squareData}
+          <CustomButton name={"Save"} func={this.props.saveMap} />
+          <CustomButton name={"Clear"} func={this.props.resetMap} />
+          <TierFilterButton tier={5} func={this.props.filterTier} />
+          <TierFilterButton tier={4} func={this.props.filterTier} />
+          <TierFilterButton tier={3} func={this.props.filterTier} />
+          <TierFilterButton tier={2} func={this.props.filterTier} />
+          <TierFilterButton tier={1} func={this.props.filterTier} />
+          <TierFilterButton tier={0} func={this.props.filterTier} />
+          <div style={{ color: "white", textAlign: "center" }}>
+            Units on Board: {this.props.maps.length}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

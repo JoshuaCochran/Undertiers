@@ -1,15 +1,17 @@
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { DndProvider } from "react-dnd";
 import TouchBackend from "react-dnd-touch-backend";
 import HTML5Backend from "react-dnd-html5-backend";
 import { MobileCheck } from "./MobileCheck";
+import axios from "axios";
 
 import Board from "./Board";
 import Units from "../Units";
 import { alphabeticalSort, tierSort, tierFilter } from "../sorting";
 import Abyss from "./Abyss";
+import { UserContext } from "../usercontext";
 
 const styles = theme => ({
   root: {
@@ -39,15 +41,18 @@ class Maps extends Component {
     this.state = {
       units: [],
       unitList: [],
-      unitsOnMap: [{}],
-      mapInfo: ["description", "name", "id", "user"],
+      unitsOnMap: [],
+      mapInfo: [],
       loadedMaps: false,
       loadedUnits: false,
+      loadedBoard: false,
+      isLoading: false,
       sortedAlphabetically: false,
       sortedByTier: false,
       unitDragged: null,
       draggingId: null,
-      userToken: null
+      userToken: null,
+      userTokenExp: null
     };
     this.sortAlphabetically = this.sortAlphabetically.bind(this);
     this.sortByTier = this.sortByTier.bind(this);
@@ -58,91 +63,92 @@ class Maps extends Component {
     this.saveMap = this.saveMap.bind(this);
     this.resetMap = this.resetMap.bind(this);
     this.deleteUnit = this.deleteUnit.bind(this);
+    this.getMapInfo = this.getMapInfo.bind(this);
+    this.getUnits = this.getUnits.bind(this);
+    this.getUnitsOnMap = this.getUnitsOnMap.bind(this);
+    this.test = this.test.bind(this);
   }
 
   async componentDidMount() {
-    try {
-      const credentials = btoa("test:hunter21");
-      const res = await fetch("http://www.undertiers.com:8000/auth/login/", {
-        method: "POST",
-        body: JSON.stringify({}),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Basic " + credentials
-        }
-      });
-      const token = await res.json();
-      this.setState({ userToken: token.token });
-    } catch (e) {
-      console.log(e);
-    }
-    this.loadMapData();
+    this.setState({ isLoading: true });
+    axios.all([this.getUnits(), this.getMapInfo()]);
   }
 
-  async loadMapData() {
-    try {
-      const res = await fetch(
-        "http://www.undertiers.com:8000/boards/" + this.props.board_id, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Token " + this.state.userToken
-          }
-        }
-      );
-      const maps = await res.json();
-      var unit;
-      for (let i = 0; i < maps.length; i++) {
-        unit = this.state.units.filter(unit => unit.id === maps[i].unit);
-        maps[i].unit = unit[0];
+  getUnitsOnMap() {
+    axios({
+      method: "get",
+      url: "http://www.undertiers.com:8000/boards/" + this.props.board_id,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + this.context.token
       }
-      this.setState({
-        unitsOnMap: maps,
-        loadedMaps: true
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  async loadBoard() {
-    try {
-      const res = await fetch(
-        "http://www.undertiers.com:8000/maps/" + this.props.board_id, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Token " + this.state.userToken
-          }
+    })
+      .then(response => {
+        var maps = response.data;
+        var unit;
+        for (let i = 0; i < maps.length; i++) {
+          unit = this.state.units.filter(unit => unit.id === maps[i].unit);
+          maps[i].unit = unit[0];
         }
-      );
-      const mapInfo = await res.json();
-      this.setState({
-        mapInfo: mapInfo
+        this.setState({
+          unitsOnMap: maps,
+          loadedMaps: true
+        });
+      })
+      .catch(function(error) {
+        console.log(error);
       });
-    } catch (e) {
-      console.log(e);
-    }
   }
 
-  async loadUnits() {
-    if (this.state.userToken !== null) {
-      try {
-        const res = await fetch("http://www.undertiers.com:8000/units/", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Token " + this.state.userToken
-          }
-        });
-        const units = await res.json();
+  getUnits() {
+    axios({
+      method: "get",
+      url: "http://www.undertiers.com:8000/units/",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + this.context.token
+      }
+    })
+      .then(response => {
         this.setState({
-          units: units,
-          unitList: units,
+          units: response.data,
+          unitList: response.data,
           loadedUnits: true
         });
         this.sortAlphabetically();
-      } catch (e) {
-        console.log(e);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  getMapInfo() {
+    axios({
+      method: "get",
+      url: "http://www.undertiers.com:8000/maps/" + this.props.board_id,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + this.context.token
       }
+    })
+      .then(response => {
+        this.setState({ mapInfo: response.data, loadedBoard: true });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
+
+  test(maps) {
+    var unit;
+    for (let i = 0; i < maps.length; i++) {
+      unit = this.state.units.filter(unit => unit.id === maps[i].unit);
+      maps[i].unit = unit[0];
     }
+    this.setState({
+      unitsOnMap: maps,
+      loadedMaps: true
+    });
   }
 
   sortAlphabetically() {
@@ -163,12 +169,7 @@ class Maps extends Component {
   }
 
   filterTier(tier) {
-    if (this.state.userToken !== null) {
-      this.loadUnits();
-      this.loadBoard();
-      this.loadMapData();
-    }
-    //this.setState({ unitList: tierFilter(this.state.units, tier) });
+    this.setState({ unitList: tierFilter(this.state.units, tier) });
   }
 
   draggingUnit(unit) {
@@ -208,12 +209,16 @@ class Maps extends Component {
         };
         new_data.push(unit);
       }
-    await fetch("http://www.undertiers.com:8000/boards/add/", {
-      method: "POST",
-      body: JSON.stringify(new_data),
+    axios({
+      method: "post",
+      url: "http://www.undertiers.com:8000/boards/add/",
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+        Authorization: "Token " + this.context.token
+      },
+      data: JSON.stringify(new_data)
+    }).catch(function(error) {
+      console.log(error);
     });
   }
 
@@ -225,47 +230,59 @@ class Maps extends Component {
 
   render() {
     const { classes } = this.props;
+    if (this.state.isLoading && this.state.units.length > 0) {
+      axios
+        .all([this.getUnitsOnMap()])
+        .then(response => this.setState({ isLoading: false }));
+    }
 
-    return (
-      <DndProvider backend={MobileCheck() ? TouchBackend : HTML5Backend}>
-        <div className={classes.root}>
-          <Abyss
-            draggingId={this.state.draggingId}
-            deleteUnit={this.deleteUnit}
-          >
-            <div className={classes.title}>{this.state.mapInfo[0].name}</div>
-            <Grid container spacing={4} className={classes.board}>
-              <Grid item xs={4}>
-                <Board
-                  board_id={this.props.board_id}
-                  maps={this.state.unitsOnMap}
-                  unitDragged={this.state.unitDragged}
-                  draggingPiece={this.draggingPiece}
-                  draggingId={this.state.draggingId}
-                  updateMap={this.updateMap}
-                  saveMap={this.saveMap}
-                  resetMap={this.resetMap}
-                  filterTier={this.filterTier}
-                  loaded={this.state.loadedMaps}
-                />
+    if (
+      !this.state.isLoading &&
+      this.state.mapInfo.length > 0 &&
+      this.state.units.length > 0 &&
+      this.state.unitsOnMap.length > 0
+    )
+      return (
+        <DndProvider backend={MobileCheck() ? TouchBackend : HTML5Backend}>
+          <div className={classes.root}>
+            <Abyss
+              draggingId={this.state.draggingId}
+              deleteUnit={this.deleteUnit}
+            >
+              <div className={classes.title}>{this.state.mapInfo[0].name}</div>
+              <Grid container spacing={4} className={classes.board}>
+                <Grid item xs={4}>
+                  <Board
+                    board_id={this.props.board_id}
+                    maps={this.state.unitsOnMap}
+                    unitDragged={this.state.unitDragged}
+                    draggingPiece={this.draggingPiece}
+                    draggingId={this.state.draggingId}
+                    updateMap={this.updateMap}
+                    saveMap={this.saveMap}
+                    resetMap={this.resetMap}
+                    filterTier={this.filterTier}
+                    loaded={this.state.loadedMaps}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container spacing={4} className={classes.units}>
-              <Grid item xs={4}>
-                <Units
-                  units={this.state.unitList}
-                  loaded={this.state.loadedUnits}
-                  sortAlphabetically={this.sortAlphabetically}
-                  sortByTier={this.sortByTier}
-                  draggingUnit={this.draggingUnit}
-                />
+              <Grid container spacing={4} className={classes.units}>
+                <Grid item xs={4}>
+                  <Units
+                    units={this.state.unitList}
+                    loaded={this.state.loadedUnits}
+                    sortAlphabetically={this.sortAlphabetically}
+                    sortByTier={this.sortByTier}
+                    draggingUnit={this.draggingUnit}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-          </Abyss>
-        </div>
-      </DndProvider>
-    );
+            </Abyss>
+          </div>
+        </DndProvider>
+      );
+    return <p>Loading...</p>;
   }
 }
-
+Maps.contextType = UserContext;
 export default withStyles(styles)(Maps);
