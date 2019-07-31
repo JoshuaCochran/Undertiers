@@ -25,6 +25,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+function renderRegister() {
+  return (
+    <Button
+      href="http://www.undertiers.com:3000/register"
+      style={{
+        color: "white",
+        fontSize: "20px"
+      }}
+    >
+      register
+    </Button>
+  );
+}
+
 export default function NavBar() {
   const classes = useStyles();
   return (
@@ -45,6 +59,7 @@ export default function NavBar() {
                   >
                     {loggedIn ? "Logout" : "Login"}
                   </Button>
+                  {loggedIn ? null : renderRegister()}
                 </Router>
               )}
             </UserContext.Consumer>

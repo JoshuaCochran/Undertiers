@@ -6,6 +6,7 @@ import AllianceInfo from "./AllianceInfo";
 import Maps from "./MapTest/Maps";
 import SignIn from "./LoginForm";
 import { UserContext } from "./usercontext";
+import SignUp from "./Register";
 
 function Main() {
   const contextValue = useContext(UserContext);
@@ -27,6 +28,7 @@ function Main() {
           render={props => 
           contextValue.loggedIn ? <Maps board_id={props.match.params.id} /> : <SignIn />}
         />
+        <Route path="/register" component={SignUp}/>
         <Route
           path="/signin"
           render={() =>

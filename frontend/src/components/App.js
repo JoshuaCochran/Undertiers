@@ -29,8 +29,8 @@ class App extends Component {
     const expire = new Date(cookies.get("token expire"));
     const date = new Date();
     if (date > expire) {
-      cookies.remove("token");
-      cookies.remove("token expire");
+      cookies.remove("token", { path: "/" });
+      cookies.remove("token expire", { path: "/" });
       this.setState({ expired: true });
     } else {
       this.setToken(cookies.get("token"));
