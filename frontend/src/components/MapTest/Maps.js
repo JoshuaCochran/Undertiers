@@ -1,4 +1,4 @@
-import React, { Component, useContext } from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { DndProvider } from "react-dnd";
@@ -70,7 +70,6 @@ class Maps extends Component {
 
   async componentDidMount() {
     this.setState({ isLoading: true });
-    axios.all([this.getUnits(), this.getMapInfo()]);
   }
 
   getUnitsOnMap() {
@@ -217,6 +216,8 @@ class Maps extends Component {
 
   render() {
     const { classes } = this.props;
+    if (this.state.isLoading && this.state.units.length === 0)
+      axios.all([this.getUnits(), this.getMapInfo()]);
     if (this.state.isLoading && this.state.units.length > 0) {
       axios
         .all([this.getUnitsOnMap()])

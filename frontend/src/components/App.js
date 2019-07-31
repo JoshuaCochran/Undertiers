@@ -10,6 +10,7 @@ class App extends Component {
     this.setToken = this.setToken.bind(this);
     this.setUser = this.setUser.bind(this);
     this.setLogin = this.setLogin.bind(this);
+    this.logOut = this.logOut.bind(this);
     this.state = {
       user: null,
       token: null,
@@ -18,7 +19,8 @@ class App extends Component {
       loggedIn: false,
       setUser: this.setUser,
       setToken: this.setToken,
-      setLogin: this.setLogin
+      setLogin: this.setLogin,
+      logOut: this.logOut
     };
   }
 
@@ -26,9 +28,14 @@ class App extends Component {
     const cookies = new Cookies();
     const expire = new Date(cookies.get("token expire"));
     const date = new Date();
-    this.setToken(cookies.get("token"));
-    this.setState({ tokenExpire: cookies.get("token expire") });
-    if (date > expire) this.setState({ expired: true });
+    if (date > expire) {
+      cookies.remove("token");
+      cookies.remove("token expire");
+      this.setState({ expired: true });
+    } else {
+      this.setToken(cookies.get("token"));
+      this.setState({ tokenExpire: cookies.get("token expire") });
+    }
   }
 
   setUser(user) {
@@ -41,6 +48,13 @@ class App extends Component {
 
   setLogin(loggedIn) {
     this.setState({ loggedIn: loggedIn });
+  }
+
+  logOut() {
+    const cookies = new Cookies();
+    cookies.remove("token", { path: "/" });
+    cookies.remove("token expire", { path: "/" });
+    this.setState({ token: null, loggedIn: false, tokenExpire: null });
   }
 
   render() {

@@ -3,8 +3,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link as RouterLink } from "react-router-dom";
-import Link from "@material-ui/core/Link";
+import { UserContext } from "./usercontext";
+import { MemoryRouter as Router } from "react-router";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,9 +18,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   link: {
-	  color: "white",
-	  margin: theme.spacing(1),
-	  fontSize: "20px",
+    color: "white",
+    margin: theme.spacing(1),
+    fontSize: "20px",
+    marginLeft: "80%"
   }
 }));
 
@@ -31,9 +33,21 @@ export default function NavBar() {
         <Toolbar>
           <Typography variant="h4" color="inherit" className={classes.title}>
             Undertiers
-            <Link component={RouterLink} to="/signin" className={classes.link}>
-              Sign In
-            </Link>
+            <UserContext.Consumer>
+              {({ loggedIn, logOut }) => (
+                <Router>
+                  <Button
+                    href={
+                      loggedIn ? "" : "http://www.undertiers.com:3000/signin"
+                    }
+                    className={classes.link}
+                    onClick={loggedIn ? logOut : null}
+                  >
+                    {loggedIn ? "Logout" : "Login"}
+                  </Button>
+                </Router>
+              )}
+            </UserContext.Consumer>
           </Typography>
         </Toolbar>
       </AppBar>

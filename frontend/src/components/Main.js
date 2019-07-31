@@ -25,7 +25,7 @@ function Main() {
         <Route
           path="/boards/:id"
           render={props => 
-          contextValue.token === null ? <Redirect to="/signin"/> : <Maps board_id={props.match.params.id} />}
+          contextValue.loggedIn ? <Maps board_id={props.match.params.id} /> : <SignIn />}
         />
         <Route
           path="/signin"
