@@ -5,7 +5,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { UserContext } from "./usercontext";
 import Button from "@material-ui/core/Button";
-import { GetMaps } from "./Login";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 
@@ -33,10 +32,6 @@ function renderRegister(style) {
   );
 }
 
-function renderGetMaps(style) {
-  return <Button className={style} onClick={GetMaps}>Get Maps</Button>;
-}
-
 function renderLogInLogOut(loggedIn, logOut, style) {
   if (loggedIn) return <Button className={style} onClick={logOut}>Logout</Button>;
   return (
@@ -53,7 +48,7 @@ export default function NavBar() {
       <AppBar position="sticky">
         <Toolbar>
           <Grid container direction="row">
-            <Typography variant="h4" color="inherit" className={classes.title}>
+            <Typography component={Link} to="/" variant="h4" color="inherit" className={classes.title}>
               Undertiers
             </Typography>
             <UserContext.Consumer>
@@ -61,7 +56,6 @@ export default function NavBar() {
                 <>
                   {renderLogInLogOut(loggedIn, logOut, classes.link)}
                   {loggedIn ? null : renderRegister(classes.link)}
-                  {loggedIn ? renderGetMaps(classes.link) : null}
                 </>
               )}
             </UserContext.Consumer>

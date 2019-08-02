@@ -41,6 +41,11 @@ class UnitPieceSerializer(serializers.ModelSerializer):
 
 # Serializer for maps.
 class MapSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+        return obj.user.username
+
     class Meta:
         fields = (
             'id',

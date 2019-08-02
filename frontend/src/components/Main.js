@@ -7,7 +7,7 @@ import Maps from "./MapTest/Maps";
 import SignIn from "./LoginForm";
 import { UserContext } from "./usercontext";
 import SignUp from "./Register";
-import BoardCard from "./MapTest/BoardCard"
+import BoardList from "./MapTest/BoardList";
 
 function Main() {
   const contextValue = useContext(UserContext);
@@ -26,17 +26,27 @@ function Main() {
         <Route path="/test" component={Maps} />
         <Route
           path="/boards/:id"
-          render={props => 
-          contextValue.loggedIn ? <Maps board_id={props.match.params.id} /> : <SignIn />}
+          render={props =>
+            contextValue.loggedIn ? (
+              <Maps board_id={props.match.params.id} />
+            ) : (
+              <SignIn />
+            )
+          }
         />
-        <Route path="/register" component={SignUp}/>
+        <Route path="/register" component={SignUp} />
         <Route
           path="/signin"
           render={() =>
-            contextValue.loggedIn ? <Redirect to="/boards/2" /> : <SignIn />
+            contextValue.loggedIn ? <Redirect to="/" /> : <SignIn />
           }
         />
-        <Route path="/" component={BoardCard}/>
+        <Route
+          path="/"
+          render={() =>
+            contextValue.loggedIn ? <BoardList /> : <SignIn />
+          }
+        />
       </Switch>
     </main>
   );
