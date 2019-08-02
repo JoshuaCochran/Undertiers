@@ -14,9 +14,9 @@ export function LogIn(username, password, setToken, setLogin, setUser) {
   })
     .then(function(response) {
       setToken(response.data.token);
-      setLogin(response.data.token !== undefined);
       cookies.set("token expire", response.data.expiry, { path: "/" });
       cookies.set("token", response.data.token, { path: "/" });
+      setLogin(response.data.token !== undefined);
     })
     .then(function(response) {
       axios({
@@ -36,7 +36,7 @@ export function LogIn(username, password, setToken, setLogin, setUser) {
     });
 }
 
-export function Register(username, password, email, setToken, setLogin) {
+export function Register(username, password, email) {
   const axios = require("axios");
   axios({
     method: "post",
@@ -53,13 +53,12 @@ export function Register(username, password, email, setToken, setLogin) {
   // Handle response packet Username already exists/Password invalid
 }
 
-export function GetBoards(setBoardData) {
+export function GetBoards(token, setBoardData, setLoading, setLoaded) {
   const axios = require("axios");
   const cookies = new Cookies();
-  var mapData;
   axios({
     method: "get",
-    url: "http://www.undertiers.com:8000/boards/me",
+    url: "http://www.undertiers.com:8000/boards/me/",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Token " + cookies.get("token", { path: "/" })
@@ -67,7 +66,7 @@ export function GetBoards(setBoardData) {
   })
     .then(function(response) {
       setBoardData(response.data);
-      console.log(response.data);
+      setLoaded(true);
     })
     .catch(function(error) {
       console.log(error);

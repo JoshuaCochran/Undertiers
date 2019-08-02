@@ -14,9 +14,14 @@ import Abyss from "./Abyss";
 import { UserContext } from "../usercontext";
 
 const styles = theme => ({
+  "@global": {
+    body: {
+      backgroundColor: "rgba(35, 35, 35)",
+      marginTop: "3%",
+    }
+  },
   root: {
     flexGrow: 1,
-    backgroundColor: "rgba(35, 35, 35)",
     height: "100vh"
   },
   units: {

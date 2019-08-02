@@ -11,6 +11,8 @@ const useStyles = makeStyles({
   card: {
     minWidth: 275,
     marginTop: "2%",
+    marginLeft: "10%", 
+    marginRight: "10%",
   },
   bullet: {
     display: 'inline-block',
