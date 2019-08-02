@@ -21,7 +21,7 @@ import * as serviceWorker from './serviceWorker';
 
 render((
 	<BrowserRouter>
-		<App/>
+		<App style={{backgroundColor: "rgba(35, 35, 35)", height: "100vh"}}/>
 	</BrowserRouter>
 ), document.getElementById('root'));
 

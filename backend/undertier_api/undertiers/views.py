@@ -2,6 +2,7 @@ from rest_framework import generics, response, status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from knox.views import LoginView as KnoxLoginView
 
@@ -15,6 +16,13 @@ class LoginView(KnoxLoginView):
 class ListBoards(generics.ListCreateAPIView):
     queryset = UnitLoc.objects.all()
     serializer_class = UnitLocSerializer
+
+class ListMyBoards(ModelViewSet):
+    permission_classes = [IsAuthenticated,]
+    serializer_class = MapSerializer
+
+    def get_queryset(self):
+        return Map.objects.filter(user=self.request.user).all()
 
 # The view giving a list of all units on a particular map and their positions.
 class DetailBoard(ModelViewSet):

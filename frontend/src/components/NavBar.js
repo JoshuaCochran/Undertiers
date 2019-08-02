@@ -4,8 +4,10 @@ import Toolbar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { UserContext } from "./usercontext";
-import { MemoryRouter as Router } from "react-router";
 import Button from "@material-ui/core/Button";
+import { GetMaps } from "./Login";
+import { Link } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,22 +21,27 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     color: "white",
-    margin: theme.spacing(1),
-    fontSize: "20px",
-    marginLeft: "80%"
-  }
+    fontSize: "20px"
+  },
 }));
 
-function renderRegister() {
+function renderRegister(style) {
   return (
-    <Button
-      href="http://www.undertiers.com:3000/register"
-      style={{
-        color: "white",
-        fontSize: "20px"
-      }}
-    >
+    <Button className={style} component={Link} to="/register">
       register
+    </Button>
+  );
+}
+
+function renderGetMaps(style) {
+  return <Button className={style} onClick={GetMaps}>Get Maps</Button>;
+}
+
+function renderLogInLogOut(loggedIn, logOut, style) {
+  if (loggedIn) return <Button className={style} onClick={logOut}>Logout</Button>;
+  return (
+    <Button component={Link} to="/signin" className={style}>
+      Login
     </Button>
   );
 }
@@ -45,25 +52,20 @@ export default function NavBar() {
     <div className={classes.root}>
       <AppBar position="sticky">
         <Toolbar>
-          <Typography variant="h4" color="inherit" className={classes.title}>
-            Undertiers
+          <Grid container direction="row">
+            <Typography variant="h4" color="inherit" className={classes.title}>
+              Undertiers
+            </Typography>
             <UserContext.Consumer>
               {({ loggedIn, logOut }) => (
-                <Router>
-                  <Button
-                    href={
-                      loggedIn ? "" : "http://www.undertiers.com:3000/signin"
-                    }
-                    className={classes.link}
-                    onClick={loggedIn ? logOut : null}
-                  >
-                    {loggedIn ? "Logout" : "Login"}
-                  </Button>
-                  {loggedIn ? null : renderRegister()}
-                </Router>
+                <>
+                  {renderLogInLogOut(loggedIn, logOut, classes.link)}
+                  {loggedIn ? null : renderRegister(classes.link)}
+                  {loggedIn ? renderGetMaps(classes.link) : null}
+                </>
               )}
             </UserContext.Consumer>
-          </Typography>
+          </Grid>
         </Toolbar>
       </AppBar>
     </div>

@@ -7,6 +7,7 @@ import Maps from "./MapTest/Maps";
 import SignIn from "./LoginForm";
 import { UserContext } from "./usercontext";
 import SignUp from "./Register";
+import BoardCard from "./MapTest/BoardCard"
 
 function Main() {
   const contextValue = useContext(UserContext);
@@ -35,6 +36,7 @@ function Main() {
             contextValue.loggedIn ? <Redirect to="/boards/2" /> : <SignIn />
           }
         />
+        <Route path="/" component={BoardCard}/>
       </Switch>
     </main>
   );

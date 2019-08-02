@@ -106,7 +106,6 @@ export default function SignIn() {
             label="Remember me"
           />
           <Button
-            //type="submit"
             fullWidth
             variant="contained"
             color="primary"
@@ -116,7 +115,8 @@ export default function SignIn() {
                 username,
                 password,
                 contextValue.setToken,
-                contextValue.setLogin
+                contextValue.setLogin,
+                contextValue.setUser,
               )
             }
           >
@@ -130,7 +130,7 @@ export default function SignIn() {
             </Grid>
             <Grid item>
               <Link
-                href="http://www.undertiers.com:3000/register"
+                to="/register"
                 variant="body2"
               >
                 {"Don't have an account? Sign Up"}

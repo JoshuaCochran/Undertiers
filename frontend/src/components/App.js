@@ -31,10 +31,12 @@ class App extends Component {
     if (date > expire) {
       cookies.remove("token", { path: "/" });
       cookies.remove("token expire", { path: "/" });
+      cookies.remove("user", { path: "/"});
       this.setState({ expired: true });
     } else {
       this.setToken(cookies.get("token"));
       this.setState({ tokenExpire: cookies.get("token expire") });
+      this.setUser(cookies.get("user"));
     }
   }
 
@@ -68,7 +70,7 @@ class App extends Component {
 
     return (
       <UserContext.Provider value={this.state}>
-        <div style={{ marginTop: "35px" }}>
+        <div style={{marginTop: "45px"}}>
           <NavBar />
           <Main />
         </div>
