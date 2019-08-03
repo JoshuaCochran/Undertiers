@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   link: {
     color: "white",
     fontSize: "20px"
-  },
+  }
 }));
 
 function renderRegister(style) {
@@ -33,10 +33,23 @@ function renderRegister(style) {
 }
 
 function renderLogInLogOut(loggedIn, logOut, style) {
-  if (loggedIn) return <Button className={style} onClick={logOut}>Logout</Button>;
+  if (loggedIn)
+    return (
+      <Button className={style} onClick={logOut}>
+        Logout
+      </Button>
+    );
   return (
     <Button component={Link} to="/signin" className={style}>
       Login
+    </Button>
+  );
+}
+
+function renderMyBoards(style) {
+  return (
+    <Button component={Link} to="/boards/me" className={style}>
+      My Boards
     </Button>
   );
 }
@@ -48,12 +61,19 @@ export default function NavBar() {
       <AppBar position="sticky">
         <Toolbar>
           <Grid container direction="row">
-            <Typography component={Link} to="/" variant="h4" color="inherit" className={classes.title}>
+            <Typography
+              component={Link}
+              to="/"
+              variant="h4"
+              color="inherit"
+              className={classes.title}
+            >
               Undertiers
             </Typography>
             <UserContext.Consumer>
               {({ loggedIn, logOut }) => (
                 <>
+                  {loggedIn ? renderMyBoards(classes.link) : null}
                   {renderLogInLogOut(loggedIn, logOut, classes.link)}
                   {loggedIn ? null : renderRegister(classes.link)}
                 </>

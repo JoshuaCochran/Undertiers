@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { GetBoards } from "../Login";
 import BoardCard from "./BoardCard";
-import { UserContext } from "../usercontext";
+import AllianceInfo from "../AllianceInfo";
 
 function renderBoardCard(item, i) {
   return (
@@ -24,20 +24,22 @@ function renderBoardCards(boardData) {
   return boardCards;
 }
 
-export default function BoardList(children) {
+export default function BoardList(all) {
   const [loaded, setLoaded] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [boardData, setBoardData] = useState();
-  const contextValue = useContext(UserContext);
+  const [showingAll, setShowingAll] = useState();
 
-  if (!loaded && !loading) {
-    GetBoards(contextValue.token, setBoardData, setLoading, setLoaded);
-    return <p>Getting...</p>;
-  } else if (!loaded && loading) { 
+  if (all.all !== showingAll) {
+      setShowingAll(all.all);
+      setLoaded(false);
+  }
+
+  if (!loaded) {
+    GetBoards(all, setBoardData, setLoaded);
     return <p>Loading...</p>;
   } else if (boardData !== null && boardData !== undefined) {
     const boardCards = renderBoardCards(boardData);
     return boardCards;
   }
-  return <p>Test</p>;
+  return <p>Loading...</p>;
 }

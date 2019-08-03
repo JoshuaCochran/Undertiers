@@ -53,16 +53,27 @@ export function Register(username, password, email) {
   // Handle response packet Username already exists/Password invalid
 }
 
-export function GetBoards(token, setBoardData, setLoading, setLoaded) {
+export function GetBoards(all, setBoardData, setLoaded) {
   const axios = require("axios");
   const cookies = new Cookies();
-  axios({
-    method: "get",
-    url: "http://www.undertiers.com:8000/boards/me/",
-    headers: {
+  var url;
+  var headers;
+  if (all.all === true) {
+    url = "http://www.undertiers.com:8000/boards/";
+    headers = {
+      "Content-Type": "application/json"
+    };
+  } else {
+    url = "http://www.undertiers.com:8000/boards/me/";
+    headers = {
       "Content-Type": "application/json",
       Authorization: "Token " + cookies.get("token", { path: "/" })
-    }
+    };
+  }
+  axios({
+    method: "get",
+    url: url,
+    headers: headers
   })
     .then(function(response) {
       setBoardData(response.data);

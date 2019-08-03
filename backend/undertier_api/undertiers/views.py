@@ -13,9 +13,10 @@ class LoginView(KnoxLoginView):
     authentication_classes = [BasicAuthentication]
 
 # The view giving a list of all units on all maps and their positions.
-class ListBoards(generics.ListCreateAPIView):
-    queryset = UnitLoc.objects.all()
-    serializer_class = UnitLocSerializer
+class ListBoards(generics.ListAPIView):
+    permission_classes = [AllowAny,]
+    queryset = Map.objects.all()
+    serializer_class = MapSerializer
 
 class ListMyBoards(ModelViewSet):
     permission_classes = [IsAuthenticated,]

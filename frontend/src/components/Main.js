@@ -23,7 +23,12 @@ function Main() {
           path="/alliances/:id"
           render={props => <AllianceInfo id={props.match.params.id} />}
         />
-        <Route path="/test" component={Maps} />
+        <Route
+          path="/boards/me"
+          render={() =>
+            contextValue.loggedIn ? <BoardList all={false} /> : <SignIn />
+          }
+        />
         <Route
           path="/boards/:id"
           render={props =>
@@ -41,12 +46,7 @@ function Main() {
             contextValue.loggedIn ? <Redirect to="/" /> : <SignIn />
           }
         />
-        <Route
-          path="/"
-          render={() =>
-            contextValue.loggedIn ? <BoardList /> : <SignIn />
-          }
-        />
+        <Route path="/" render={() => <BoardList all={true} />} />
       </Switch>
     </main>
   );
