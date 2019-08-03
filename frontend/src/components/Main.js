@@ -8,6 +8,7 @@ import SignIn from "./LoginForm";
 import { UserContext } from "./usercontext";
 import SignUp from "./Register";
 import BoardList from "./MapTest/BoardList";
+import MapsViewMode from "./MapTest/MapsViewMode";
 
 function Main() {
   const contextValue = useContext(UserContext);
@@ -30,14 +31,12 @@ function Main() {
           }
         />
         <Route
+          path="/boards/edit/:id"
+          render={props => <Maps board_id={props.match.params.id} />}
+        />
+        <Route
           path="/boards/:id"
-          render={props =>
-            contextValue.loggedIn ? (
-              <Maps board_id={props.match.params.id} />
-            ) : (
-              <SignIn />
-            )
-          }
+          render={props => <MapsViewMode loggedIn={contextValue.loggedIn} board_id={props.match.params.id} />}
         />
         <Route path="/register" component={SignUp} />
         <Route

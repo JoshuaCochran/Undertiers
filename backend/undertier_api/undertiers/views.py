@@ -26,7 +26,8 @@ class ListMyBoards(ModelViewSet):
         return Map.objects.filter(user=self.request.user).all()
 
 # The view giving a list of all units on a particular map and their positions.
-class DetailBoard(ModelViewSet):
+class DetailBoard(generics.ListAPIView):
+    permission_classes = [AllowAny,]
     # Returns all UnitLoc objects (units on a given map with position on map) given the private key in the url
     def get_queryset(self, *args, **kwargs):
         return UnitLoc.objects.filter(board__id=self.kwargs.get('pk'))
@@ -44,13 +45,16 @@ class AddUnitToBoard(generics.ListCreateAPIView):
         return super(AddUnitToBoard, self).get_serializer(*args, **kwargs)
 
     def create(self, request, *args, **kwargs):
-        UnitLoc.objects.filter(board__id=request.data[0]["board"]).delete()
-        return super(AddUnitToBoard, self).create(request, *args, **kwargs)
+        if Map.objects.filter(id=request.data[0]["board"], user=self.request.user):
+            UnitLoc.objects.filter(board__id=request.data[0]["board"]).delete()
+            return super(AddUnitToBoard, self).create(request, *args, **kwargs)
+        return null
 
     queryset = UnitLoc.objects.all()
     serializer_class = UnitLocSerializer
 
-class DetailMap(generics.ListCreateAPIView):
+class DetailMap(generics.ListAPIView):
+    permission_classes = [AllowAny,]
     def get_queryset(self, *args, **kwargs):
         return Map.objects.filter(id=self.kwargs.get('pk'))
 
@@ -67,7 +71,8 @@ class DetailAlliance(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AllianceSerializer
 
 # The view giving a list of all units
-class ListUnits(generics.ListCreateAPIView):
+class ListUnits(generics.ListAPIView):
+    permission_classes = [AllowAny,]
     queryset = Unit.objects.filter()
     serializer_class = UnitSerializer
 
