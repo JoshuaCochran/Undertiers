@@ -268,7 +268,7 @@ class Maps extends Component {
                 </Grid>
               </Grid>
               <Grid container item spacing={3} direction="row">
-                <Grid item xs={2} style={{maxHeight: "50vh", overflow: "auto"}}>
+                <Grid item xs={2}>
                   <AllianceFilterRadioButtons
                     filterAlliance={this.filterAlliance}
                   />

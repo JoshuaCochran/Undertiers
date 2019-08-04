@@ -23,7 +23,6 @@ export function tierFilter(data, tier) {
 }
 
 export function allianceFilter(data, allianceMatch) {
-  //const filteredData = data.filter(unit => unit.alliances.every(a => a.includes(alliance)));
   if (allianceMatch === "None")
     return data;
   const filteredData = data.filter(unit => unit.alliances.some(alliance => alliance.name ===  allianceMatch));

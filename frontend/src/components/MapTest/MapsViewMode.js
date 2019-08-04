@@ -150,7 +150,12 @@ class MapsViewMode extends Component {
       return (
         <div className={classes.root}>
           <div className={classes.title}>{this.state.mapInfo[0].name}</div>
-          <Grid container spacing={16} className={classes.board} direction="row">
+          <Grid
+            container
+            spacing={16}
+            className={classes.board}
+            direction="row"
+          >
             <Grid item xs={4}>
               <BoardViewMode
                 board_id={this.props.board_id}
@@ -158,9 +163,10 @@ class MapsViewMode extends Component {
                 loaded={this.state.loadedMaps}
               />
             </Grid>
-            {this.context.loggedIn &&
-            this.context.user.username === this.state.mapInfo[0].user
-              ? this.renderEditButton(classes.button)
+            {this.context.loggedIn && this.context.user != null
+              ? this.context.user.username === this.state.mapInfo[0].user
+                ? this.renderEditButton(classes.button)
+                : null
               : null}
           </Grid>
         </div>

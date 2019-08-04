@@ -13,7 +13,9 @@ const useStyles = makeStyles(theme => ({
     color: "white"
   },
   formControl: {
-    margin: theme.spacing(3)
+    margin: theme.spacing(3),
+    maxHeight: "50vh",
+    overflow: "auto",
   },
   group: {
     margin: theme.spacing(1, 0)

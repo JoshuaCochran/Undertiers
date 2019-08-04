@@ -32,7 +32,7 @@ class App extends Component {
       cookies.remove("token", { path: "/" });
       cookies.remove("token expire", { path: "/" });
       cookies.remove("user", { path: "/"});
-      this.setState({ expired: true });
+      this.setState({ expired: true, user: null });
     } else {
       this.setToken(cookies.get("token"));
       this.setState({ tokenExpire: cookies.get("token expire") });
@@ -56,7 +56,7 @@ class App extends Component {
     const cookies = new Cookies();
     cookies.remove("token", { path: "/" });
     cookies.remove("token expire", { path: "/" });
-    this.setState({ token: null, loggedIn: false, tokenExpire: null });
+    this.setState({ token: null, loggedIn: false, tokenExpire: null, user: null });
   }
 
   render() {
