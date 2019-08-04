@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import BoardViewMode from "./BoardViewMode";
 import { UserContext } from "../usercontext";
+import DescriptionCard from "./DescriptionCard";
 
 const styles = theme => ({
   "@global": {
@@ -18,22 +19,17 @@ const styles = theme => ({
     flexGrow: 1,
     height: "100vh"
   },
-  units: {
-    marginTop: "55vh",
-    position: "relative",
-    display: "flex",
-    flexWrap: "wrap",
-    overFlowY: "auto",
-    width: "90%",
-    marginLeft: "5%",
-    backgroundColor: "rgba(35, 35, 35)"
-  },
   title: {
     color: "white",
     textAlign: "center"
   },
   button: {
     color: "white"
+  },
+  container: {
+    display: "grid",
+    gridTemplateColumns: "repeat(12, 1fr)",
+    gridGap: `${theme.spacing.unit * 3}px`
   }
 });
 
@@ -98,7 +94,6 @@ class MapsViewMode extends Component {
           unitList: response.data,
           loadedUnits: true
         });
-        this.sortAlphabetically();
       })
       .catch(function(error) {
         console.log(error);
@@ -150,24 +145,38 @@ class MapsViewMode extends Component {
       return (
         <div className={classes.root}>
           <div className={classes.title}>{this.state.mapInfo[0].name}</div>
-          <Grid
-            container
-            spacing={16}
-            className={classes.board}
-            direction="row"
-          >
-            <Grid item xs={4}>
-              <BoardViewMode
-                board_id={this.props.board_id}
-                maps={this.state.unitsOnMap}
-                loaded={this.state.loadedMaps}
-              />
+          <Grid container spacing={2} xs={12} direction="column">
+            <Grid container item spacing={1} xs={1} direction="row">
+              <Grid item xs={2}>
+                <BoardViewMode
+                  board_id={this.props.board_id}
+                  maps={this.state.unitsOnMap}
+                  loaded={this.state.loadedMaps}
+                />
+              </Grid>
             </Grid>
-            {this.context.loggedIn && this.context.user != null
-              ? this.context.user.username === this.state.mapInfo[0].user
-                ? this.renderEditButton(classes.button)
-                : null
-              : null}
+          </Grid>
+          <Grid container spacing={1} direction="column">
+            <Grid container item spacing={3} direction="row">
+              <Grid item xs={2} style={{ marginTop: "45vh", marginLeft: "60vh"}}>
+                {this.context.loggedIn && this.context.user != null
+                  ? this.context.user.username === this.state.mapInfo[0].user
+                    ? this.renderEditButton(classes.button)
+                    : null
+                  : null}
+              </Grid>
+            </Grid>
+            <Grid container item spacing={3} direction="row">
+              <Grid
+                item
+                xs={6}
+                style={{ marginLeft: "51.5vh" }}
+              >
+                <DescriptionCard
+                  description={this.state.mapInfo[0].description}
+                />
+              </Grid>
+            </Grid>
           </Grid>
         </div>
       );

@@ -32,7 +32,7 @@ const styles = theme => ({
     height: "100vh"
   },
   units: {
-    marginTop: "12vh",
+    marginTop: "12vh"
   },
   title: {
     color: "white",
@@ -248,41 +248,41 @@ class Maps extends Component {
             >
               <div className={classes.title}>{this.state.mapInfo[0].name}</div>
               <Grid container spacing={2} xs={12} direction="column">
-              <Grid container item spacing={1} xs={1} direction="row">
-                <Grid item xs={4}>
-                  <FilterRadioButtons filterTier={this.filterTier} />
+                <Grid container item spacing={1} xs={1} direction="row">
+                  <Grid item xs={4}>
+                    <FilterRadioButtons filterTier={this.filterTier} />
+                  </Grid>
+                  <Grid item xs={2} className={classes.board}>
+                    <Board
+                      board_id={this.props.board_id}
+                      maps={this.state.unitsOnMap}
+                      unitDragged={this.state.unitDragged}
+                      draggingPiece={this.draggingPiece}
+                      draggingId={this.state.draggingId}
+                      updateMap={this.updateMap}
+                      saveMap={this.saveMap}
+                      resetMap={this.resetMap}
+                      filterTier={this.filterTier}
+                      loaded={this.state.loadedMaps}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={2} className={classes.board}>
-                  <Board
-                    board_id={this.props.board_id}
-                    maps={this.state.unitsOnMap}
-                    unitDragged={this.state.unitDragged}
-                    draggingPiece={this.draggingPiece}
-                    draggingId={this.state.draggingId}
-                    updateMap={this.updateMap}
-                    saveMap={this.saveMap}
-                    resetMap={this.resetMap}
-                    filterTier={this.filterTier}
-                    loaded={this.state.loadedMaps}
-                  />
+                <Grid container item spacing={3} direction="row">
+                  <Grid item xs={2}>
+                    <AllianceFilterRadioButtons
+                      filterAlliance={this.filterAlliance}
+                    />
+                  </Grid>
+                  <Grid item xs={10} className={classes.units}>
+                    <Units
+                      units={this.state.unitList}
+                      loaded={this.state.loadedUnits}
+                      sortAlphabetically={this.sortAlphabetically}
+                      sortByTier={this.sortByTier}
+                      draggingUnit={this.draggingUnit}
+                    />
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid container item spacing={3} direction="row">
-                <Grid item xs={2}>
-                  <AllianceFilterRadioButtons
-                    filterAlliance={this.filterAlliance}
-                  />
-                </Grid>
-                <Grid item xs={10} className={classes.units}>
-                  <Units
-                    units={this.state.unitList}
-                    loaded={this.state.loadedUnits}
-                    sortAlphabetically={this.sortAlphabetically}
-                    sortByTier={this.sortByTier}
-                    draggingUnit={this.draggingUnit}
-                  />
-                </Grid>
-              </Grid>
               </Grid>
             </Abyss>
           </div>
