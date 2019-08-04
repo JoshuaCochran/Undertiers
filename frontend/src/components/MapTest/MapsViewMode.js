@@ -145,7 +145,12 @@ class MapsViewMode extends Component {
       return (
         <div className={classes.root}>
           <div className={classes.title}>{this.state.mapInfo[0].name}</div>
-          <Grid container spacing={2} xs={12} direction="column">
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            justify="center"
+          >
             <Grid container item spacing={1} xs={1} direction="row">
               <Grid item xs={2}>
                 <BoardViewMode
@@ -156,9 +161,13 @@ class MapsViewMode extends Component {
               </Grid>
             </Grid>
           </Grid>
-          <Grid container spacing={1} direction="column">
+          <Grid container spacing={1} justify="center" alignItems="center" direction="column">
             <Grid container item spacing={3} direction="row">
-              <Grid item xs={2} style={{ marginTop: "45vh", marginLeft: "60vh"}}>
+              <Grid
+                item
+                xs={2}
+                style={{ marginTop: "45vh", marginLeft: "60vh" }}
+              >
                 {this.context.loggedIn && this.context.user != null
                   ? this.context.user.username === this.state.mapInfo[0].user
                     ? this.renderEditButton(classes.button)
@@ -166,12 +175,8 @@ class MapsViewMode extends Component {
                   : null}
               </Grid>
             </Grid>
-            <Grid container item spacing={3} direction="row">
-              <Grid
-                item
-                xs={6}
-                style={{ marginLeft: "51.5vh" }}
-              >
+            <Grid container item spacing={3} justify="center" alignItems="center" direction="row">
+              <Grid item xs={6}>
                 <DescriptionCard
                   description={this.state.mapInfo[0].description}
                 />
