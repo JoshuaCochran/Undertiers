@@ -6,10 +6,12 @@ import TouchBackend from "react-dnd-touch-backend";
 import HTML5Backend from "react-dnd-html5-backend";
 import { MobileCheck } from "./MobileCheck";
 import axios from "axios";
+import FilterRadioButtons from "./FilterRadioButtons"
+import AllianceFilterRadioButtons from "./AllianceFilterRadioButtons"
 
 import Board from "./Board";
 import Units from "../Units";
-import { alphabeticalSort, tierSort, tierFilter } from "../sorting";
+import { alphabeticalSort, tierSort, tierFilter, allianceFilter } from "../sorting";
 import Abyss from "./Abyss";
 import { UserContext } from "../usercontext";
 
@@ -25,7 +27,7 @@ const styles = theme => ({
     height: "100vh"
   },
   units: {
-    marginTop: "55vh",
+    marginTop: "35vh",
     position: "relative",
     display: "flex",
     flexWrap: "wrap",
@@ -62,6 +64,7 @@ class Maps extends Component {
     this.sortAlphabetically = this.sortAlphabetically.bind(this);
     this.sortByTier = this.sortByTier.bind(this);
     this.filterTier = this.filterTier.bind(this);
+    this.filterAlliance = this.filterAlliance.bind(this);
     this.draggingUnit = this.draggingUnit.bind(this);
     this.draggingPiece = this.draggingPiece.bind(this);
     this.updateMap = this.updateMap.bind(this);
@@ -163,6 +166,10 @@ class Maps extends Component {
     this.setState({ unitList: tierFilter(this.state.units, tier) });
   }
 
+  filterAlliance(alliance) {
+    this.setState({ unitList: allianceFilter(this.state.units, alliance) });
+  }
+
   draggingUnit(unit) {
     this.setState({ unitDragged: unit });
   }
@@ -258,7 +265,15 @@ class Maps extends Component {
                   />
                 </Grid>
               </Grid>
-              <Grid container spacing={4} className={classes.units}>
+              <Grid container spacing={1} direction="column">
+                <Grid item xs={4}>
+                  <FilterRadioButtons filterTier={this.filterTier}/>
+                </Grid>
+                <Grid item xs={4}>
+                  <AllianceFilterRadioButtons filterAlliance={this.filterAlliance}/>
+                </Grid>
+              </Grid>
+              <Grid container spacing={1} className={classes.units}>
                 <Grid item xs={4}>
                   <Units
                     units={this.state.unitList}

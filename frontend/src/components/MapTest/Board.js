@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import BoardSquare from "./BoardSquare";
 import UnitPiece from "./UnitPiece";
 import CustomButton from "./CustomButton";
-import TierFilterButton from "./TierFilterButton";
 
 class Board extends Component {
   constructor(props) {
@@ -118,12 +117,6 @@ class Board extends Component {
           {squareData}
           <CustomButton name={"Save"} func={this.props.saveMap} />
           <CustomButton name={"Clear"} func={this.props.resetMap} />
-          <TierFilterButton tier={5} func={this.props.filterTier} />
-          <TierFilterButton tier={4} func={this.props.filterTier} />
-          <TierFilterButton tier={3} func={this.props.filterTier} />
-          <TierFilterButton tier={2} func={this.props.filterTier} />
-          <TierFilterButton tier={1} func={this.props.filterTier} />
-          <TierFilterButton tier={0} func={this.props.filterTier} />
           <div style={{ color: "white", textAlign: "center" }}>
             Units on Board: {this.props.maps.length}
           </div>

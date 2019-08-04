@@ -32,7 +32,7 @@ function Main() {
         />
         <Route
           path="/boards/edit/:id"
-          render={props => <Maps board_id={props.match.params.id} />}
+          render={props => contextValue.loggedIn ? <Maps board_id={props.match.params.id}/> : <Redirect to="/"/>}/>
         />
         <Route
           path="/boards/:id"

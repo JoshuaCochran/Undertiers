@@ -18,5 +18,14 @@ export function tierSort(data, alreadySorted) {
 
 export function tierFilter(data, tier) {
   const filteredData = data.filter(unit => unit.tier === tier);
+  if (tier >= 1 && tier <= 5) return filteredData;
+  else return data;
+}
+
+export function allianceFilter(data, allianceMatch) {
+  //const filteredData = data.filter(unit => unit.alliances.every(a => a.includes(alliance)));
+  if (allianceMatch === "None")
+    return data;
+  const filteredData = data.filter(unit => unit.alliances.some(alliance => alliance.name ===  allianceMatch));
   return filteredData;
 }
