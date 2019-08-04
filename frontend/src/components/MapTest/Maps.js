@@ -1,4 +1,4 @@
-import React, { Component} from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { DndProvider } from "react-dnd";
@@ -6,12 +6,17 @@ import TouchBackend from "react-dnd-touch-backend";
 import HTML5Backend from "react-dnd-html5-backend";
 import { MobileCheck } from "./MobileCheck";
 import axios from "axios";
-import FilterRadioButtons from "./FilterRadioButtons"
-import AllianceFilterRadioButtons from "./AllianceFilterRadioButtons"
+import FilterRadioButtons from "./FilterRadioButtons";
+import AllianceFilterRadioButtons from "./AllianceFilterRadioButtons";
 
 import Board from "./Board";
 import Units from "../Units";
-import { alphabeticalSort, tierSort, tierFilter, allianceFilter } from "../sorting";
+import {
+  alphabeticalSort,
+  tierSort,
+  tierFilter,
+  allianceFilter
+} from "../sorting";
 import Abyss from "./Abyss";
 import { UserContext } from "../usercontext";
 
@@ -19,7 +24,7 @@ const styles = theme => ({
   "@global": {
     body: {
       backgroundColor: "rgba(35, 35, 35)",
-      marginTop: "3%",
+      marginTop: "3%"
     }
   },
   root: {
@@ -27,14 +32,7 @@ const styles = theme => ({
     height: "100vh"
   },
   units: {
-    marginTop: "35vh",
-    position: "relative",
-    display: "flex",
-    flexWrap: "wrap",
-    overFlowY: "auto",
-    width: "90%",
-    marginLeft: "5%",
-    backgroundColor: "rgba(35, 35, 35)"
+    marginTop: "12vh",
   },
   title: {
     color: "white",
@@ -233,7 +231,7 @@ class Maps extends Component {
     if (this.state.isLoading && this.state.units.length > 0) {
       axios
         .all([this.getUnitsOnMap()])
-        .then((response) => this.setState({ isLoading: false }));
+        .then(response => this.setState({ isLoading: false }));
     }
 
     if (
@@ -249,8 +247,12 @@ class Maps extends Component {
               deleteUnit={this.deleteUnit}
             >
               <div className={classes.title}>{this.state.mapInfo[0].name}</div>
-              <Grid container spacing={4} className={classes.board}>
+              <Grid container spacing={2} xs={12} direction="column">
+              <Grid container item spacing={1} xs={1} direction="row">
                 <Grid item xs={4}>
+                  <FilterRadioButtons filterTier={this.filterTier} />
+                </Grid>
+                <Grid item xs={2} className={classes.board}>
                   <Board
                     board_id={this.props.board_id}
                     maps={this.state.unitsOnMap}
@@ -265,16 +267,13 @@ class Maps extends Component {
                   />
                 </Grid>
               </Grid>
-              <Grid container spacing={1} direction="column">
-                <Grid item xs={4}>
-                  <FilterRadioButtons filterTier={this.filterTier}/>
+              <Grid container item spacing={3} direction="row">
+                <Grid item xs={2} style={{maxHeight: "50vh", overflow: "auto"}}>
+                  <AllianceFilterRadioButtons
+                    filterAlliance={this.filterAlliance}
+                  />
                 </Grid>
-                <Grid item xs={4}>
-                  <AllianceFilterRadioButtons filterAlliance={this.filterAlliance}/>
-                </Grid>
-              </Grid>
-              <Grid container spacing={1} className={classes.units}>
-                <Grid item xs={4}>
+                <Grid item xs={10} className={classes.units}>
                   <Units
                     units={this.state.unitList}
                     loaded={this.state.loadedUnits}
@@ -283,6 +282,7 @@ class Maps extends Component {
                     draggingUnit={this.draggingUnit}
                   />
                 </Grid>
+              </Grid>
               </Grid>
             </Abyss>
           </div>
