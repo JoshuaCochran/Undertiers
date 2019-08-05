@@ -7,12 +7,15 @@ import { Link } from "react-router-dom";
 import BoardViewMode from "./BoardViewMode";
 import { UserContext } from "../usercontext";
 import DescriptionCard from "./DescriptionCard";
+import EditIcon from "@material-ui/icons/Edit";
+import IconButton from "@material-ui/core/IconButton";
+import BoardTextField from "./BoardTextField";
 
 const styles = theme => ({
   "@global": {
     body: {
       backgroundColor: "rgba(35, 35, 35)",
-      marginTop: "3%"
+      marginTop: "5%"
     }
   },
   root: {
@@ -44,11 +47,17 @@ class MapsViewMode extends Component {
       loadedMaps: false,
       loadedUnits: false,
       loadedBoard: false,
-      isLoading: false
+      isLoading: false,
+      showingTitleField: false,
+      showingDescriptionField: false
     };
     this.getMapInfo = this.getMapInfo.bind(this);
     this.getUnits = this.getUnits.bind(this);
     this.getUnitsOnMap = this.getUnitsOnMap.bind(this);
+    this.showTitleField = this.showTitleField.bind(this);
+    this.changeTitle = this.changeTitle.bind(this);
+    this.showDescriptionField = this.showDescriptionField.bind(this);
+    this.changeDescription = this.changeDescription.bind(this);
   }
 
   async componentDidMount() {
@@ -122,9 +131,60 @@ class MapsViewMode extends Component {
       <Grid xm={9}>
         <Button component={Link} to={url} className={style}>
           Edit
+          <EditIcon />
         </Button>
       </Grid>
     );
+  }
+
+  showTitleField() {
+    this.setState({ showingTitleField: !this.state.showingTitleField });
+  }
+
+  changeTitle(title) {
+    var newInfo = this.state.mapInfo;
+    newInfo[0].name = title;
+    this.setState({ mapInfo: newInfo, showingTitleField: false });
+    axios({
+      method: "put",
+      url:
+        "http://www.undertiers.com:8000/boards/update/" +
+        this.props.board_id +
+        "/",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + this.context.token
+      },
+      data: JSON.stringify({ pk: this.props.board_id, name: title })
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
+
+  showDescriptionField() {
+    this.setState({
+      showingDescriptionField: !this.state.showingDescriptionField
+    });
+  }
+
+  changeDescription(description) {
+    var newInfo = this.state.mapInfo;
+    newInfo[0].description = description;
+    this.setState({ mapInfo: newInfo, showingDescriptionField: false });
+    axios({
+      method: "put",
+      url:
+        "http://www.undertiers.com:8000/boards/update/" +
+        this.props.board_id +
+        "/",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + this.context.token
+      },
+      data: JSON.stringify({ pk: this.props.board_id, description: description })
+    }).catch(function(error) {
+      console.log(error);
+    });
   }
 
   render() {
@@ -136,55 +196,105 @@ class MapsViewMode extends Component {
         .all([this.getUnitsOnMap()])
         .then(response => this.setState({ isLoading: false }));
     }
-
+    var isMapOwner = false;
     if (
       !this.state.isLoading &&
       this.state.mapInfo.length > 0 &&
       this.state.units.length > 0
-    )
+    ) {
+      isMapOwner =
+        this.context.loggedIn && this.context.user != null
+          ? this.context.user.username === this.state.mapInfo[0].username
+          : false;
       return (
         <div className={classes.root}>
-          <div className={classes.title}>{this.state.mapInfo[0].name}</div>
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            justify="center"
-          >
+          <Grid container spacing={0} direction="column" justify="center">
+            <Grid
+              item
+              xs={1}
+              style={{
+                textAlign: "center",
+                marginLeft: "40vw",
+                marginRight: "40vw"
+              }}
+            >
+              {this.state.showingTitleField ? (
+                <BoardTextField
+                  input={this.state.mapInfo[0].name}
+                  submit={title => this.changeTitle(title)}
+                  long={false}
+                />
+              ) : (
+                <DescriptionCard
+                  owner={isMapOwner}
+                  description={this.state.mapInfo[0].name}
+                  button={
+                    <IconButton onClick={this.showTitleField}>
+                      <EditIcon />
+                    </IconButton>
+                  }
+                />
+              )}
+            </Grid>
             <Grid container item spacing={1} xs={1} direction="row">
               <Grid item xs={2}>
                 <BoardViewMode
                   board_id={this.props.board_id}
+                  title={this.state.mapInfo[0].name}
                   maps={this.state.unitsOnMap}
                   loaded={this.state.loadedMaps}
                 />
               </Grid>
             </Grid>
           </Grid>
-          <Grid container spacing={1} justify="center" alignItems="center" direction="column">
+          <Grid
+            container
+            spacing={1}
+            justify="center"
+            alignItems="center"
+            direction="column"
+          >
             <Grid container item spacing={3} direction="row">
               <Grid
                 item
                 xs={2}
-                style={{ marginTop: "45vh", marginLeft: "60vh" }}
+                style={{ marginTop: "45vh", marginLeft: "30vw" }}
               >
-                {this.context.loggedIn && this.context.user != null
-                  ? this.context.user.username === this.state.mapInfo[0].user
-                    ? this.renderEditButton(classes.button)
-                    : null
-                  : null}
+                {isMapOwner ? this.renderEditButton(classes.button) : null}
               </Grid>
             </Grid>
-            <Grid container item spacing={3} justify="center" alignItems="center" direction="row">
+            <Grid
+              container
+              item
+              spacing={3}
+              justify="center"
+              alignItems="center"
+              direction="row"
+            >
               <Grid item xs={6}>
-                <DescriptionCard
-                  description={this.state.mapInfo[0].description}
-                />
+                {this.state.showingDescriptionField ? (
+                  <BoardTextField
+                    input={this.state.mapInfo[0].description}
+                    submit={description => this.changeDescription(description)}
+                    long={true}
+                  />
+                ) : (
+                  <DescriptionCard
+                    owner={isMapOwner}
+                    description={this.state.mapInfo[0].description}
+                    button={
+                      <IconButton onClick={this.showDescriptionField}>
+                        <EditIcon />
+                      </IconButton>
+                    }
+                  />
+                )}
               </Grid>
             </Grid>
           </Grid>
         </div>
       );
+    }
     return <p>Loading...</p>;
   }
 }

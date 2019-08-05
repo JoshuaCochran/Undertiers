@@ -12,6 +12,7 @@ urlpatterns = [
     path('boards/', views.ListBoards.as_view()), # Gives a list of all maps (TODO: Add sorting options)
     path('boards/add/', views.AddUnitToBoard.as_view()),
     path('boards/me/', views.ListMyBoards.as_view({'get': 'list',})),
+    path('boards/update/<int:pk>/', views.UpdateBoard.as_view()),
     path('boards/<int:pk>/', views.DetailBoard.as_view()),# Gives a detailed list of all items on a single map
     path('maps/<int:pk>/', views.DetailMap.as_view()),
     path('alliances/', views.ListAlliances.as_view()), # Gives a list of all alliances (TODO: Add sorting options)

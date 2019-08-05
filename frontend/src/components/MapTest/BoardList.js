@@ -9,7 +9,7 @@ function renderBoardCard(item, i) {
       <BoardCard
         id={item.id}
         name={item.name}
-        owner={item.user}
+        owner={item.username}
         description={item.description.length > 140 ? item.description.substr(0, 140) + "..." : item.description}
       />
     </div>

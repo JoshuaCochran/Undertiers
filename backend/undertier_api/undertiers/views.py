@@ -34,6 +34,19 @@ class DetailBoard(generics.ListAPIView):
 
     serializer_class = UnitLocSerializer
 
+class UpdateBoard(generics.UpdateAPIView):
+    queryset = Map.objects.all()
+    permission_classes = [IsAuthenticated,]
+    serializer_class = MapSerializer
+
+    def put(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        if Map.objects.filter(id=request.data["pk"], user=self.request.user):
+            return super(UpdateBoard, self).partial_update(request, *args, **kwargs)
+        return null
+
 class AddUnitToBoard(generics.ListCreateAPIView):
     def get_serializer(self, *args, **kwargs):
         if "data" in kwargs:

@@ -161,7 +161,7 @@ class Maps extends Component {
   }
 
   filterTier(tier) {
-    this.setState({ unitList: tierFilter(this.state.units, tier) });
+    this.setState({ unitList: tierFilter(this.state.units, tier)});
   }
 
   filterAlliance(alliance) {

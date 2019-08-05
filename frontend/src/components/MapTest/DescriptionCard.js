@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles({
   card: {
@@ -24,13 +25,13 @@ const useStyles = makeStyles({
   }
 });
 
-export default function DescriptionCard({ description }) {
+export default function DescriptionCard({ owner, description, button }) {
   const classes = useStyles();
   return (
     <Card className={classes.card}>
       <CardContent>
         <Typography variant="body2" component="p">
-          {description}
+          {description} {owner ? button : null}
         </Typography>
       </CardContent>
     </Card>
