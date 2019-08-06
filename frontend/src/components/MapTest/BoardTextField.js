@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 export default function BoardTextFields({ input, submit, long }) {
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    multiline: "",
+    multiline: JSON.stringify(input).replace(/\"/g, ""),
     title: JSON.stringify(input).replace(/\"/g, "")
   });
   const [error, setError] = React.useState(false);
@@ -47,7 +47,8 @@ export default function BoardTextFields({ input, submit, long }) {
 
   const onFormSubmit = event => {
     event.preventDefault();
-    long ? submit(values.multiline) : submit(values.title);
+    if (values.title == "" || values.multiline == "") setError(true);
+    else long ? submit(values.multiline) : submit(values.title);
   };
 
   return (
@@ -61,25 +62,26 @@ export default function BoardTextFields({ input, submit, long }) {
         >
           {long ? (
             <>
-            <TextField
-              required
-              id="outlined-multiline-static"
-              label="Description"
-              multiline
-              fullWidth
-              rows="4"
-              className={classes.textField}
-              value={values.multiline}
-              onChange={handleChange("multiline")}
-              margin="normal"
-              variant="outlined"
-              placeholder="Enter description here"
-              helperText="Description of your board"
-              InputLabelProps={{
-                shrink: true
-              }}
-            />
-            <Button onClick={onFormSubmit}>Submit</Button>
+              <TextField
+                required
+                error={error}
+                id="outlined-multiline-static"
+                label="Description"
+                multiline
+                fullWidth
+                rows="4"
+                className={classes.textField}
+                value={values.multiline}
+                onChange={handleChange("multiline")}
+                margin="normal"
+                variant="outlined"
+                placeholder="Enter description here"
+                helperText={error ? "Description cannot be blank!" : ""}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+              <Button onClick={onFormSubmit}>Submit</Button>
             </>
           ) : (
             <>
@@ -93,8 +95,9 @@ export default function BoardTextFields({ input, submit, long }) {
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
+                helperText={error ? "Title cannot be blank!" : ""}
               />
-              <Button onClick={handleClick}>Error</Button>{" "}
+              <Button onClick={onFormSubmit}>Submit</Button>{" "}
             </>
           )}
         </form>
