@@ -51,3 +51,13 @@ class Alliance(models.Model):
     synergies = ArrayField(models.CharField(max_length=200, blank=True), null=True, default=list)
     units = models.ManyToManyField(Unit) # Intermediary join table representing M:N relationship
                                          # between alliances and units
+
+class Upvote(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    map = models.ForeignKey(Map, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ['user', 'map']

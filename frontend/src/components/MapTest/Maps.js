@@ -246,8 +246,7 @@ class Maps extends Component {
               draggingId={this.state.draggingId}
               deleteUnit={this.deleteUnit}
             >
-              <div className={classes.title}>{this.state.mapInfo[0].name}</div>
-              <Grid container spacing={2} xs={12} direction="column">
+              <Grid container spacing={2} direction="column">
                 <Grid container item spacing={1} xs={1} direction="row">
                   <Grid item xs={4}>
                     <FilterRadioButtons filterTier={this.filterTier} />
@@ -277,8 +276,6 @@ class Maps extends Component {
                     <Units
                       units={this.state.unitList}
                       loaded={this.state.loadedUnits}
-                      sortAlphabetically={this.sortAlphabetically}
-                      sortByTier={this.sortByTier}
                       draggingUnit={this.draggingUnit}
                     />
                   </Grid>

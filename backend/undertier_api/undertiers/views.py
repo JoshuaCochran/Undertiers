@@ -6,11 +6,21 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from knox.views import LoginView as KnoxLoginView
 
-from .models import Unit, UnitLoc, Map, Alliance
-from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer
+from .models import Unit, UnitLoc, Map, Alliance, Upvote
+from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer, UpvoteSerializer
 
 class LoginView(KnoxLoginView):
     authentication_classes = [BasicAuthentication]
+
+class UpvoteView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated,]
+    serializer_class = UpvoteSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        return Upvote.objects.filter(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        return super(UpvoteView, self).create(request, *args, **kwargs)
 
 # The view giving a list of all units on all maps and their positions.
 class ListBoards(generics.ListAPIView):

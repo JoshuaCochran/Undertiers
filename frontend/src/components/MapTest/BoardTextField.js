@@ -41,10 +41,6 @@ export default function BoardTextFields({ input, submit, long }) {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleClick = () => {
-    setError(!error);
-  };
-
   const onFormSubmit = event => {
     event.preventDefault();
     if (values.title == "" || values.multiline == "") setError(true);

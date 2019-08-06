@@ -32,7 +32,7 @@ const styles = theme => ({
   container: {
     display: "grid",
     gridTemplateColumns: "repeat(12, 1fr)",
-    gridGap: `${theme.spacing.unit * 3}px`
+    gridGap: `${theme.spacing(3)}px`
   }
 });
 

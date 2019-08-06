@@ -83,3 +83,39 @@ export function GetBoards(all, setBoardData, setLoaded) {
       console.log(error);
     });
 }
+
+export function GetMyUpvotes(setUpvotes) {
+  const axios = require("axios");
+  const cookies = new Cookies();
+  axios({
+    method: "get",
+    url: "http://www.undertiers.com:8000/upvotes/me/",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Token " + cookies.get("token", { path: "/" })
+    }
+  })
+    .then(function(response) {
+      setUpvotes(response.data);
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+}
+
+export function Upvote(id, userId) {
+  const axios = require("axios");
+  const cookies = new Cookies();
+  axios({
+    method: "post",
+    url: "http://www.undertiers.com:8000/upvotes/me/",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Token " + cookies.get("token", { path: "/" })
+    },
+    data: {
+      user: userId,
+      map: id
+    }
+  })
+}

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Unit, UnitLoc, Map, Alliance
+from .models import Unit, UnitLoc, Map, Alliance, Upvote
 
 # Serializer for alliance model
 class AllianceSerializer(serializers.ModelSerializer):
@@ -51,7 +51,6 @@ class MapSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'username',
-            'user',
             'description',
         )
 
@@ -63,3 +62,7 @@ class UnitLocSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = UnitLoc
 
+class UpvoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Upvote

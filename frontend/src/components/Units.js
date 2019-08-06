@@ -53,10 +53,6 @@ class Units extends Component {
     const { classes } = this.props;
     return this.props.loaded ? (
       <div className={classes.root}>
-        <UnitSortMenu
-          sortByTier={this.props.sortByTier}
-          sortAlphabetically={this.props.sortAlphabetically}
-        />
         <UnitModal
           show={this.state.showUnit}
           handleUnitClose={() => this.handleUnitClose()}
