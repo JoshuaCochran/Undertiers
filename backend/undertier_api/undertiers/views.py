@@ -22,6 +22,13 @@ class UpvoteView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         return super(UpvoteView, self).create(request, *args, **kwargs)
 
+class DownvoteView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated,]
+    serializer_class = UpvoteSerializer
+
+    def get_object(self):
+        return Upvote.objects.filter(user=self.request.user, map=self.request.data["map"])
+
 # The view giving a list of all units on all maps and their positions.
 class ListBoards(generics.ListAPIView):
     permission_classes = [AllowAny,]

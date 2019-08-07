@@ -34,17 +34,16 @@ const useStyles = makeStyles({
   }
 });
 
-export default function BoardCard({ id, name, owner, description, upvoted}) {
+export default function BoardCard({ id, name, owner, description, upvoted, clickUpvote }) {
   const classes = useStyles();
   const boardLink = "/boards/" + id;
   const [upvote, setUpvote] = useState(upvoted);
   const contextValue = useContext(UserContext);
-  const userId = contextValue.user.id;
+  var userId = null;
+  if (contextValue.user) userId = contextValue.user.id;
 
-  function clickUpvote() {
-    setUpvote(!upvote);
-    Upvote(id, userId);
-  }
+  if (upvoted != upvote)
+    setUpvote(upvoted);
 
   return (
     <Card className={classes.card}>
@@ -60,7 +59,10 @@ export default function BoardCard({ id, name, owner, description, upvoted}) {
         </Typography>
       </CardContent>
       <CardActions>
-        <IconButton className={upvote ? classes.upvoted : null} onClick={() => clickUpvote()}>
+        <IconButton
+          className={upvote ? classes.upvoted : null}
+          onClick={contextValue.loggedIn ? () => clickUpvote(id, userId, upvote) : null}
+        >
           <ThumbUpIcon />
         </IconButton>
         <IconButton component={Link} to={boardLink}>

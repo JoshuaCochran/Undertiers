@@ -84,7 +84,7 @@ export function GetBoards(all, setBoardData, setLoaded) {
     });
 }
 
-export function GetMyUpvotes(setUpvotes) {
+export function GetMyUpvotes(setUpvotes, setLoadedUpvotes) {
   const axios = require("axios");
   const cookies = new Cookies();
   axios({
@@ -97,25 +97,43 @@ export function GetMyUpvotes(setUpvotes) {
   })
     .then(function(response) {
       setUpvotes(response.data);
+      setLoadedUpvotes(true);
     })
     .catch(function(error) {
       console.log(error);
     });
 }
 
-export function Upvote(id, userId) {
+export function Upvote(id, userId, upvote) {
   const axios = require("axios");
   const cookies = new Cookies();
-  axios({
-    method: "post",
-    url: "http://www.undertiers.com:8000/upvotes/me/",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Token " + cookies.get("token", { path: "/" })
-    },
-    data: {
-      user: userId,
-      map: id
-    }
-  })
+  if (upvote) {
+    axios({
+      method: "post",
+      url: "http://www.undertiers.com:8000/upvotes/me/",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + cookies.get("token", { path: "/" })
+      },
+      data: {
+        user: userId,
+        map: id
+      }
+    });
+  } else {
+    axios({
+      method: "delete",
+      url: "http://www.undertiers.com:8000/downvote/",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + cookies.get("token", { path: "/" })
+      },
+      data: {
+        user: userId,
+        map: id
+      }
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
 }

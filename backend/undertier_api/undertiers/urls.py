@@ -20,4 +20,5 @@ urlpatterns = [
     path('units/', views.ListUnits.as_view()), # Gives a list of all units (TODO: Add sorting options)
     path('units/<int:pk>/', views.DetailUnit.as_view()), # Gives a detailed description of a single unit
     path('upvotes/me/', views.UpvoteView.as_view()),
+    path('downvote/', views.DownvoteView.as_view()),
 ]
