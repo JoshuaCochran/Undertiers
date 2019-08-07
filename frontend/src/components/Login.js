@@ -53,11 +53,12 @@ export function Register(username, password, email) {
   // Handle response packet Username already exists/Password invalid
 }
 
-export function GetBoards(all, setBoardData, setLoaded) {
+export function GetBoards(all, setBoardData, setLoaded, setLoading) {
   const axios = require("axios");
   const cookies = new Cookies();
   var url;
   var headers;
+  setLoading(true);
   if (all.all === true) {
     url = "http://www.undertiers.com:8000/boards/";
     headers = {
@@ -84,9 +85,33 @@ export function GetBoards(all, setBoardData, setLoaded) {
     });
 }
 
-export function GetMyUpvotes(setUpvotes, setLoadedUpvotes) {
+export function GetAllUpvotes(setCount, setLoadedCount, setLoadingCount) {
+  const axios = require("axios");
+  setLoadingCount(true);
+  axios({
+    method: "get",
+    url: "http://www.undertiers.com:8000/upvotes/",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(function(response) {
+    var data = response.data.map(upvote =>
+      response.data.filter(upfil => upvote.board === upfil.board)
+    );
+    data = data.map(upvote => JSON.stringify(upvote));
+    data = Array.from(new Set(data));
+    data = data.map(upvote => JSON.parse(upvote));
+    setCount(data);
+    setLoadedCount(true);
+  }).catch(function(error){
+    console.log(error);
+  });
+}
+
+export function GetMyUpvotes(setUpvotes, setLoadedUpvotes, setLoadingUpvotes) {
   const axios = require("axios");
   const cookies = new Cookies();
+  setLoadingUpvotes(true);
   axios({
     method: "get",
     url: "http://www.undertiers.com:8000/upvotes/me/",
@@ -117,7 +142,7 @@ export function Upvote(id, userId, upvote) {
       },
       data: {
         user: userId,
-        map: id
+        board: id
       }
     });
   } else {
@@ -130,7 +155,7 @@ export function Upvote(id, userId, upvote) {
       },
       data: {
         user: userId,
-        map: id
+        board: id
       }
     }).catch(function(error) {
       console.log(error);

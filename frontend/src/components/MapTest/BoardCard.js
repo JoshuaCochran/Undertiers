@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import PageviewIcon from "@material-ui/icons/Pageview";
-import { Upvote } from "../Login";
 import { UserContext } from "../usercontext";
 
 const useStyles = makeStyles({
@@ -34,7 +33,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function BoardCard({ id, name, owner, description, upvoted, clickUpvote }) {
+export default function BoardCard({ id, name, owner, description, upvoted, clickUpvote, numUpvotes }) {
   const classes = useStyles();
   const boardLink = "/boards/" + id;
   const [upvote, setUpvote] = useState(upvoted);
@@ -63,6 +62,7 @@ export default function BoardCard({ id, name, owner, description, upvoted, click
           className={upvote ? classes.upvoted : null}
           onClick={contextValue.loggedIn ? () => clickUpvote(id, userId, upvote) : null}
         >
+          {numUpvotes}
           <ThumbUpIcon />
         </IconButton>
         <IconButton component={Link} to={boardLink}>

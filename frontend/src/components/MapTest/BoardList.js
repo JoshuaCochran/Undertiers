@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react";
-import { GetBoards, GetMyUpvotes } from "../Login";
+import { GetBoards, GetMyUpvotes, Upvote, GetAllUpvotes } from "../Login";
 import BoardCard from "./BoardCard";
-import { UserContext } from "../usercontext";
-import { Upvote } from "../Login";
 
-function renderBoardCard(item, i, upvoted, clickUpvote) {
+function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
   return (
     <div key={i}>
       <BoardCard
@@ -18,20 +16,30 @@ function renderBoardCard(item, i, upvoted, clickUpvote) {
         }
         upvoted={upvoted}
         clickUpvote={clickUpvote}
+        numUpvotes={numUpvotes}
       />
     </div>
   );
 }
 
-function renderBoardCards(boardData, upvotes, clickUpvote) {
+function renderBoardCards(boardData, upvotes, clickUpvote, count) {
   const boardCards = [];
+  var numUpvotes = 0;
   boardData.map((item, i) => {
+    if (Array.isArray(count)) {
+      numUpvotes = count.filter(upvote => upvote[0].board === item.id).length;
+      if (numUpvotes)
+        numUpvotes = count.filter(upvote => upvote[0].board === item.id)[0]
+          .length;
+    }
+
     if (
       Array.isArray(upvotes) &&
-      upvotes.filter(upvote => upvote.map === item.id).length
+      upvotes.filter(upvote => upvote.board === item.id).length
     )
-      boardCards.push(renderBoardCard(item, i, true, clickUpvote));
-    else boardCards.push(renderBoardCard(item, i, false, clickUpvote));
+      boardCards.push(renderBoardCard(item, i, true, clickUpvote, numUpvotes));
+    else
+      boardCards.push(renderBoardCard(item, i, false, clickUpvote, numUpvotes));
   });
   return boardCards;
 }
@@ -39,21 +47,25 @@ function renderBoardCards(boardData, upvotes, clickUpvote) {
 export default function BoardList(all) {
   const [loaded, setLoaded] = useState(false);
   const [loadedUpvotes, setLoadedUpvotes] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(false);
   const [boardData, setBoardData] = useState();
   const [showingAll, setShowingAll] = useState();
   const [upvotes, setUpvotes] = useState();
+  const [count, setCount] = useState();
+  const [sorted, setSorted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingUpvotes, setLoadingUpvotes] = useState(false);
+  const [loadingCount, setLoadingCount] = useState(false);
 
   function clickUpvote(id, userId, upvote) {
     Upvote(id, userId, !upvote);
-    if (!upvote) 
-    {
+    if (!upvote) {
       const newData = upvotes.slice(0);
-      newData.push({user: userId, map: id, });
+      newData.push({ user: userId, board: id });
       setUpvotes(newData);
-    }
-    else {
+    } else {
       const newData = upvotes.slice(0);
-      newData.splice(upvotes.findIndex(upvote => upvote.map === id), 1);
+      newData.splice(upvotes.findIndex(upvote => upvote.board === id), 1);
       console.log(newData);
       setUpvotes(newData);
     }
@@ -62,16 +74,46 @@ export default function BoardList(all) {
   if (all.all !== showingAll) {
     setShowingAll(all.all);
     setLoaded(false);
+    setLoadedCount(false);
+    setLoadedUpvotes(false);
+    setLoading(false);
+    setLoadingCount(false);
+    setLoadingUpvotes(false);
+    setSorted(false);
   }
 
-  if (!loaded) {
-    GetBoards(all, setBoardData, setLoaded);
+  if (loaded && loadedCount && !sorted) {
+    const newBoards = boardData.slice(0);
 
+    newBoards.map(board => {
+      var numUpvotes = count.filter(upvote => upvote[0].board === board.id)
+        .length;
+      if (numUpvotes)
+        numUpvotes = count.filter(upvote => upvote[0].board === board.id)[0]
+          .length;
+
+      board.upvotes = numUpvotes;
+    });
+    newBoards.sort(function(a, b) {
+      return b.upvotes - a.upvotes;
+    })
+    console.log(newBoards);
+    setBoardData(newBoards);
+    setSorted(true);
+  }
+
+  if (!loaded && !loading) {
+    GetBoards(all, setBoardData, setLoaded, setLoading);
     return <p>Loading...</p>;
-  } if (!loadedUpvotes) {
-    GetMyUpvotes(setUpvotes, setLoadedUpvotes);
-  } if (boardData !== null && boardData !== undefined) {
-    const boardCards = renderBoardCards(boardData, upvotes, clickUpvote);
+  }
+  if (!loadedUpvotes && !loadingUpvotes) {
+    GetMyUpvotes(setUpvotes, setLoadedUpvotes, setLoadingUpvotes);
+  }
+  if (!loadedCount && !loadingCount) {
+    GetAllUpvotes(setCount, setLoadedCount, setLoadingCount);
+  }
+  if (boardData !== null && boardData !== undefined && sorted) {
+    const boardCards = renderBoardCards(boardData, upvotes, clickUpvote, count);
     return boardCards;
   }
   return <p>Loading...</p>;

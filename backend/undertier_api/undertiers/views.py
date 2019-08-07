@@ -3,6 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.views import APIView
 
 from knox.views import LoginView as KnoxLoginView
 
@@ -22,12 +23,17 @@ class UpvoteView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         return super(UpvoteView, self).create(request, *args, **kwargs)
 
+class UpvotesView(generics.ListAPIView):
+    permission_classes = [AllowAny,]
+    serializer_class = UpvoteSerializer
+    queryset = Upvote.objects.all()
+
 class DownvoteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated,]
     serializer_class = UpvoteSerializer
 
     def get_object(self):
-        return Upvote.objects.filter(user=self.request.user, map=self.request.data["map"])
+        return Upvote.objects.filter(user=self.request.user, board=self.request.data["board"])
 
 # The view giving a list of all units on all maps and their positions.
 class ListBoards(generics.ListAPIView):

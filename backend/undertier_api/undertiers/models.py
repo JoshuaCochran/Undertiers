@@ -57,7 +57,7 @@ class Upvote(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    map = models.ForeignKey(Map, on_delete=models.CASCADE)
+    board = models.ForeignKey(Map, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ['user', 'map']
+        unique_together = ['user', 'board']

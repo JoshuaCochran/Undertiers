@@ -21,4 +21,5 @@ urlpatterns = [
     path('units/<int:pk>/', views.DetailUnit.as_view()), # Gives a detailed description of a single unit
     path('upvotes/me/', views.UpvoteView.as_view()),
     path('downvote/', views.DownvoteView.as_view()),
+    path('upvotes/', views.UpvotesView.as_view()),
 ]
