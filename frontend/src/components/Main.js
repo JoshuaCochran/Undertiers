@@ -9,7 +9,7 @@ import { UserContext } from "./usercontext";
 import SignUp from "./Register";
 import BoardList from "./MapTest/BoardList";
 import MapsViewMode from "./MapTest/MapsViewMode";
-import BoardTextField from "./MapTest/BoardTextField";
+import BoardCreateField from "./MapTest/BoardCreateField";
 
 function Main() {
   const contextValue = useContext(UserContext);
@@ -25,7 +25,7 @@ function Main() {
           path="/alliances/:id"
           render={props => <AllianceInfo id={props.match.params.id} />}
         />
-        <Route path="/test" component={BoardTextField}/>
+        <Route path="/boards/create" component={BoardCreateField}/>
         <Route
           path="/boards/me"
           render={() =>

@@ -11,6 +11,7 @@ urlpatterns = [
     path('account/', include('djoser.urls.authtoken')),
     path('boards/', views.ListBoards.as_view()), # Gives a list of all maps (TODO: Add sorting options)
     path('boards/add/', views.AddUnitToBoard.as_view()),
+    path('boards/create/', views.CreateBoard.as_view()),
     path('boards/me/', views.ListMyBoards.as_view({'get': 'list',})),
     path('boards/update/<int:pk>/', views.UpdateBoard.as_view()),
     path('boards/<int:pk>/', views.DetailBoard.as_view()),# Gives a detailed list of all items on a single map

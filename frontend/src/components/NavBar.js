@@ -7,7 +7,6 @@ import { UserContext } from "./usercontext";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import { GetAllUpvotes } from "./Login";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -71,7 +70,9 @@ export default function NavBar() {
             >
               Undertiers
             </Typography>
-            <Button onClick={GetAllUpvotes}>Test</Button>
+            <Button component={Link} to="/boards/create" className={classes.link}>
+              New Board
+            </Button>
             <UserContext.Consumer>
               {({ loggedIn, logOut }) => (
                 <>

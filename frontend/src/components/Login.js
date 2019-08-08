@@ -162,3 +162,25 @@ export function Upvote(id, userId, upvote) {
     });
   }
 }
+
+export function CreateBoard(userId, name, description){
+  const axios = require('axios');
+  const cookies = new Cookies();
+  axios({
+    method: "post",
+    url: "http://www.undertiers.com:8000/boards/create/",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Token " + cookies.get("token", { path: "/" })
+    },
+    data: {
+      name: name,
+      user: userId,
+      description: description
+    }
+  }).then(function(response){
+    console.log(response.data);
+  }).catch(function(error){
+    console.log(error);
+  })
+}
