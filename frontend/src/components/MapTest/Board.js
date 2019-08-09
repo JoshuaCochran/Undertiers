@@ -61,7 +61,7 @@ class Board extends Component {
   movePiece(toX, toY) {
     const maps = this.props.maps.slice();
     const id = this.props.draggingId;
-    maps.map((unit, i) => {
+    maps.forEach((unit, i) => {
       if (unit.posx === toX && unit.posy === toY) {
         maps[i].posx = maps[id].posx;
         maps[i].posy = maps[id].posy;

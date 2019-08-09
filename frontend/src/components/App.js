@@ -32,11 +32,11 @@ class App extends Component {
       cookies.remove("token", { path: "/" });
       cookies.remove("token expire", { path: "/" });
       cookies.remove("user", { path: "/"});
-      this.setState({ expired: true, user: null });
-    } else {
-      this.setToken(cookies.get("token"));
-      this.setState({ tokenExpire: cookies.get("token expire") });
-      this.setUser(cookies.get("user"));
+      this.setState({ expired: true, user: null, });
+    } else if (cookies.get("token", { path: "/" })) {
+      this.setToken(cookies.get("token", { path: "/" }));
+      this.setState({ tokenExpire: cookies.get("token expire", { path: "/" }), loggedIn: true });
+      this.setUser(cookies.get("user", { path: "/" }));
     }
   }
 
@@ -60,14 +60,6 @@ class App extends Component {
   }
 
   render() {
-    if (
-      this.state.token !== undefined &&
-      this.state.token !== null &&
-      !this.state.loggedIn &&
-      !this.state.expired
-    )
-      this.setLogin(true);
-
     return (
       <UserContext.Provider value={this.state}>
         <div style={{marginTop: "45px"}}>

@@ -4,10 +4,6 @@ import UnitPieceView from "./UnitPieceView";
 
 
 class BoardViewMode extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   renderSquare(i) {
     const x = i % 8;
     const y = Math.floor(i / 8);

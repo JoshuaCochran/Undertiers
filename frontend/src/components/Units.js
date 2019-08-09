@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import UnitModal from "./UnitModal";
 import { withStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
-import UnitSortMenu from "./UnitSortMenu";
 import UnitPopover from "./UnitPopover";
 import UnitListItem from "./UnitListItem";
 

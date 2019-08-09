@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 
 const useStyles = makeStyles(theme => ({
@@ -32,8 +31,8 @@ const useStyles = makeStyles(theme => ({
 export default function BoardTextFields({ input, submit, long }) {
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    multiline: JSON.stringify(input).replace(/\"/g, ""),
-    title: JSON.stringify(input).replace(/\"/g, "")
+    multiline: JSON.stringify(input).replace(/"/g, ""),
+    title: JSON.stringify(input).replace(/"/g, "")
   });
   const [error, setError] = React.useState(false);
 
@@ -43,7 +42,7 @@ export default function BoardTextFields({ input, submit, long }) {
 
   const onFormSubmit = event => {
     event.preventDefault();
-    if (values.title == "" || values.multiline == "") setError(true);
+    if (values.title === "" || values.multiline === "") setError(true);
     else long ? submit(values.multiline) : submit(values.title);
   };
 

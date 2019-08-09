@@ -41,7 +41,7 @@ export default function BoardCard({ id, name, owner, description, upvoted, click
   var userId = null;
   if (contextValue.user) userId = contextValue.user.id;
 
-  if (upvoted != upvote)
+  if (upvoted !== upvote)
     setUpvote(upvoted);
 
   return (

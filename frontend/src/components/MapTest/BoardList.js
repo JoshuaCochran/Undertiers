@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { GetBoards, GetMyUpvotes, Upvote, GetAllUpvotes } from "../Login";
 import BoardCard from "./BoardCard";
 
@@ -25,7 +25,7 @@ function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
 function renderBoardCards(boardData, upvotes, clickUpvote, count) {
   const boardCards = [];
   var numUpvotes = 0;
-  boardData.map((item, i) => {
+  boardData.forEach((item, i) => {
     if (Array.isArray(count)) {
       numUpvotes = count.filter(upvote => upvote[0].board === item.id).length;
       if (numUpvotes)
@@ -85,7 +85,7 @@ export default function BoardList(all) {
   if (loaded && loadedCount && !sorted) {
     const newBoards = boardData.slice(0);
 
-    newBoards.map(board => {
+    newBoards.forEach(board => {
       var numUpvotes = count.filter(upvote => upvote[0].board === board.id)
         .length;
       if (numUpvotes)
@@ -97,7 +97,6 @@ export default function BoardList(all) {
     newBoards.sort(function(a, b) {
       return b.upvotes - a.upvotes;
     })
-    console.log(newBoards);
     setBoardData(newBoards);
     setSorted(true);
   }

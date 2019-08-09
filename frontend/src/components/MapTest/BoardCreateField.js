@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { UserContext } from "../usercontext";
 import { CreateBoard } from "../Login";
@@ -46,7 +45,7 @@ export default function BoardTextFields() {
 
   const onFormSubmit = event => {
     event.preventDefault();
-    if (values.title == "" || values.multiline == "") setError(true);
+    if (values.title === "" || values.multiline === "") setError(true);
     else CreateBoard(contextValue.user.id, values.title, values.multiline);
   };
 
