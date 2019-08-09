@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { GetBoards, GetMyUpvotes, Upvote, GetAllUpvotes } from "../Login";
 import BoardCard from "./BoardCard";
+import { UserContext } from "../usercontext";
 
 function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
   return (
@@ -56,6 +57,7 @@ export default function BoardList(all) {
   const [loading, setLoading] = useState(false);
   const [loadingUpvotes, setLoadingUpvotes] = useState(false);
   const [loadingCount, setLoadingCount] = useState(false);
+  const contextValue = useContext(UserContext);
 
   function clickUpvote(id, userId, upvote) {
     Upvote(id, userId, !upvote);
@@ -105,7 +107,7 @@ export default function BoardList(all) {
     GetBoards(all, setBoardData, setLoaded, setLoading);
     return <p>Loading...</p>;
   }
-  if (!loadedUpvotes && !loadingUpvotes) {
+  if (contextValue.loggedIn && !loadedUpvotes && !loadingUpvotes) {
     GetMyUpvotes(setUpvotes, setLoadedUpvotes, setLoadingUpvotes);
   }
   if (!loadedCount && !loadingCount) {
