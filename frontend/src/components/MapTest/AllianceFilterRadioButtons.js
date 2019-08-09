@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function AllianceFilterRadioButtons({ filterAlliance }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState({});
+  const [value, setValue] = React.useState();
 
   function handleChange(event) {
     setValue(event.target.value);
