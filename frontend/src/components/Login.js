@@ -141,7 +141,6 @@ export function Upvote(id, userId, upvote) {
         Authorization: "Token " + cookies.get("token", { path: "/" })
       },
       data: {
-        user: userId,
         board: id
       }
     });
@@ -154,7 +153,6 @@ export function Upvote(id, userId, upvote) {
         Authorization: "Token " + cookies.get("token", { path: "/" })
       },
       data: {
-        user: userId,
         board: id
       }
     }).catch(function(error) {

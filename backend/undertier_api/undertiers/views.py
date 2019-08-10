@@ -21,7 +21,14 @@ class UpvoteView(generics.ListCreateAPIView):
         return Upvote.objects.filter(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
-        return super(UpvoteView, self).create(request, *args, **kwargs)
+        upvote = Upvote(user=self.request.user)
+        serializer = self.serializer_class(upvote, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class UpvotesView(generics.ListAPIView):
     permission_classes = [AllowAny,]

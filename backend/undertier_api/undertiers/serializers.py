@@ -69,5 +69,5 @@ class UnitLocSerializer(serializers.ModelSerializer):
 
 class UpvoteSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = '__all__'
+        fields = ('user', 'board')
         model = Upvote
