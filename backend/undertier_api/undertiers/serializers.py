@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 from .models import Unit, UnitLoc, Map, Alliance, Upvote
 
 # Serializer for alliance model
@@ -71,3 +72,9 @@ class UpvoteSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('user', 'board')
         model = Upvote
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Upvote.objects.all(),
+                fields=['user', 'board']
+            )
+        ]
