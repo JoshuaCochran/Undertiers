@@ -10,6 +10,7 @@ import DescriptionCard from "./DescriptionCard";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import BoardTextField from "./BoardTextField";
+import { getAllAlliances } from "../allianceCounting";
 
 const styles = theme => ({
   "@global": {
@@ -41,7 +42,6 @@ class MapsViewMode extends Component {
     super(props);
     this.state = {
       units: [],
-      unitList: [],
       unitsOnMap: [],
       mapInfo: [],
       loadedMaps: false,
@@ -100,7 +100,6 @@ class MapsViewMode extends Component {
       .then(response => {
         this.setState({
           units: response.data,
-          unitList: response.data,
           loadedUnits: true
         });
       })
@@ -132,6 +131,12 @@ class MapsViewMode extends Component {
         <Button component={Link} to={url} className={style}>
           Edit
           <EditIcon />
+        </Button>
+        <Button
+          onClick={() => getAllAlliances(this.state.units, this.state.unitsOnMap)}
+          className={style}
+        >
+          Count alliances
         </Button>
       </Grid>
     );
@@ -181,7 +186,10 @@ class MapsViewMode extends Component {
         "Content-Type": "application/json",
         Authorization: "Token " + this.context.token
       },
-      data: JSON.stringify({ pk: this.props.board_id, description: description })
+      data: JSON.stringify({
+        pk: this.props.board_id,
+        description: description
+      })
     }).catch(function(error) {
       console.log(error);
     });
