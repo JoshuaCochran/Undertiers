@@ -11,6 +11,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import BoardTextField from "./BoardTextField";
 import { getAllAlliances } from "../allianceCounting";
+import AllianceList from "./AllianceList";
 
 const styles = theme => ({
   "@global": {
@@ -21,7 +22,6 @@ const styles = theme => ({
   },
   root: {
     flexGrow: 1,
-    height: "100vh"
   },
   title: {
     color: "white",
@@ -133,7 +133,7 @@ class MapsViewMode extends Component {
           <EditIcon />
         </Button>
         <Button
-          onClick={() => getAllAlliances(this.state.units, this.state.unitsOnMap)}
+          onClick={() => getAllAlliances(this.state.unitsOnMap)}
           className={style}
         >
           Count alliances
@@ -216,7 +216,8 @@ class MapsViewMode extends Component {
           : false;
       return (
         <div className={classes.root}>
-          <Grid container spacing={0} direction="column" justify="center">
+          <Grid container spacing={5}>
+          <Grid item container spacing={1} direction="column" justify="center">
             <Grid
               item
               xs={1}
@@ -253,20 +254,24 @@ class MapsViewMode extends Component {
                   loaded={this.state.loadedMaps}
                 />
               </Grid>
+              <Grid item xs={4}>
+                <AllianceList units={this.state.unitsOnMap} />
+              </Grid>
             </Grid>
           </Grid>
           <Grid
             container
-            spacing={1}
+            spacing={3}
+            item
             justify="center"
             alignItems="center"
             direction="column"
           >
-            <Grid container item spacing={3} direction="row">
+            <Grid container item spacing={5} direction="row">
               <Grid
                 item
                 xs={2}
-                style={{ marginTop: "45vh", marginLeft: "30vw" }}
+                style={{marginLeft: "30vw", marginTop: "5vh"}}
               >
                 {isMapOwner ? this.renderEditButton(classes.button) : null}
               </Grid>
@@ -274,7 +279,7 @@ class MapsViewMode extends Component {
             <Grid
               container
               item
-              spacing={3}
+              spacing={1}
               justify="center"
               alignItems="center"
               direction="row"
@@ -299,6 +304,7 @@ class MapsViewMode extends Component {
                 )}
               </Grid>
             </Grid>
+          </Grid>
           </Grid>
         </div>
       );

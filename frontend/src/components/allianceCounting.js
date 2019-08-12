@@ -35,14 +35,19 @@ export function getAlliance(units, allianceToGet) {
         " active."
     );
   }
+  result[0].count = result.length;
+  return result[0];
 }
 
-export function getAllAlliances(units, unitsOnMap) {
+export function getAllAlliances(units) {
   var alliances = [];
   units.forEach(piece => {
-    piece.alliances.forEach(alliance => {
+    piece.unit.alliances.forEach(alliance => {
       if (!alliances.includes(alliance.name)) alliances.push(alliance.name);
     });
   });
-  alliances.forEach(alliance => getAlliance(unitsOnMap, alliance));
+  var result = [];
+  alliances.forEach(alliance => result.push(getAlliance(units, alliance)));
+  console.log(result);
+  return result;
 }
