@@ -5,37 +5,23 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
-    card: {
-      minWidth: 275,
-      marginTop: "2%",
-      marginLeft: "10%",
-      marginRight: "10%"
-    },
-    bullet: {
-      display: "inline-block",
-      margin: "0 2px",
-      transform: "scale(0.8)"
-    },
-    title: {
-      fontSize: 14
-    },
-    pos: {
-      marginBottom: 12
-    },
-    upvoted: {
-      color: "orange"
-    }
-  });
+  card: {
+    width: 80,
+    marginLeft: "10%",
+    marginRight: "10%"
+  }
+});
 
-export default function AllianceCard({alliance}) {
-    const classes = useStyles();
-    return (
-        <Card className={classes.card}>
-            <CardContent>
-                <Typography variant="h5" component="h5">
-                <img src={alliance.icon_url}/> ({alliance.count}) {alliance.name}
-                </Typography>
-            </CardContent>
-        </Card>
-    )
+export default function AllianceCard({ alliance }) {
+  const classes = useStyles();
+  return (
+    <Card className={classes.card}>
+      <CardContent>
+        <img src={alliance.icon_url} />
+        <Typography style={{ textAlign: "center" }} variant="h5" component="h5">
+          ({alliance.count})
+        </Typography>
+      </CardContent>
+    </Card>
+  );
 }
