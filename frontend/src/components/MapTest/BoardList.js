@@ -57,6 +57,7 @@ export default function BoardList(all) {
   const [loading, setLoading] = useState(false);
   const [loadingUpvotes, setLoadingUpvotes] = useState(false);
   const [loadingCount, setLoadingCount] = useState(false);
+  const [page, setPage] = useState(0);
   const contextValue = useContext(UserContext);
 
   function clickUpvote(id, userId, upvote) {
@@ -99,7 +100,8 @@ export default function BoardList(all) {
     newBoards.sort(function(a, b) {
       return b.upvotes - a.upvotes;
     })
-    setBoardData(newBoards);
+    const sortedBoards = newBoards.slice(page * 5, page + 5);
+    setBoardData(sortedBoards);
     setSorted(true);
   }
 

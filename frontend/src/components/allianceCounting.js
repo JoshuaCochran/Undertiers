@@ -48,6 +48,5 @@ export function getAllAlliances(units) {
   });
   var result = [];
   alliances.forEach(alliance => result.push(getAlliance(units, alliance)));
-  console.log(result);
   return result;
 }

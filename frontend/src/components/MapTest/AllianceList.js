@@ -23,7 +23,6 @@ export default function AllianceList({units}) {
   if (!loaded && unitList.length) {
     setAlliances(getAllAlliances(units));
     setLoaded(true);
-    console.log(alliances);
     return <p>Loading..</p>;
   } else if (alliances.length) {
     var allianceCards = [];

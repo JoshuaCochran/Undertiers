@@ -17,7 +17,7 @@ export default function AllianceCard({ alliance }) {
   return (
     <Card className={classes.card}>
       <CardContent>
-        <img src={alliance.icon_url} />
+        <img src={alliance.icon_url} alt={"Dota Underlords " + alliance.name + " icon"}/>
         <Typography style={{ textAlign: "center" }} variant="h5" component="h5">
           ({alliance.count})
         </Typography>
