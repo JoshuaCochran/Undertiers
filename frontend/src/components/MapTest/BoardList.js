@@ -5,6 +5,7 @@ import { UserContext } from "../usercontext";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import Button from "@material-ui/core/Button";
 
 function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
   return (
@@ -82,12 +83,17 @@ export default function BoardList(all) {
     if (forward && (page + 1) * 4 < boardData.length) {
       const newPage = page + 1;
       setPage(newPage);
-      setDisplayData(boardData.slice(newPage * 4, (newPage * 4) + 4));
+      setDisplayData(boardData.slice(newPage * 4, newPage * 4 + 4));
     } else if (!forward && page >= 1) {
       const newPage = page - 1;
       setPage(newPage);
-      setDisplayData(boardData.slice(newPage * 4, (newPage * 4) + 4));
+      setDisplayData(boardData.slice(newPage * 4, newPage * 4 + 4));
     }
+  }
+
+  function loadMore() {
+    setPage(page + 1);
+    setDisplayData(boardData.slice(0, ((page + 1) * 4) + 4));
   }
 
   if (all.all !== showingAll) {
@@ -117,7 +123,7 @@ export default function BoardList(all) {
       return b.upvotes - a.upvotes;
     });
     setBoardData(newBoards);
-    setDisplayData(newBoards.slice(page * 4, (page * 4)+ 4));
+    setDisplayData(newBoards.slice(page * 4, page * 4 + 4));
     setSorted(true);
   }
   if (!loaded && !loading) {
@@ -140,13 +146,7 @@ export default function BoardList(all) {
     return (
       <>
         {boardCards}
-        <IconButton onClick={() => nav(false)}>
-          <ArrowBackIcon />
-        </IconButton>
-        {page}
-        <IconButton onClick={() => nav(true)}>
-          <ArrowForwardIcon />
-        </IconButton>
+        <Button fullWidth onClick={loadMore}>Load more</Button>
       </>
     );
   }
