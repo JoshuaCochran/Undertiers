@@ -2,6 +2,9 @@ import React, { useState, useContext } from "react";
 import { GetBoards, GetMyUpvotes, Upvote, GetAllUpvotes } from "../Login";
 import BoardCard from "./BoardCard";
 import { UserContext } from "../usercontext";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 
 function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
   return (
@@ -58,6 +61,7 @@ export default function BoardList(all) {
   const [loadingUpvotes, setLoadingUpvotes] = useState(false);
   const [loadingCount, setLoadingCount] = useState(false);
   const [page, setPage] = useState(0);
+  const [displayData, setDisplayData] = useState();
   const contextValue = useContext(UserContext);
 
   function clickUpvote(id, userId, upvote) {
@@ -71,6 +75,18 @@ export default function BoardList(all) {
       newData.splice(upvotes.findIndex(upvote => upvote.board === id), 1);
       console.log(newData);
       setUpvotes(newData);
+    }
+  }
+
+  function nav(forward) {
+    if (forward && (page + 1) * 4 < boardData.length) {
+      const newPage = page + 1;
+      setPage(newPage);
+      setDisplayData(boardData.slice(newPage * 4, (newPage * 4) + 4));
+    } else if (!forward && page >= 1) {
+      const newPage = page - 1;
+      setPage(newPage);
+      setDisplayData(boardData.slice(newPage * 4, (newPage * 4) + 4));
     }
   }
 
@@ -99,12 +115,11 @@ export default function BoardList(all) {
     });
     newBoards.sort(function(a, b) {
       return b.upvotes - a.upvotes;
-    })
-    const sortedBoards = newBoards.slice(page * 5, page + 5);
-    setBoardData(sortedBoards);
+    });
+    setBoardData(newBoards);
+    setDisplayData(newBoards.slice(page * 4, (page * 4)+ 4));
     setSorted(true);
   }
-
   if (!loaded && !loading) {
     GetBoards(all, setBoardData, setLoaded, setLoading);
     return <p>Loading...</p>;
@@ -115,9 +130,25 @@ export default function BoardList(all) {
   if (!loadedCount && !loadingCount) {
     GetAllUpvotes(setCount, setLoadedCount, setLoadingCount);
   }
-  if (boardData !== null && boardData !== undefined && sorted) {
-    const boardCards = renderBoardCards(boardData, upvotes, clickUpvote, count);
-    return boardCards;
+  if (displayData !== null && displayData !== undefined && sorted) {
+    const boardCards = renderBoardCards(
+      displayData,
+      upvotes,
+      clickUpvote,
+      count
+    );
+    return (
+      <>
+        {boardCards}
+        <IconButton onClick={() => nav(false)}>
+          <ArrowBackIcon />
+        </IconButton>
+        {page}
+        <IconButton onClick={() => nav(true)}>
+          <ArrowForwardIcon />
+        </IconButton>
+      </>
+    );
   }
   return <p>Loading...</p>;
 }
