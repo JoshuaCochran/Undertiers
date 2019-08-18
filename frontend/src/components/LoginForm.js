@@ -67,6 +67,17 @@ export default function SignIn() {
     setPassword(event.target.value);
   }
 
+  const onFormSubmit = event => {
+    event.preventDefault();
+    LogIn(
+      username,
+      password,
+      contextValue.setToken,
+      contextValue.setLogin,
+      contextValue.setUser
+    );
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -77,7 +88,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={onFormSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -111,15 +122,8 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() =>
-              LogIn(
-                username,
-                password,
-                contextValue.setToken,
-                contextValue.setLogin,
-                contextValue.setUser
-              )
-            }
+            onClick={onFormSubmit}
+            type="submit"
           >
             Sign In
           </Button>

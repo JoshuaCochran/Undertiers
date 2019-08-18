@@ -72,6 +72,17 @@ export default function SignUp() {
     setEmail(event.target.value);
   }
 
+  const onFormSubmit = event => {
+    event.preventDefault();
+    Register(
+      username,
+      password,
+      email,
+      contextValue.setToken,
+      contextValue.setLogin
+    );
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -82,7 +93,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={onFormSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -130,20 +141,12 @@ export default function SignUp() {
             </Grid>
           </Grid>
           <Button
-            //type="submit"
+            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() =>
-              Register(
-                username,
-                password,
-                email,
-                contextValue.setToken,
-                contextValue.setLogin
-              )
-            }
+            onClick={onFormSubmit}
           >
             Sign Up
           </Button>

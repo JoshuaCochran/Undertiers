@@ -37,6 +37,7 @@ export default function BoardTextFields() {
     title: ""
   });
   const [error, setError] = useState(false);
+  const [errorText, setErrorText] = useState("");
   const contextValue = useContext(UserContext);
 
   const handleChange = name => event => {
@@ -45,9 +46,13 @@ export default function BoardTextFields() {
 
   const onFormSubmit = event => {
     event.preventDefault();
-    if (values.title === "" || values.multiline === "") setError(true);
-    else if (values.title.length > 50) setError(true);
-    else CreateBoard(contextValue.user.id, values.title, values.multiline);
+    if (values.title === "" || values.multiline === "") {
+      setError(true);
+      setErrorText("Title and description cannot be blank!");
+    } else if (values.title.length > 50) {
+      setError(true);
+      setErrorText("Title must be less than 50 characters!");
+    } else CreateBoard(contextValue.user.id, values.title, values.multiline);
   };
 
   return (
@@ -68,7 +73,7 @@ export default function BoardTextFields() {
             className={classes.textField}
             margin="normal"
             variant="outlined"
-            helperText={error ? "Title cannot be blank and must be less than 50 characters!" : ""}
+            helperText={errorText}
           />
           <TextField
             required
@@ -84,7 +89,7 @@ export default function BoardTextFields() {
             margin="normal"
             variant="outlined"
             placeholder="Enter description here"
-            helperText={error ? "Description cannot be blank!" : ""}
+            helperText={errorText}
             InputLabelProps={{
               shrink: true
             }}

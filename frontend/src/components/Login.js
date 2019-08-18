@@ -110,7 +110,6 @@ export function GetAllUpvotes(setCount, setLoadedCount) {
 export function GetMyUpvotes(setUpvotes, setLoadedUpvotes) {
   const axios = require("axios");
   const cookies = new Cookies();
-  //setLoadingUpvotes(true);
   axios({
     method: "get",
     url: "http://www.undertiers.com:8000/upvotes/me/",
