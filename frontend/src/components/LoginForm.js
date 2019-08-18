@@ -73,10 +73,8 @@ export default function SignIn() {
 
   const onFormSubmit = event => {
     event.preventDefault();
-    var error = {username: false, password: false};
-    if (username === "") error.username = true;
-    if (password === "") error.password = true;
-    else
+    setErrors({ username: !Boolean(username), password: !Boolean(password) });
+    if (username && password)
       LogIn(
         username,
         password,
@@ -84,7 +82,6 @@ export default function SignIn() {
         contextValue.setLogin,
         contextValue.setUser
       );
-    setErrors(error);
   };
 
   return (

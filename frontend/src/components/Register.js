@@ -79,11 +79,12 @@ export default function SignUp() {
 
   const onFormSubmit = event => {
     event.preventDefault();
-    var error = { usename: false, password: false, email: false };
-    if (username === "") error.username = true;
-    if (password === "") error.password = true;
-    if (email === "") error.email = true;
-    else
+    setErrors({
+      username: !Boolean(username),
+      password: !Boolean(password),
+      email: !Boolean(email)
+    });
+    if (username && password && email)
       Register(
         username,
         password,
@@ -91,7 +92,6 @@ export default function SignUp() {
         contextValue.setToken,
         contextValue.setLogin
       );
-    setErrors(error);
   };
 
   return (
