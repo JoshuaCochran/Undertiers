@@ -55,8 +55,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignIn() {
   const classes = useStyles();
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({
+    username: false,
+    password: false
+  });
   const contextValue = useContext(UserContext);
 
   function setUserValue(event) {
@@ -69,13 +73,18 @@ export default function SignIn() {
 
   const onFormSubmit = event => {
     event.preventDefault();
-    LogIn(
-      username,
-      password,
-      contextValue.setToken,
-      contextValue.setLogin,
-      contextValue.setUser
-    );
+    var error = {username: false, password: false};
+    if (username === "") error.username = true;
+    if (password === "") error.password = true;
+    else
+      LogIn(
+        username,
+        password,
+        contextValue.setToken,
+        contextValue.setLogin,
+        contextValue.setUser
+      );
+    setErrors(error);
   };
 
   return (
@@ -100,6 +109,7 @@ export default function SignIn() {
             autoComplete="username"
             autoFocus
             onChange={setUserValue}
+            error={errors.username}
           />
           <TextField
             variant="outlined"
@@ -112,6 +122,7 @@ export default function SignIn() {
             id="password"
             autoComplete="current-password"
             onChange={setPassValue}
+            error={errors.password}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}

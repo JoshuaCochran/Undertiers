@@ -55,9 +55,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [email, setEmail] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState({
+    username: false,
+    password: false,
+    email: false
+  });
   const contextValue = useContext(UserContext);
 
   function setUserValue(event) {
@@ -74,13 +79,19 @@ export default function SignUp() {
 
   const onFormSubmit = event => {
     event.preventDefault();
-    Register(
-      username,
-      password,
-      email,
-      contextValue.setToken,
-      contextValue.setLogin
-    );
+    var error = { usename: false, password: false, email: false };
+    if (username === "") error.username = true;
+    if (password === "") error.password = true;
+    if (email === "") error.email = true;
+    else
+      Register(
+        username,
+        password,
+        email,
+        contextValue.setToken,
+        contextValue.setLogin
+      );
+    setErrors(error);
   };
 
   return (
@@ -106,6 +117,7 @@ export default function SignUp() {
                 label="Username"
                 autoFocus
                 onChange={setUserValue}
+                error={errors.username}
               />
             </Grid>
             <Grid item xs={12}>
@@ -118,6 +130,7 @@ export default function SignUp() {
                 name="email"
                 autoComplete="email"
                 onChange={setEmailValue}
+                error={errors.email}
               />
             </Grid>
             <Grid item xs={12}>
@@ -131,6 +144,7 @@ export default function SignUp() {
                 id="password"
                 autoComplete="current-password"
                 onChange={setPassValue}
+                error={errors.password}
               />
             </Grid>
             <Grid item xs={12}>
