@@ -10,31 +10,7 @@ export function getUniqueAlliances(units) {
 export function getAlliance(units, allianceToGet) {
   const alliances = getUniqueAlliances(units);
   const result = alliances.filter(alliance => alliance.name === allianceToGet);
-  var active = false;
 
-  if (
-    Array.isArray(result) &&
-    result.length &&
-    (allianceToGet === "Demon"
-      ? result.length === result[0].min_units
-      : result.length >= result[0].min_units)
-  )
-    active = true;
-  if (active) {
-    console.log(
-      "There are " +
-        result.length +
-        " unique " +
-        allianceToGet +
-        "s on the board."
-    );
-    console.log(
-      allianceToGet +
-        " bonus " +
-        Math.floor(result.length / result[0].min_units) +
-        " active."
-    );
-  }
   result[0].count = result.length;
   return result[0];
 }

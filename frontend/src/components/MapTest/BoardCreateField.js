@@ -46,6 +46,7 @@ export default function BoardTextFields() {
   const onFormSubmit = event => {
     event.preventDefault();
     if (values.title === "" || values.multiline === "") setError(true);
+    else if (values.title.length > 50) setError(true);
     else CreateBoard(contextValue.user.id, values.title, values.multiline);
   };
 
@@ -67,7 +68,7 @@ export default function BoardTextFields() {
             className={classes.textField}
             margin="normal"
             variant="outlined"
-            helperText={error ? "Title cannot be blank!" : ""}
+            helperText={error ? "Title cannot be blank and must be less than 50 characters!" : ""}
           />
           <TextField
             required

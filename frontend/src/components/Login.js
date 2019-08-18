@@ -85,9 +85,8 @@ export function GetBoards(all, setBoardData, setLoaded, setLoading) {
     });
 }
 
-export function GetAllUpvotes(setCount, setLoadedCount, setLoadingCount) {
+export function GetAllUpvotes(setCount, setLoadedCount) {
   const axios = require("axios");
-  setLoadingCount(true);
   axios({
     method: "get",
     url: "http://www.undertiers.com:8000/upvotes/",
@@ -108,10 +107,10 @@ export function GetAllUpvotes(setCount, setLoadedCount, setLoadingCount) {
   });
 }
 
-export function GetMyUpvotes(setUpvotes, setLoadedUpvotes, setLoadingUpvotes) {
+export function GetMyUpvotes(setUpvotes, setLoadedUpvotes) {
   const axios = require("axios");
   const cookies = new Cookies();
-  setLoadingUpvotes(true);
+  //setLoadingUpvotes(true);
   axios({
     method: "get",
     url: "http://www.undertiers.com:8000/upvotes/me/",
@@ -129,7 +128,7 @@ export function GetMyUpvotes(setUpvotes, setLoadedUpvotes, setLoadingUpvotes) {
     });
 }
 
-export function Upvote(id, userId, upvote) {
+export function Upvote(id, upvote) {
   const axios = require("axios");
   const cookies = new Cookies();
   if (upvote) {

@@ -70,12 +70,18 @@ export default function NavBar() {
             >
               Undertiers
             </Typography>
-            <Button component={Link} to="/boards/create" className={classes.link}>
-              New Board
-            </Button>
             <UserContext.Consumer>
               {({ loggedIn, logOut }) => (
                 <>
+                  {loggedIn ? (
+                    <Button
+                      component={Link}
+                      to="/boards/create"
+                      className={classes.link}
+                    >
+                      New Board
+                    </Button>
+                  ) : null}
                   {loggedIn ? renderMyBoards(classes.link) : null}
                   {renderLogInLogOut(loggedIn, logOut, classes.link)}
                   {loggedIn ? null : renderRegister(classes.link)}

@@ -2,9 +2,6 @@ import React, { useState, useContext } from "react";
 import { GetBoards, GetMyUpvotes, Upvote, GetAllUpvotes } from "../Login";
 import BoardCard from "./BoardCard";
 import { UserContext } from "../usercontext";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import IconButton from "@material-ui/core/IconButton";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import Button from "@material-ui/core/Button";
 
 function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
@@ -50,23 +47,21 @@ function renderBoardCards(boardData, upvotes, clickUpvote, count) {
 }
 
 export default function BoardList(all) {
-  const [loaded, setLoaded] = useState(false);
-  const [loadedUpvotes, setLoadedUpvotes] = useState(false);
-  const [loadedCount, setLoadedCount] = useState(false);
-  const [boardData, setBoardData] = useState();
+  const [boardData, setBoardData] = useState([]);
   const [showingAll, setShowingAll] = useState();
   const [upvotes, setUpvotes] = useState();
   const [count, setCount] = useState();
   const [sorted, setSorted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loadingUpvotes, setLoadingUpvotes] = useState(false);
-  const [loadingCount, setLoadingCount] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [loadedUpvotes, setLoadedUpvotes] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(false);
   const [page, setPage] = useState(0);
   const [displayData, setDisplayData] = useState();
   const contextValue = useContext(UserContext);
 
   function clickUpvote(id, userId, upvote) {
-    Upvote(id, userId, !upvote);
+    Upvote(id, !upvote);
     if (!upvote) {
       const newData = upvotes.slice(0);
       newData.push({ user: userId, board: id });
@@ -79,31 +74,17 @@ export default function BoardList(all) {
     }
   }
 
-  function nav(forward) {
-    if (forward && (page + 1) * 4 < boardData.length) {
-      const newPage = page + 1;
-      setPage(newPage);
-      setDisplayData(boardData.slice(newPage * 4, newPage * 4 + 4));
-    } else if (!forward && page >= 1) {
-      const newPage = page - 1;
-      setPage(newPage);
-      setDisplayData(boardData.slice(newPage * 4, newPage * 4 + 4));
-    }
-  }
-
   function loadMore() {
+    setDisplayData(boardData.slice(0, (page + 1) * 4 + 4));
     setPage(page + 1);
-    setDisplayData(boardData.slice(0, ((page + 1) * 4) + 4));
   }
 
   if (all.all !== showingAll) {
     setShowingAll(all.all);
     setLoaded(false);
+    setLoading(false);
     setLoadedCount(false);
     setLoadedUpvotes(false);
-    setLoading(false);
-    setLoadingCount(false);
-    setLoadingUpvotes(false);
     setSorted(false);
   }
 
@@ -126,15 +107,15 @@ export default function BoardList(all) {
     setDisplayData(newBoards.slice(page * 4, page * 4 + 4));
     setSorted(true);
   }
-  if (!loaded && !loading) {
+  if (!loading && !loaded) {
     GetBoards(all, setBoardData, setLoaded, setLoading);
-    return <p>Loading...</p>;
+    return <p>loading...</p>;
   }
-  if (contextValue.loggedIn && !loadedUpvotes && !loadingUpvotes) {
-    GetMyUpvotes(setUpvotes, setLoadedUpvotes, setLoadingUpvotes);
+  if (contextValue.loggedIn && !loadedUpvotes) {
+    GetMyUpvotes(setUpvotes, setLoadedUpvotes);
   }
-  if (!loadedCount && !loadingCount) {
-    GetAllUpvotes(setCount, setLoadedCount, setLoadingCount);
+  if (!loadedCount) {
+    GetAllUpvotes(setCount, setLoadedCount);
   }
   if (displayData !== null && displayData !== undefined && sorted) {
     const boardCards = renderBoardCards(
@@ -146,9 +127,11 @@ export default function BoardList(all) {
     return (
       <>
         {boardCards}
-        <Button fullWidth onClick={loadMore}>Load more</Button>
+        <Button fullWidth onClick={loadMore}>
+          Load more
+        </Button>
       </>
     );
   }
-  return <p>Loading...</p>;
+  return <p>loading...</p>;
 }

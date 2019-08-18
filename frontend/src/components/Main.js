@@ -25,7 +25,12 @@ function Main() {
           path="/alliances/:id"
           render={props => <AllianceInfo id={props.match.params.id} />}
         />
-        <Route path="/boards/create" component={BoardCreateField}/>
+        <Route
+          path="/boards/create"
+          render={() =>
+            contextValue.loggedIn ? <BoardCreateField /> : <SignIn />
+          }
+        />
         <Route
           path="/boards/me"
           render={() =>
@@ -34,11 +39,23 @@ function Main() {
         />
         <Route
           path="/boards/edit/:id"
-          render={props => contextValue.loggedIn ? <Maps board_id={props.match.params.id}/> : <Redirect to="/"/>}/>
+          render={props =>
+            contextValue.loggedIn ? (
+              <Maps board_id={props.match.params.id} />
+            ) : (
+              <Redirect to="/" />
+            )
+          }
+        />
         />
         <Route
           path="/boards/:id"
-          render={props => <MapsViewMode loggedIn={contextValue.loggedIn} board_id={props.match.params.id} />}
+          render={props => (
+            <MapsViewMode
+              loggedIn={contextValue.loggedIn}
+              board_id={props.match.params.id}
+            />
+          )}
         />
         <Route path="/register" component={SignUp} />
         <Route

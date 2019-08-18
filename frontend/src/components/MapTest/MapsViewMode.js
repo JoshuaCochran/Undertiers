@@ -10,7 +10,6 @@ import DescriptionCard from "./DescriptionCard";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import BoardTextField from "./BoardTextField";
-import { getAllAlliances } from "../allianceCounting";
 import AllianceList from "./AllianceList";
 
 const styles = theme => ({
@@ -131,12 +130,6 @@ class MapsViewMode extends Component {
         <Button component={Link} to={url} className={style}>
           Edit
           <EditIcon />
-        </Button>
-        <Button
-          onClick={() => getAllAlliances(this.state.unitsOnMap)}
-          className={style}
-        >
-          Count alliances
         </Button>
       </Grid>
     );
