@@ -5,11 +5,11 @@ import UnitInfo from "./UnitInfo";
 import AllianceInfo from "./AllianceInfo";
 import Maps from "./MapTest/Maps";
 import SignIn from "./LoginForm";
-import { UserContext } from "./usercontext";
 import SignUp from "./Register";
 import BoardList from "./MapTest/BoardList";
 import MapsViewMode from "./MapTest/MapsViewMode";
 import BoardCreateField from "./MapTest/BoardCreateField";
+import { UserContext } from "./UserStore";
 
 function Main() {
   const contextValue = useContext(UserContext);

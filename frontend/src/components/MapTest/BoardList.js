@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { GetBoards, GetMyUpvotes, Upvote, GetAllUpvotes } from "../Login";
 import BoardCard from "./BoardCard";
-import { UserContext } from "../usercontext";
+import { UserContext } from "../UserStore";
 import Button from "@material-ui/core/Button";
 
 function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {

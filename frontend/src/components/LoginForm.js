@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { LogIn } from "./Login";
-import { UserContext } from "./usercontext";
+import { UserContext } from "./UserStore";
 
 function MadeWithLove() {
   return (
@@ -143,7 +143,7 @@ export default function SignIn() {
             </Grid>
             <Grid item>
               <Link component={RouterLink} to="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
+                Don't have an account? Sign Up
               </Link>
             </Grid>
           </Grid>

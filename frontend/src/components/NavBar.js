@@ -3,10 +3,10 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { UserContext } from "./usercontext";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import { UserContext } from "./UserStore";
 
 const useStyles = makeStyles(theme => ({
   root: {

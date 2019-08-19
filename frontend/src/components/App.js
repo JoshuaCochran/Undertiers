@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import NavBar from "./NavBar";
 import Main from "./Main";
-import { UserContext } from "./usercontext";
 import Cookies from "universal-cookie";
+import UserStore from "./UserStore";
 
 class App extends Component {
   constructor(props) {
@@ -31,11 +31,14 @@ class App extends Component {
     if (date > expire) {
       cookies.remove("token", { path: "/" });
       cookies.remove("token expire", { path: "/" });
-      cookies.remove("user", { path: "/"});
-      this.setState({ expired: true, user: null, });
+      cookies.remove("user", { path: "/" });
+      this.setState({ expired: true, user: null });
     } else if (cookies.get("token", { path: "/" })) {
       this.setToken(cookies.get("token", { path: "/" }));
-      this.setState({ tokenExpire: cookies.get("token expire", { path: "/" }), loggedIn: true });
+      this.setState({
+        tokenExpire: cookies.get("token expire", { path: "/" }),
+        loggedIn: true
+      });
       this.setUser(cookies.get("user", { path: "/" }));
     }
   }
@@ -56,17 +59,22 @@ class App extends Component {
     const cookies = new Cookies();
     cookies.remove("token", { path: "/" });
     cookies.remove("token expire", { path: "/" });
-    this.setState({ token: null, loggedIn: false, tokenExpire: null, user: null });
+    this.setState({
+      token: null,
+      loggedIn: false,
+      tokenExpire: null,
+      user: null
+    });
   }
 
   render() {
     return (
-      <UserContext.Provider value={this.state}>
-        <div style={{marginTop: "45px"}}>
-          <NavBar />
-          <Main />
-        </div>
-      </UserContext.Provider>
+      <UserStore>
+          <div style={{ marginTop: "45px" }}>
+            <NavBar />
+            <Main />
+          </div>
+      </UserStore>
     );
   }
 }
