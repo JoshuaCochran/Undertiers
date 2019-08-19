@@ -14,11 +14,12 @@ export default function UserStore({ children }) {
     setLogin: setLogin,
     logOut: logOut
   });
+  const [loaded, setLoaded] = useState(false);
 
   function setUser(user) {
     setUserData(prevState => {
-        return { ...prevState, user };
-      });
+      return { ...prevState, user };
+    });
   }
 
   function setToken(token) {
@@ -29,8 +30,8 @@ export default function UserStore({ children }) {
 
   function setLogin(loggedIn) {
     setUserData(prevState => {
-        return { ...prevState, loggedIn };
-      });
+      return { ...prevState, loggedIn };
+    });
   }
 
   function logOut() {
@@ -44,6 +45,29 @@ export default function UserStore({ children }) {
       tokenExpire: null,
       user: null
     });
+  }
+
+  if (!loaded) {
+    const cookies = new Cookies();
+    const expire = new Date(cookies.get("token expire"));
+    const date = new Date();
+    if (date > expire) {
+      cookies.remove("token", { path: "/" });
+      cookies.remove("token expire", { path: "/" });
+      cookies.remove("user", { path: "/" });
+      setUserData({ ...userData, expired: true, user: null });
+    } else if (cookies.get("token", { path: "/" })) {
+      setToken(cookies.get("token", { path: "/" }));
+      setUserData(prevState => {
+        return {
+          ...prevState,
+          tokenExpire: cookies.get("token expire", { path: "/" }),
+          loggedIn: true
+        };
+      });
+      setUser(cookies.get("user", { path: "/" }));
+    }
+    setLoaded(true);
   }
 
   return (

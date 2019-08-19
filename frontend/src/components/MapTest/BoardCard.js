@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import PageviewIcon from "@material-ui/icons/Pageview";
-import { UserContext } from "../usercontext";
+import { UserContext } from "../UserStore";
 
 const useStyles = makeStyles({
   card: {

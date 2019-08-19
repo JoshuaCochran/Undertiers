@@ -18,7 +18,7 @@ import {
   allianceFilter
 } from "../sorting";
 import Abyss from "./Abyss";
-import { UserContext } from "../usercontext";
+import { UserContext } from "../UserStore";
 
 const styles = theme => ({
   "@global": {

@@ -5,7 +5,7 @@ import axios from "axios";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import BoardViewMode from "./BoardViewMode";
-import { UserContext } from "../usercontext";
+import { UserContext } from "../UserStore";
 import DescriptionCard from "./DescriptionCard";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
