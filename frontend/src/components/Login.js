@@ -13,7 +13,7 @@ export function LogIn(username, password, setToken, setLogin, setUser) {
     }
   })
     .then(function(response) {
-      setToken(response.data.token);
+      setToken(response.data.token, response.data.expiry);
       cookies.set("token expire", response.data.expiry, { path: "/" });
       cookies.set("token", response.data.token, { path: "/" });
       setLogin(response.data.token !== undefined);
@@ -28,7 +28,7 @@ export function LogIn(username, password, setToken, setLogin, setUser) {
         }
       }).then(function(response) {
         setUser(response.data);
-        cookies.set("user", response.data);
+        cookies.set("user", response.data, { path: "/" });
       });
     })
     .catch(function(error) {

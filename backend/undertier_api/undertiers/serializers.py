@@ -64,6 +64,7 @@ class BoardSerializer(serializers.ModelSerializer):
 
 # Serializer for unit locations. The UnitLoc model represents an intermediary JOIN table between units and maps.
 class UnitLocSerializer(serializers.ModelSerializer):
+    unit = UnitSerializer()
     class Meta:
         fields = '__all__'
         model = UnitLoc
@@ -78,3 +79,15 @@ class UpvoteSerializer(serializers.ModelSerializer):
                 fields=['user', 'board']
             )
         ]
+
+class TestBoard2Serializer(serializers.ModelSerializer):
+    pieces = UnitLocSerializer(source="unitloc_set", many=True)
+    username = serializers.SerializerMethodField()
+
+    def get_username(self, obj):
+        return obj.user.username
+
+    class Meta:
+        fields = ("id", "username", "name", "description", "pieces")
+        model = Map
+        depth = 1

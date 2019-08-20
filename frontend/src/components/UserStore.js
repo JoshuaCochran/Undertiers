@@ -22,9 +22,9 @@ export default function UserStore({ children }) {
     });
   }
 
-  function setToken(token) {
+  function setToken(token, expiry) {
     setUserData(prevState => {
-      return { ...prevState, token };
+      return { ...prevState, token: token, tokenExpire: expiry };
     });
   }
 

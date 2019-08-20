@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from knox.views import LoginView as KnoxLoginView
 
 from .models import Unit, UnitLoc, Map, Alliance, Upvote
-from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer, UpvoteSerializer, BoardSerializer
+from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer, UpvoteSerializer, BoardSerializer, TestBoard2Serializer
 
 class LoginView(KnoxLoginView):
     authentication_classes = [BasicAuthentication]
@@ -52,6 +52,19 @@ class ListBoards(generics.ListAPIView):
     permission_classes = [AllowAny,]
     queryset = Map.objects.all()
     serializer_class = MapSerializer
+
+class TestBoards(generics.ListAPIView):
+    permission_classes = [AllowAny,]
+    queryset = Map.objects.all()
+    serializer_class = TestBoard2Serializer
+
+class DetailTestBoards(generics.ListAPIView):
+    permission_classes = [AllowAny,]
+
+    def get_queryset(self, *args, **kwargs):
+        return Map.objects.filter(id=self.kwargs.get('pk'))
+
+    serializer_class = TestBoard2Serializer
 
 class ListMyBoards(ModelViewSet):
     permission_classes = [IsAuthenticated,]
