@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from knox.views import LoginView as KnoxLoginView
 
 from .models import Unit, UnitLoc, Map, Alliance, Upvote
-from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer, UpvoteSerializer, BoardSerializer, TestBoard2Serializer
+from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer, UpvoteSerializer, BoardSerializer, DetailedBoardSerializer
 
 class LoginView(KnoxLoginView):
     authentication_classes = [BasicAuthentication]
@@ -51,20 +51,7 @@ class CreateBoard(generics.CreateAPIView):
 class ListBoards(generics.ListAPIView):
     permission_classes = [AllowAny,]
     queryset = Map.objects.all()
-    serializer_class = MapSerializer
-
-class TestBoards(generics.ListAPIView):
-    permission_classes = [AllowAny,]
-    queryset = Map.objects.all()
-    serializer_class = TestBoard2Serializer
-
-class DetailTestBoards(generics.ListAPIView):
-    permission_classes = [AllowAny,]
-
-    def get_queryset(self, *args, **kwargs):
-        return Map.objects.filter(id=self.kwargs.get('pk'))
-
-    serializer_class = TestBoard2Serializer
+    serializer_class = DetailedBoardSerializer
 
 class ListMyBoards(ModelViewSet):
     permission_classes = [IsAuthenticated,]
@@ -78,9 +65,9 @@ class DetailBoard(generics.ListAPIView):
     permission_classes = [AllowAny,]
     # Returns all UnitLoc objects (units on a given map with position on map) given the private key in the url
     def get_queryset(self, *args, **kwargs):
-        return UnitLoc.objects.filter(board__id=self.kwargs.get('pk'))
+        return Map.objects.filter(id=self.kwargs.get('pk'))
 
-    serializer_class = UnitLocSerializer
+    serializer_class = DetailedBoardSerializer
 
 class UpdateBoard(generics.UpdateAPIView):
     queryset = Map.objects.all()

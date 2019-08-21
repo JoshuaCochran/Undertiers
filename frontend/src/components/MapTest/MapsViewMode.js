@@ -11,6 +11,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import BoardTextField from "./BoardTextField";
 import AllianceList from "./AllianceList";
+import { BoardContext } from "../BoardStore";
 
 const styles = theme => ({
   "@global": {
@@ -20,7 +21,7 @@ const styles = theme => ({
     }
   },
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   title: {
     color: "white",
@@ -40,87 +41,14 @@ class MapsViewMode extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      units: [],
-      unitsOnMap: [],
-      mapInfo: [],
-      loadedMaps: false,
-      loadedUnits: false,
-      loadedBoard: false,
-      isLoading: false,
       showingTitleField: false,
-      showingDescriptionField: false
+      showingDescriptionField: false,
+      loaded: false
     };
-    this.getMapInfo = this.getMapInfo.bind(this);
-    this.getUnits = this.getUnits.bind(this);
-    this.getUnitsOnMap = this.getUnitsOnMap.bind(this);
     this.showTitleField = this.showTitleField.bind(this);
     this.changeTitle = this.changeTitle.bind(this);
     this.showDescriptionField = this.showDescriptionField.bind(this);
     this.changeDescription = this.changeDescription.bind(this);
-  }
-
-  async componentDidMount() {
-    this.setState({ isLoading: true });
-  }
-
-  getUnitsOnMap() {
-    axios({
-      method: "get",
-      url: "http://www.undertiers.com:8000/boards/" + this.props.board_id,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => {
-        var maps = response.data;
-        var unit;
-        for (let i = 0; i < maps.length; i++) {
-          unit = this.state.units.filter(unit => unit.id === maps[i].unit);
-          maps[i].unit = unit[0];
-        }
-        this.setState({
-          unitsOnMap: maps,
-          loadedMaps: true
-        });
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  }
-
-  getUnits() {
-    axios({
-      method: "get",
-      url: "http://www.undertiers.com:8000/units/",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => {
-        this.setState({
-          units: response.data,
-          loadedUnits: true
-        });
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  }
-
-  getMapInfo() {
-    axios({
-      method: "get",
-      url: "http://www.undertiers.com:8000/maps/" + this.props.board_id,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => {
-        this.setState({ mapInfo: response.data, loadedBoard: true });
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
   }
 
   renderEditButton(style) {
@@ -190,26 +118,14 @@ class MapsViewMode extends Component {
 
   render() {
     const { classes } = this.props;
-    if (this.state.isLoading && this.state.units.length === 0)
-      axios.all([this.getUnits(), this.getMapInfo()]);
-    if (this.state.isLoading && this.state.units.length > 0) {
-      axios
-        .all([this.getUnitsOnMap()])
-        .then(response => this.setState({ isLoading: false }));
-    }
-    var isMapOwner = false;
-    if (
-      !this.state.isLoading &&
-      this.state.mapInfo.length > 0 &&
-      this.state.units.length > 0
-    ) {
-      isMapOwner =
-        this.context.loggedIn && this.context.user != null
-          ? this.context.user.username === this.state.mapInfo[0].username
-          : false;
-      return (
-        <div className={classes.root}>
-          <Grid container spacing={5}>
+    var isMapOwner =
+      this.context.loggedIn && this.context.user != null
+        ? this.context.user.username === this.state.mapInfo[0].username
+        : false;
+
+    return (
+      <div className={classes.root}>
+        <Grid container spacing={5}>
           <Grid item container spacing={1} direction="column" justify="center">
             <Grid
               item
@@ -222,14 +138,14 @@ class MapsViewMode extends Component {
             >
               {this.state.showingTitleField ? (
                 <BoardTextField
-                  input={this.state.mapInfo[0].name}
+                  input={this.props.board.name}
                   submit={title => this.changeTitle(title)}
                   long={false}
                 />
               ) : (
                 <DescriptionCard
                   owner={isMapOwner}
-                  description={this.state.mapInfo[0].name}
+                  description={this.props.board.name}
                   button={
                     <IconButton onClick={this.showTitleField}>
                       <EditIcon />
@@ -242,13 +158,13 @@ class MapsViewMode extends Component {
               <Grid item xs={2}>
                 <BoardViewMode
                   board_id={this.props.board_id}
-                  title={this.state.mapInfo[0].name}
-                  maps={this.state.unitsOnMap}
-                  loaded={this.state.loadedMaps}
+                  title={this.props.board.name}
+                  maps={this.props.board.pieces}
+                  loaded={true}
                 />
               </Grid>
               <Grid item xs={4}>
-                <AllianceList units={this.state.unitsOnMap} />
+                <AllianceList units={this.props.board.pieces} />
               </Grid>
             </Grid>
           </Grid>
@@ -264,7 +180,7 @@ class MapsViewMode extends Component {
               <Grid
                 item
                 xs={2}
-                style={{marginLeft: "30vw", marginTop: "5vh"}}
+                style={{ marginLeft: "30vw", marginTop: "5vh" }}
               >
                 {isMapOwner ? this.renderEditButton(classes.button) : null}
               </Grid>
@@ -280,14 +196,14 @@ class MapsViewMode extends Component {
               <Grid item xs={6}>
                 {this.state.showingDescriptionField ? (
                   <BoardTextField
-                    input={this.state.mapInfo[0].description}
+                    input={this.props.board.description}
                     submit={description => this.changeDescription(description)}
                     long={true}
                   />
                 ) : (
                   <DescriptionCard
                     owner={isMapOwner}
-                    description={this.state.mapInfo[0].description}
+                    description={this.props.board.description}
                     button={
                       <IconButton onClick={this.showDescriptionField}>
                         <EditIcon />
@@ -298,11 +214,9 @@ class MapsViewMode extends Component {
               </Grid>
             </Grid>
           </Grid>
-          </Grid>
-        </div>
-      );
-    }
-    return <p>Loading...</p>;
+        </Grid>
+      </div>
+    );
   }
 }
 MapsViewMode.contextType = UserContext;

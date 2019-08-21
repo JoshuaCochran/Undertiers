@@ -23,6 +23,4 @@ urlpatterns = [
     path('upvotes/me/', views.UpvoteView.as_view()),
     path('downvote/', views.DownvoteView.as_view()),
     path('upvotes/', views.UpvotesView.as_view()),
-    path('test/', views.TestBoards.as_view()),
-    path('test/<int:pk>/', views.DetailTestBoards.as_view()),
 ]

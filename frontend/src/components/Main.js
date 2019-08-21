@@ -10,9 +10,11 @@ import BoardList from "./MapTest/BoardList";
 import MapsViewMode from "./MapTest/MapsViewMode";
 import BoardCreateField from "./MapTest/BoardCreateField";
 import { UserContext } from "./UserStore";
+import { BoardContext } from "./BoardStore";
 
 function Main() {
   const contextValue = useContext(UserContext);
+  const boardContext = useContext(BoardContext);
   return (
     <main>
       <Switch>
@@ -50,12 +52,13 @@ function Main() {
         />
         <Route
           path="/boards/:id"
-          render={props => (
+          render={props => boardContext.board.length > 0 ? (
             <MapsViewMode
               loggedIn={contextValue.loggedIn}
               board_id={props.match.params.id}
+              board={boardContext.board.filter(item => item.id == props.match.params.id)[0]}
             />
-          )}
+          ) : <p>Board not found</p>}
         />
         <Route path="/register" component={SignUp} />
         <Route

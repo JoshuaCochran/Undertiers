@@ -80,7 +80,7 @@ class UpvoteSerializer(serializers.ModelSerializer):
             )
         ]
 
-class TestBoard2Serializer(serializers.ModelSerializer):
+class DetailedBoardSerializer(serializers.ModelSerializer):
     pieces = UnitLocSerializer(source="unitloc_set", many=True)
     username = serializers.SerializerMethodField()
 
