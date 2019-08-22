@@ -1,11 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import axios from "axios";
 
 export const BoardContext = React.createContext();
 export default function BoardStore({ children }) {
-  const [boardData, setBoardData] = useState({ board: [], getBoard: getBoard });
+  const [boardData, setBoardData] = useState({ board: [], setTitle: null });
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    function setTitle(title, id) {
+      setBoardData(prevState => {
+        return {
+          ...prevState,
+          board: boardData.board.map(item => {
+            if (item.id == id) item.name = title;
+            return item;
+          })
+        };
+      });
+    }
+
+    setBoardData(prevState => {
+      return { ...prevState, setTitle: setTitle };
+    });
+  }, [boardData]);
 
   function getBoards() {
     setLoading(true);
@@ -24,12 +42,6 @@ export default function BoardStore({ children }) {
       .catch(function(error) {
         console.log(error);
       });
-  }
-
-  function getBoard(id) {
-    console.log("Loaded: " + loaded + " .");
-    console.log("Id: " + id);
-    return boardData.board;
   }
 
   if (Array.isArray(boardData.board) && boardData.board.length > 0 && !loaded) {

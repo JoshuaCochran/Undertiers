@@ -57,6 +57,7 @@ function Main() {
               loggedIn={contextValue.loggedIn}
               board_id={props.match.params.id}
               board={boardContext.board.filter(item => item.id == props.match.params.id)[0]}
+              setTitle={boardContext.setTitle}
             />
           ) : <p>Board not found</p>}
         />

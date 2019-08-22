@@ -68,9 +68,8 @@ class MapsViewMode extends Component {
   }
 
   changeTitle(title) {
-    var newInfo = this.state.mapInfo;
-    newInfo[0].name = title;
-    this.setState({ mapInfo: newInfo, showingTitleField: false });
+    this.setState({ showingTitleField: false });
+    this.props.setTitle(title, this.props.board_id);
     axios({
       method: "put",
       url:
@@ -120,7 +119,7 @@ class MapsViewMode extends Component {
     const { classes } = this.props;
     var isMapOwner =
       this.context.loggedIn && this.context.user != null
-        ? this.context.user.username === this.state.mapInfo[0].username
+        ? this.context.user.username === this.props.board.username
         : false;
 
     return (
