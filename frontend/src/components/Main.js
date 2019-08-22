@@ -58,6 +58,7 @@ function Main() {
               board_id={props.match.params.id}
               board={boardContext.board.filter(item => item.id == props.match.params.id)[0]}
               setTitle={boardContext.setTitle}
+              setDescription={boardContext.setDescription}
             />
           ) : <p>Board not found</p>}
         />
@@ -68,7 +69,7 @@ function Main() {
             contextValue.loggedIn ? <Redirect to="/" /> : <SignIn />
           }
         />
-        <Route path="/" render={() => <BoardList all={true} />} />
+        <Route path="/" render={() => <BoardList all={true}/>} />
       </Switch>
     </main>
   );

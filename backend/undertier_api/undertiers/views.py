@@ -53,6 +53,12 @@ class ListBoards(generics.ListAPIView):
     queryset = Map.objects.all()
     serializer_class = DetailedBoardSerializer
 
+    def list(self, request):
+        queryset = Map.objects.all()
+        serializer = DetailedBoardSerializer(queryset, many=True)
+        serializer_data = sorted(serializer.data, key=lambda k: k['upvotes'].count(), reverse=True)
+        return Response(serializer_data)
+
 class ListMyBoards(ModelViewSet):
     permission_classes = [IsAuthenticated,]
     serializer_class = MapSerializer

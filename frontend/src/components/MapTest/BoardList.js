@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { GetBoards, GetMyUpvotes, Upvote, GetAllUpvotes } from "../Login";
 import BoardCard from "./BoardCard";
 import { UserContext } from "../UserStore";
+import { BoardContext } from "../BoardStore";
 import Button from "@material-ui/core/Button";
 
 function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
@@ -24,105 +25,58 @@ function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
   );
 }
 
-function renderBoardCards(boardData, upvotes, clickUpvote, count) {
+function renderBoardCards(boardData, clickUpvote, userId) {
   const boardCards = [];
-  var numUpvotes = 0;
   boardData.forEach((item, i) => {
-    if (Array.isArray(count)) {
-      numUpvotes = count.filter(upvote => upvote[0].board === item.id).length;
-      if (numUpvotes)
-        numUpvotes = count.filter(upvote => upvote[0].board === item.id)[0]
-          .length;
-    }
-
     if (
-      Array.isArray(upvotes) &&
-      upvotes.filter(upvote => upvote.board === item.id).length
+      userId &&
+      item.upvotes.filter(upvote => userId == upvote.user_id).length
     )
-      boardCards.push(renderBoardCard(item, i, true, clickUpvote, numUpvotes));
+      boardCards.push(
+        renderBoardCard(item, i, true, clickUpvote, item.upvotes.length)
+      );
     else
-      boardCards.push(renderBoardCard(item, i, false, clickUpvote, numUpvotes));
+      boardCards.push(
+        renderBoardCard(item, i, false, clickUpvote, item.upvotes.length)
+      );
   });
   return boardCards;
 }
 
 export default function BoardList(all) {
-  const [boardData, setBoardData] = useState([]);
   const [showingAll, setShowingAll] = useState();
-  const [upvotes, setUpvotes] = useState();
-  const [count, setCount] = useState();
-  const [sorted, setSorted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-  const [loadedUpvotes, setLoadedUpvotes] = useState(false);
-  const [loadedCount, setLoadedCount] = useState(false);
   const [page, setPage] = useState(0);
   const [displayData, setDisplayData] = useState();
   const contextValue = useContext(UserContext);
+  const boardContext = useContext(BoardContext);
 
-  function clickUpvote(id, userId, upvote) {
+  useEffect(() => {
+    if (showingAll) setDisplayData(boardContext.board.slice(0, page * 4 + 4));
+    else
+      setDisplayData(
+        boardContext.board
+          .filter(item => contextValue.user.id == item.user)
+          .slice(0, page * 4 + 4)
+      );
+  }, [page, showingAll]);
+
+  function clickUpvote(id, upvote) {
     Upvote(id, !upvote);
-    if (!upvote) {
-      const newData = upvotes.slice(0);
-      newData.push({ user: userId, board: id });
-      setUpvotes(newData);
-    } else {
-      const newData = upvotes.slice(0);
-      newData.splice(upvotes.findIndex(upvote => upvote.board === id), 1);
-      console.log(newData);
-      setUpvotes(newData);
-    }
   }
 
   function loadMore() {
-    setDisplayData(boardData.slice(0, (page + 1) * 4 + 4));
     setPage(page + 1);
   }
 
   if (all.all !== showingAll) {
     setShowingAll(all.all);
-    setLoaded(false);
-    setLoading(false);
-    setLoadedCount(false);
-    setLoadedUpvotes(false);
-    setSorted(false);
   }
 
-  if (loaded && loadedCount && !sorted) {
-    const newBoards = boardData.slice(0);
-
-    newBoards.forEach(board => {
-      var numUpvotes = count.filter(upvote => upvote[0].board === board.id)
-        .length;
-      if (numUpvotes)
-        numUpvotes = count.filter(upvote => upvote[0].board === board.id)[0]
-          .length;
-
-      board.upvotes = numUpvotes;
-    });
-    newBoards.sort(function(a, b) {
-      return b.upvotes - a.upvotes;
-    });
-    setBoardData(newBoards);
-    setDisplayData(newBoards.slice(page * 4, page * 4 + 4));
-    setSorted(true);
-  }
-  if (!loading && !loaded) {
-    GetBoards(all, setBoardData, setLoaded, setLoading);
-    return <p>loading...</p>;
-  }
-  if (contextValue.loggedIn && !loadedUpvotes) {
-    GetMyUpvotes(setUpvotes, setLoadedUpvotes);
-  }
-  if (!loadedCount) {
-    GetAllUpvotes(setCount, setLoadedCount);
-  }
-  if (displayData !== null && displayData !== undefined && sorted) {
+  if (displayData !== null && displayData !== undefined) {
     const boardCards = renderBoardCards(
       displayData,
-      upvotes,
       clickUpvote,
-      count
+      contextValue.loggedIn && contextValue.user ? contextValue.user.id : null
     );
     return (
       <>

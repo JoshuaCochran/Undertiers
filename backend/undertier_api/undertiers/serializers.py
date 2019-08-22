@@ -82,12 +82,15 @@ class UpvoteSerializer(serializers.ModelSerializer):
 
 class DetailedBoardSerializer(serializers.ModelSerializer):
     pieces = UnitLocSerializer(source="unitloc_set", many=True)
+    upvotes = serializers.SerializerMethodField()
     username = serializers.SerializerMethodField()
 
     def get_username(self, obj):
         return obj.user.username
 
+    def get_upvotes(self, obj):
+        return Upvote.objects.filter(board=obj.id).values()
+
     class Meta:
-        fields = ("id", "username", "name", "description", "pieces")
+        fields = ("id", "user", "username", "name", "description", "pieces", "upvotes")
         model = Map
-        depth = 1

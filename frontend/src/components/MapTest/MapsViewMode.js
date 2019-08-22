@@ -93,9 +93,8 @@ class MapsViewMode extends Component {
   }
 
   changeDescription(description) {
-    var newInfo = this.state.mapInfo;
-    newInfo[0].description = description;
-    this.setState({ mapInfo: newInfo, showingDescriptionField: false });
+    this.props.setDescription(description, this.props.board_id);
+    this.setState({ showingDescriptionField: false });
     axios({
       method: "put",
       url:
