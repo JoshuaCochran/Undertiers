@@ -11,7 +11,6 @@ import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import BoardTextField from "./BoardTextField";
 import AllianceList from "./AllianceList";
-import { BoardContext } from "../BoardStore";
 
 const styles = theme => ({
   "@global": {

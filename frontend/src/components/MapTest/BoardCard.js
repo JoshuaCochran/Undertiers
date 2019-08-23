@@ -61,7 +61,7 @@ export default function BoardCard({ id, name, owner, description, upvoted, click
       <CardActions>
         <IconButton
           className={upvote ? classes.upvoted : null}
-          onClick={contextValue.loggedIn ? () => clickUpvote(id, userId, upvote) : null}
+          onClick={contextValue.loggedIn ? () => clickUpvote(id, upvote) : null}
         >
           {numUpvotes}
           <ThumbUpIcon />

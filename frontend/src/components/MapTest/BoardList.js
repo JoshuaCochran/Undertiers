@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { GetBoards, GetMyUpvotes, Upvote, GetAllUpvotes } from "../Login";
+import { Upvote } from "../Login";
 import BoardCard from "./BoardCard";
 import { UserContext } from "../UserStore";
 import { BoardContext } from "../BoardStore";
@@ -27,27 +27,27 @@ function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
 
 function renderBoardCards(boardData, clickUpvote, userId) {
   const boardCards = [];
+  var userUpvoted = false;
   boardData.forEach((item, i) => {
+    userUpvoted = false;
     if (
       userId &&
       item.upvotes.filter(upvote => userId == upvote.user_id).length
     )
-      boardCards.push(
-        renderBoardCard(item, i, true, clickUpvote, item.upvotes.length)
-      );
-    else
-      boardCards.push(
-        renderBoardCard(item, i, false, clickUpvote, item.upvotes.length)
-      );
+      userUpvoted = true;
+
+    boardCards.push(
+      renderBoardCard(item, i, userUpvoted, clickUpvote, item.upvotes.length)
+    );
   });
   return boardCards;
 }
 
-export default function BoardList(all) {
+export default function BoardList(props) {
   const [showingAll, setShowingAll] = useState();
   const [page, setPage] = useState(0);
   const [displayData, setDisplayData] = useState();
-  const contextValue = useContext(UserContext);
+  const userContext = useContext(UserContext);
   const boardContext = useContext(BoardContext);
 
   useEffect(() => {
@@ -55,28 +55,32 @@ export default function BoardList(all) {
     else
       setDisplayData(
         boardContext.board
-          .filter(item => contextValue.user.id == item.user)
+          .filter(item => userContext.user.id == item.user)
           .slice(0, page * 4 + 4)
       );
-  }, [page, showingAll]);
+  }, [page, showingAll, boardContext.board]);
 
   function clickUpvote(id, upvote) {
     Upvote(id, !upvote);
+    if (!upvote)
+      boardContext.addUpvote({user_id: userContext.user.id, board_id: id});
+    else
+      boardContext.deleteUpvote({user_id: userContext.user.id, board_id: id});
   }
 
   function loadMore() {
     setPage(page + 1);
   }
 
-  if (all.all !== showingAll) {
-    setShowingAll(all.all);
+  if (props.all !== showingAll) {
+    setShowingAll(props.all);
   }
 
   if (displayData !== null && displayData !== undefined) {
     const boardCards = renderBoardCards(
       displayData,
       clickUpvote,
-      contextValue.loggedIn && contextValue.user ? contextValue.user.id : null
+      userContext.loggedIn && userContext.user ? userContext.user.id : null
     );
     return (
       <>

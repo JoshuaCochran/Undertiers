@@ -6,7 +6,9 @@ export default function BoardStore({ children }) {
   const [boardData, setBoardData] = useState({
     board: [],
     setTitle: null,
-    setDescription: null
+    setDescription: null,
+    addUpvote: null,
+    deleteUpvote: null
   });
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -48,23 +50,56 @@ export default function BoardStore({ children }) {
   }, [boardData]);
 
   useEffect(() => {
-      setLoading(true);
-      axios({
-        method: "get",
-        url: "http://www.undertiers.com:8000/boards/",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-        .then(response => {
-          setBoardData(prevState => {
-            return { ...prevState, board: response.data };
-          });
-        })
-        .catch(function(error) {
-          console.log(error);
+    function addUpvote(upvote) {
+      const newData = boardData.board.slice(0);
+      newData.map(item => {
+        if (item.id == upvote.board_id) item.upvotes.push(upvote);
+        return item;
+      });
+
+      setBoardData(prevState => {
+        return { ...prevState, board: newData };
+      });
+    }
+
+    function deleteUpvote(upvote) {
+      const newData = boardData.board.slice(0);
+      newData.forEach(item => {
+        item.upvotes = item.upvotes.filter(up => {
+          if (up.board_id == upvote.board_id)
+            return up.user_id != upvote.user_id;
+          else return true;
         });
-  }, [])
+      });
+
+      setBoardData(prevState => {
+        return { ...prevState, board: newData };
+      });
+    }
+
+    setBoardData(prevState => {
+      return { ...prevState, addUpvote: addUpvote, deleteUpvote: deleteUpvote };
+    });
+  }, [boardData]);
+
+  useEffect(() => {
+    setLoading(true);
+    axios({
+      method: "get",
+      url: "http://www.undertiers.com:8000/boards/",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        setBoardData(prevState => {
+          return { ...prevState, board: response.data };
+        });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }, []);
 
   if (Array.isArray(boardData.board) && boardData.board.length > 0 && !loaded) {
     setLoading(false);
