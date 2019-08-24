@@ -6,6 +6,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { UserContext } from "../UserStore";
 import { CreateBoard } from "../Login";
+import { Redirect } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -38,7 +39,7 @@ export default function BoardTextFields() {
   });
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
-  const [test, setTest] = useState();
+  const [toMyBoards, setToMyBoards] = useState(false);
   const contextValue = useContext(UserContext);
 
   const handleChange = name => event => {
@@ -54,63 +55,56 @@ export default function BoardTextFields() {
       setError(true);
       setErrorText("Title must be less than 50 characters!");
     } else {
-      var newId = await CreateBoard(
-        contextValue.user.id,
-        values.title,
-        values.multiline
-      );
-      await setTest(prevState => {
-        return { ...prevState, newId };
-      });
-      if (newId) {
-        console.log("Wooooooooah. (Sound of routing)");
-        context.history.push("/boards/edit/" + newId);
-      }
+      CreateBoard(contextValue.user.id, values.title, values.multiline);
+      console.log("Wooooooooah. (Sound of routing)");
+      setToMyBoards(true);
     }
   }
 
-  return (
-    <Card className={classes.card}>
-      <CardContent>
-        <form
-          className={classes.container}
-          noValidate
-          autoComplete="off"
-          onSubmit={onFormSubmit}
-        >
-          <TextField
-            required
-            error={error}
-            id="outlined-required"
-            label="Title"
-            onChange={handleChange("title")}
-            className={classes.textField}
-            margin="normal"
-            variant="outlined"
-            helperText={errorText}
-          />
-          <TextField
-            required
-            error={error}
-            id="outlined-multiline-static"
-            label="Description"
-            multiline
-            fullWidth
-            rows="4"
-            className={classes.textField}
-            value={values.multiline}
-            onChange={handleChange("multiline")}
-            margin="normal"
-            variant="outlined"
-            placeholder="Enter description here"
-            helperText={errorText}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-          <Button onClick={onFormSubmit}>Submit</Button>
-        </form>
-      </CardContent>
-    </Card>
-  );
+  if (toMyBoards) return <Redirect to="/boards/me" />;
+  else
+    return (
+      <Card className={classes.card}>
+        <CardContent>
+          <form
+            className={classes.container}
+            noValidate
+            autoComplete="off"
+            onSubmit={onFormSubmit}
+          >
+            <TextField
+              required
+              error={error}
+              id="outlined-required"
+              label="Title"
+              onChange={handleChange("title")}
+              className={classes.textField}
+              margin="normal"
+              variant="outlined"
+              helperText={errorText}
+            />
+            <TextField
+              required
+              error={error}
+              id="outlined-multiline-static"
+              label="Description"
+              multiline
+              fullWidth
+              rows="4"
+              className={classes.textField}
+              value={values.multiline}
+              onChange={handleChange("multiline")}
+              margin="normal"
+              variant="outlined"
+              placeholder="Enter description here"
+              helperText={errorText}
+              InputLabelProps={{
+                shrink: true
+              }}
+            />
+            <Button onClick={onFormSubmit}>Submit</Button>
+          </form>
+        </CardContent>
+      </Card>
+    );
 }
