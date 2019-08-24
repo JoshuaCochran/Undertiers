@@ -60,9 +60,9 @@ export default function BoardList(props) {
       );
   }, [page, showingAll, boardContext.board]);
 
-  function clickUpvote(id, upvote) {
-    Upvote(id, !upvote);
-    if (!upvote)
+  function clickUpvote(id, alreadyUpvoted) {
+    Upvote(id, !alreadyUpvoted);
+    if (!alreadyUpvoted)
       boardContext.addUpvote({user_id: userContext.user.id, board_id: id});
     else
       boardContext.deleteUpvote({user_id: userContext.user.id, board_id: id});

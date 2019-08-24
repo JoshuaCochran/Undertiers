@@ -85,10 +85,10 @@ export function Upvote(id, upvote) {
   }
 }
 
-export function CreateBoard(userId, name, description){
+export async function CreateBoard(userId, name, description){
   const axios = require('axios');
   const cookies = new Cookies();
-  axios({
+  await axios({
     method: "post",
     url: "http://www.undertiers.com:8000/boards/create/",
     headers: {
@@ -101,7 +101,9 @@ export function CreateBoard(userId, name, description){
       description: description
     }
   }).then(function(response){
-    console.log(response.data);
+    const id = JSON.stringify(response.data.id);
+    console.log(id)
+      return id;
   }).catch(function(error){
     console.log(error);
   })

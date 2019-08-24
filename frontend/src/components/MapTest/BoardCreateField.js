@@ -38,13 +38,14 @@ export default function BoardTextFields() {
   });
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
+  const [test, setTest] = useState();
   const contextValue = useContext(UserContext);
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const onFormSubmit = event => {
+  async function onFormSubmit(event, context) {
     event.preventDefault();
     if (values.title === "" || values.multiline === "") {
       setError(true);
@@ -52,8 +53,21 @@ export default function BoardTextFields() {
     } else if (values.title.length > 50) {
       setError(true);
       setErrorText("Title must be less than 50 characters!");
-    } else CreateBoard(contextValue.user.id, values.title, values.multiline);
-  };
+    } else {
+      var newId = await CreateBoard(
+        contextValue.user.id,
+        values.title,
+        values.multiline
+      );
+      await setTest(prevState => {
+        return { ...prevState, newId };
+      });
+      if (newId) {
+        console.log("Wooooooooah. (Sound of routing)");
+        context.history.push("/boards/edit/" + newId);
+      }
+    }
+  }
 
   return (
     <Card className={classes.card}>
