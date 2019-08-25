@@ -39,7 +39,7 @@ export default function BoardTextFields() {
   });
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("");
-  const [toMyBoards, setToMyBoards] = useState(false);
+  const [redirect, setRedirect] = useState({isRedirecting: false, to: null});
   const contextValue = useContext(UserContext);
 
   const handleChange = name => event => {
@@ -55,13 +55,11 @@ export default function BoardTextFields() {
       setError(true);
       setErrorText("Title must be less than 50 characters!");
     } else {
-      CreateBoard(contextValue.user.id, values.title, values.multiline);
-      console.log("Wooooooooah. (Sound of routing)");
-      setToMyBoards(true);
+      CreateBoard(contextValue.user.id, values.title, values.multiline, setRedirect);
     }
   }
 
-  if (toMyBoards) return <Redirect to="/boards/me" />;
+  if (redirect.isRedirecting) return <Redirect to={redirect.to} />;
   else
     return (
       <Card className={classes.card}>
