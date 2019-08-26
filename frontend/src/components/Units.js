@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import UnitPopover from "./UnitPopover";
 import UnitListItem from "./UnitListItem";
+import color from "@material-ui/core/colors/cyan";
 
 const styles = theme => ({
   root: {
@@ -50,35 +51,37 @@ class Units extends Component {
 
   render() {
     const { classes } = this.props;
-    return this.props.loaded ? (
-      <div className={classes.root}>
-        <UnitModal
-          show={this.state.showUnit}
-          handleUnitClose={() => this.handleUnitClose()}
-          unit={this.state.unit}
-        />
-        <UnitPopover
-          open={this.state.showPopover}
-          anchorEl={this.state.anchorEl}
-          handlePopoverClose={this.handlePopoverClose}
-          unit={this.state.unit}
-        />
-        <GridList cellHeight={80} cols={15}>
-          {this.props.units.map((item, i) => (
-            <UnitListItem
-              id={i}
-              key={i}
-              unit={item}
-              showPopover={this.state.showPopover}
-              onClick={this.onUnitClick}
-              handlePopoverOpen={this.handlePopoverOpen}
-              handlePopoverClose={this.handlePopoverClose}
-              draggingUnit={this.props.draggingUnit}
-            />
-          ))}
-        </GridList>
-      </div>
-    ) : null;
+    if (Array.isArray(this.props.units) && this.props.units.length > 0)
+      return (
+        <div className={classes.root}>
+          <UnitModal
+            show={this.state.showUnit}
+            handleUnitClose={() => this.handleUnitClose()}
+            unit={this.state.unit}
+          />
+          <UnitPopover
+            open={this.state.showPopover}
+            anchorEl={this.state.anchorEl}
+            handlePopoverClose={this.handlePopoverClose}
+            unit={this.state.unit}
+          />
+          <GridList cellHeight={80} cols={15}>
+            {this.props.units.map((item, i) => (
+              <UnitListItem
+                id={i}
+                key={i}
+                unit={item}
+                showPopover={this.state.showPopover}
+                onClick={this.onUnitClick}
+                handlePopoverOpen={this.handlePopoverOpen}
+                handlePopoverClose={this.handlePopoverClose}
+                draggingUnit={this.props.draggingUnit}
+              />
+            ))}
+          </GridList>
+        </div>
+      );
+    else return null;
   }
 }
 

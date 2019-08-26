@@ -26,31 +26,34 @@ export default function UnitListItem({
       isDragging: !!monitor.isDragging()
     })
   });
-
-  const image = unit.icon_url;
   const classes = useStyles();
-  return (
-    <>
-      <DragPreviewImage connect={preview} src={image} />
-      <GridListTile
-        ref={drag}
-        col={1}
-        style={{
-          opacity: isDragging ? 0.5 : 1,
-          cursor: "move"
-        }}
-        aria-owns={showPopover ? "mouse-over-popover" : undefined}
-        aria-haspopup="true"
-        onMouseEnter={e => handlePopoverOpen(e, unit)}
-        onMouseLeave={handlePopoverClose}
-      >
-        <img
-          src={unit.icon_url}
-          onClick={() => onClick(unit)}
-          alt="{unit.name} icon"
-          className={classes.tileImage}
-        />
-      </GridListTile>
-    </>
-  );
+  if (unit && unit.icon_url) {
+    const image = unit.icon_url;
+    return (
+      <>
+        <DragPreviewImage connect={preview} src={image} />
+        <GridListTile
+          ref={drag}
+          col={1}
+          style={{
+            opacity: isDragging ? 0.5 : 1,
+            cursor: "move"
+          }}
+          aria-owns={showPopover ? "mouse-over-popover" : undefined}
+          aria-haspopup="true"
+          onMouseEnter={e => handlePopoverOpen(e, unit)}
+          onMouseLeave={handlePopoverClose}
+        >
+          <img
+            src={unit.icon_url}
+            onClick={() => onClick(unit)}
+            alt="{unit.name} icon"
+            className={classes.tileImage}
+          />
+        </GridListTile>
+      </>
+    );
+  }
+  else
+    return <p>Loading unit</p>
 }

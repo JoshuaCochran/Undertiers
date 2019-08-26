@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { UserContext } from "./UserStore"
 
 export const BoardContext = React.createContext();
 export default function BoardStore({ children }) {
   const [boardData, setBoardData] = useState({
     board: [],
+    units: [],
     setTitle: null,
     setDescription: null,
     addUpvote: null,
@@ -12,6 +14,7 @@ export default function BoardStore({ children }) {
   });
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const userContext = useContext(UserContext);
 
   useEffect(() => {
     function setTitle(title, id) {
@@ -99,6 +102,23 @@ export default function BoardStore({ children }) {
       .catch(function(error) {
         console.log(error);
       });
+
+      axios({
+        method: "get",
+        url: "http://www.undertiers.com:8000/units/",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Token " + userContext.token
+        }
+      })
+        .then(response => {
+          setBoardData(prevState => {
+            return { ...prevState, units: response.data}
+          })
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
   }, []);
 
   if (Array.isArray(boardData.board) && boardData.board.length > 0 && !loaded) {

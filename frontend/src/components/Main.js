@@ -42,8 +42,16 @@ function Main() {
         <Route
           path="/boards/edit/:id"
           render={props =>
-            contextValue.loggedIn ? (
-              <Maps board_id={props.match.params.id} />
+            contextValue.loggedIn && boardContext.board.length > 0 ? (
+              <Maps
+                board_id={props.match.params.id}
+                board={
+                  boardContext.board.filter(
+                    item => item.id == props.match.params.id
+                  )[0]
+                }
+                units={boardContext.units}
+              />
             ) : (
               <Redirect to="/" />
             )
@@ -52,15 +60,23 @@ function Main() {
         />
         <Route
           path="/boards/:id"
-          render={props => boardContext.board.length > 0 ? (
-            <MapsViewMode
-              loggedIn={contextValue.loggedIn}
-              board_id={props.match.params.id}
-              board={boardContext.board.filter(item => item.id == props.match.params.id)[0]}
-              setTitle={boardContext.setTitle}
-              setDescription={boardContext.setDescription}
-            />
-          ) : <p>Board not found</p>}
+          render={props =>
+            boardContext.board.length > 0 ? (
+              <MapsViewMode
+                loggedIn={contextValue.loggedIn}
+                board_id={props.match.params.id}
+                board={
+                  boardContext.board.filter(
+                    item => item.id == props.match.params.id
+                  )[0]
+                }
+                setTitle={boardContext.setTitle}
+                setDescription={boardContext.setDescription}
+              />
+            ) : (
+              <p>Board not found</p>
+            )
+          }
         />
         <Route path="/register" component={SignUp} />
         <Route
@@ -69,7 +85,7 @@ function Main() {
             contextValue.loggedIn ? <Redirect to="/" /> : <SignIn />
           }
         />
-        <Route path="/" render={() => <BoardList all={true}/>} />
+        <Route path="/" render={() => <BoardList all={true} />} />
       </Switch>
     </main>
   );
