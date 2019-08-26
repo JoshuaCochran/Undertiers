@@ -8,7 +8,9 @@ import { Link } from "react-router-dom";
 class Board extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      displayUnits: this.props.maps,
+    }
     this.movePiece = this.movePiece.bind(this);
     this.canMovePiece = this.canMovePiece.bind(this);
     this.createPiece = this.createPiece.bind(this);
@@ -40,8 +42,7 @@ class Board extends Component {
   }
 
   renderUnit(x, y) {
-    if (this.props.loaded && this.props.maps[0].unit) {
-      return this.props.maps.map((item, i) => {
+      return this.state.displayUnits.map((item, i) => {
         if (x === item.posx && y === item.posy)
           return (
             <div key={i}>
@@ -54,12 +55,10 @@ class Board extends Component {
           );
         return null;
       });
-    }
-    return null;
   }
 
   movePiece(toX, toY) {
-    const maps = this.props.maps.slice();
+    const maps = this.state.displayUnits.maps.slice();
     const id = this.props.draggingId;
     maps.forEach((unit, i) => {
       if (unit.posx === toX && unit.posy === toY) {
@@ -84,12 +83,10 @@ class Board extends Component {
   }
 
   canMovePiece(toX, toY) {
-    for (let i = 0; i < this.props.maps.length; i++) {
-      if (this.props.maps[i].posy === toY && this.props.maps[i].posx === toX) {
-        return false;
-      }
-    }
-    return true;
+    if (this.state.displayUnits.filter(item => item.posy === toY && item.posx === toX).length)
+      return false;
+    else
+      return true;
   }
 
   renderSquares = () => {

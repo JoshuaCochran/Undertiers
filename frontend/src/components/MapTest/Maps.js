@@ -5,18 +5,12 @@ import { DndProvider } from "react-dnd";
 import TouchBackend from "react-dnd-touch-backend";
 import HTML5Backend from "react-dnd-html5-backend";
 import { MobileCheck } from "./MobileCheck";
-import axios from "axios";
 import FilterRadioButtons from "./FilterRadioButtons";
 import AllianceFilterRadioButtons from "./AllianceFilterRadioButtons";
 
 import Board from "./Board";
 import Units from "../Units";
-import {
-  alphabeticalSort,
-  tierSort,
-  tierFilter,
-  allianceFilter
-} from "../sorting";
+import { tierFilter, allianceFilter } from "../sorting";
 import Abyss from "./Abyss";
 import { UserContext } from "../UserStore";
 
@@ -45,13 +39,9 @@ class Maps extends Component {
     super(props);
     this.state = {
       displayUnits: this.props.units,
-      loadedUnits: false,
-      loadingUnits: false,
       unitDragged: null,
       draggingId: null
     };
-    this.sortAlphabetically = this.sortAlphabetically.bind(this);
-    this.sortByTier = this.sortByTier.bind(this);
     this.filterTier = this.filterTier.bind(this);
     this.filterAlliance = this.filterAlliance.bind(this);
     this.draggingUnit = this.draggingUnit.bind(this);
@@ -60,23 +50,6 @@ class Maps extends Component {
     this.saveMap = this.saveMap.bind(this);
     this.resetMap = this.resetMap.bind(this);
     this.deleteUnit = this.deleteUnit.bind(this);
-  }
-
-  sortAlphabetically() {
-    this.setState({
-      units: alphabeticalSort(
-        this.state.units.slice(),
-        this.state.sortedAlphabetically
-      ),
-      sortedAlphabetically: !this.state.sortedAlphabetically
-    });
-  }
-
-  sortByTier() {
-    this.setState({
-      units: tierSort(this.state.units.slice(), this.state.sortedByTier),
-      sortedByTier: !this.state.sortedByTier
-    });
   }
 
   filterTier(tier) {
@@ -96,15 +69,16 @@ class Maps extends Component {
   }
 
   updateMap(maps) {
-    this.setState({ unitsOnMap: maps });
+    console.log("Called updateMap");
   }
 
   resetMap() {
-    this.setState({ unitsOnMap: [] });
+    console.log("Called resetMap");
   }
 
   async saveMap() {
-    var new_data = [];
+    console.log("Called saveMap");
+    /*var new_data = [];
     var unit;
     if (this.state.unitsOnMap.length === 0) {
       unit = {
@@ -134,14 +108,10 @@ class Maps extends Component {
       data: JSON.stringify(new_data)
     }).catch(function(error) {
       console.log(error);
-    });
+    });*/
   }
 
-  deleteUnit(id) {
-    var units = this.state.unitsOnMap;
-    units.splice(id, 1);
-    this.setState({ unitsOnMap: units });
-  }
+  deleteUnit(id) {}
 
   render() {
     const { classes } = this.props;
@@ -158,7 +128,7 @@ class Maps extends Component {
                   <FilterRadioButtons filterTier={this.filterTier} />
                 </Grid>
                 <Grid item xs={2} className={classes.board}>
-                  <Board
+                <Board
                     board_id={this.props.board_id}
                     maps={this.props.board.pieces}
                     unitDragged={this.state.unitDragged}
@@ -168,7 +138,6 @@ class Maps extends Component {
                     saveMap={this.saveMap}
                     resetMap={this.resetMap}
                     filterTier={this.filterTier}
-                    loaded={true}
                   />
                 </Grid>
               </Grid>
@@ -181,7 +150,6 @@ class Maps extends Component {
                 <Grid item xs={10} className={classes.units}>
                   <Units
                     units={this.state.displayUnits}
-                    loaded={true}
                     draggingUnit={this.draggingUnit}
                   />
                 </Grid>
@@ -195,3 +163,17 @@ class Maps extends Component {
 }
 Maps.contextType = UserContext;
 export default withStyles(styles)(Maps);
+
+/*
+                  <Board
+                    board_id={this.props.board_id}
+                    maps={this.props.board.pieces}
+                    unitDragged={this.state.unitDragged}
+                    draggingPiece={this.draggingPiece}
+                    draggingId={this.state.draggingId}
+                    updateMap={this.updateMap}
+                    saveMap={this.saveMap}
+                    resetMap={this.resetMap}
+                    filterTier={this.filterTier}
+                    loaded={true}
+                  />*/

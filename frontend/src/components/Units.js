@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import UnitPopover from "./UnitPopover";
 import UnitListItem from "./UnitListItem";
-import color from "@material-ui/core/colors/cyan";
 
 const styles = theme => ({
   root: {

@@ -119,7 +119,7 @@ export default function BoardStore({ children }) {
         .catch(function(error) {
           console.log(error);
         });
-  }, []);
+  }, [userContext.token]);
 
   if (Array.isArray(boardData.board) && boardData.board.length > 0 && !loaded) {
     setLoading(false);
