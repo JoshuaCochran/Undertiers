@@ -116,12 +116,8 @@ class Maps extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <DndProvider backend={MobileCheck() ? TouchBackend : HTML5Backend}>
+      <DndProvider backend={HTML5Backend}>
         <div className={classes.root}>
-          <Abyss
-            draggingId={this.state.draggingId}
-            deleteUnit={this.deleteUnit}
-          >
             <Grid container spacing={2} direction="column">
               <Grid container item spacing={1} xs={1} direction="row">
                 <Grid item xs={4}>
@@ -149,13 +145,12 @@ class Maps extends Component {
                 </Grid>
                 <Grid item xs={10} className={classes.units}>
                   <Units
-                    units={this.state.displayUnits}
+                    units={this.props.units}
                     draggingUnit={this.draggingUnit}
                   />
                 </Grid>
               </Grid>
             </Grid>
-          </Abyss>
         </div>
       </DndProvider>
     );
@@ -165,15 +160,7 @@ Maps.contextType = UserContext;
 export default withStyles(styles)(Maps);
 
 /*
-                  <Board
-                    board_id={this.props.board_id}
-                    maps={this.props.board.pieces}
-                    unitDragged={this.state.unitDragged}
-                    draggingPiece={this.draggingPiece}
-                    draggingId={this.state.draggingId}
-                    updateMap={this.updateMap}
-                    saveMap={this.saveMap}
-                    resetMap={this.resetMap}
-                    filterTier={this.filterTier}
-                    loaded={true}
-                  />*/
+          <Abyss
+            draggingId={this.state.draggingId}
+            deleteUnit={this.deleteUnit}
+          >*/

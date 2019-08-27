@@ -42,7 +42,7 @@ class Board extends Component {
   }
 
   renderUnit(x, y) {
-      return this.state.displayUnits.map((item, i) => {
+      return this.props.maps.map((item, i) => {
         if (x === item.posx && y === item.posy)
           return (
             <div key={i}>
@@ -58,7 +58,7 @@ class Board extends Component {
   }
 
   movePiece(toX, toY) {
-    const maps = this.state.displayUnits.maps.slice();
+    /*const maps = this.state.displayUnits.slice();
     const id = this.props.draggingId;
     maps.forEach((unit, i) => {
       if (unit.posx === toX && unit.posy === toY) {
@@ -68,7 +68,7 @@ class Board extends Component {
     });
     maps[id].posx = toX;
     maps[id].posy = toY;
-    this.setState({ maps: maps });
+    this.setState({ maps: maps });*/
   }
 
   createPiece(x, y) {
@@ -83,10 +83,14 @@ class Board extends Component {
   }
 
   canMovePiece(toX, toY) {
-    if (this.state.displayUnits.filter(item => item.posy === toY && item.posx === toX).length)
+    console.log("Called canMovePiece");
+    if (this.props.maps.filter(item => item.posy === toY && item.posx === toX).length)
+    {
+      console.log("toX: " + toX + ", toY: " + toY + ", false");
       return false;
-    else
-      return true;
+    }
+    console.log("toX: " + toX + ", toY: " + toY + ", false");
+    return true;
   }
 
   renderSquares = () => {

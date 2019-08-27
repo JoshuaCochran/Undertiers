@@ -6,7 +6,6 @@ export default function UnitPiece({image}) {
       <div
         style={{
           opacity: 1,
-          cursor: "move",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
