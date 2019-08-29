@@ -83,13 +83,8 @@ class Board extends Component {
   }
 
   canMovePiece(toX, toY) {
-    console.log("Called canMovePiece");
     if (this.props.maps.filter(item => item.posy === toY && item.posx === toX).length)
-    {
-      console.log("toX: " + toX + ", toY: " + toY + ", false");
       return false;
-    }
-    console.log("toX: " + toX + ", toY: " + toY + ", false");
     return true;
   }
 

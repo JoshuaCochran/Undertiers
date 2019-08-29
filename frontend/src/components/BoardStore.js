@@ -121,8 +121,6 @@ export default function BoardStore({ children }) {
         });
   }, []);
 
-  console.log("I rendered boardstore!");
-
   if (Array.isArray(boardData.board) && boardData.board.length > 0 && !loaded) {
     setLoading(false);
     setLoaded(true);

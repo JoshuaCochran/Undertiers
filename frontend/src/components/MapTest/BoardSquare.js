@@ -15,7 +15,7 @@ export default function BoardSquare({
   const black = (x + y) % 2 === 1;
   const [{ isOver, canDrop, itemType }, drop] = useDrop({
     accept: [ItemTypes.BOARD_PIECE, ItemTypes.LIST_PIECE],
-    canDrop: () => itemType === ItemTypes.BOARD_PIECE ? true : isOver && canMovePiece(x, y),
+    canDrop: () => itemType === ItemTypes.BOARD_PIECE ? true : canMovePiece(x, y),
     drop: () =>
       itemType === ItemTypes.BOARD_PIECE
         ? movePiece(x, y)

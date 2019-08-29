@@ -47,7 +47,6 @@ export default function UserStore({ children }) {
     });
   }
 
-  console.log("I rendered userstore!");
   if (!loaded) {
     const cookies = new Cookies();
     const expire = new Date(cookies.get("token expire"));
