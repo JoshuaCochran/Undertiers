@@ -115,6 +115,7 @@ class Maps extends Component {
 
   render() {
     const { classes } = this.props;
+    console.log("I rendered Maps!");
     return (
       <DndProvider backend={HTML5Backend}>
         <div className={classes.root}>

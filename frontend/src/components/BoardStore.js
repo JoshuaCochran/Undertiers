@@ -32,7 +32,7 @@ export default function BoardStore({ children }) {
     setBoardData(prevState => {
       return { ...prevState, setTitle: setTitle };
     });
-  }, [boardData]);
+  }, [boardData.board]);
 
   useEffect(() => {
     function setDescription(description, id) {
@@ -50,7 +50,7 @@ export default function BoardStore({ children }) {
     setBoardData(prevState => {
       return { ...prevState, setDescription: setDescription };
     });
-  }, [boardData]);
+  }, [boardData.board]);
 
   useEffect(() => {
     function addUpvote(upvote) {
@@ -83,7 +83,7 @@ export default function BoardStore({ children }) {
     setBoardData(prevState => {
       return { ...prevState, addUpvote: addUpvote, deleteUpvote: deleteUpvote };
     });
-  }, [boardData]);
+  }, [boardData.board]);
 
   useEffect(() => {
     setLoading(true);
@@ -119,7 +119,9 @@ export default function BoardStore({ children }) {
         .catch(function(error) {
           console.log(error);
         });
-  }, [userContext.token]);
+  }, []);
+
+  console.log("I rendered boardstore!");
 
   if (Array.isArray(boardData.board) && boardData.board.length > 0 && !loaded) {
     setLoading(false);
