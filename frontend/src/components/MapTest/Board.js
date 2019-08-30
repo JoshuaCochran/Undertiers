@@ -9,7 +9,7 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayUnits: this.props.maps,
+      displayPieces: this.props.maps,
     }
     this.movePiece = this.movePiece.bind(this);
     this.canMovePiece = this.canMovePiece.bind(this);
@@ -42,7 +42,7 @@ class Board extends Component {
   }
 
   renderUnit(x, y) {
-      return this.props.maps.map((item, i) => {
+      return this.state.displayPieces.map((item, i) => {
         if (x === item.posx && y === item.posy)
           return (
             <div key={i}>
@@ -58,7 +58,7 @@ class Board extends Component {
   }
 
   movePiece(toX, toY) {
-    /*const maps = this.state.displayUnits.slice();
+    const maps = this.state.displayPieces.slice();
     const id = this.props.draggingId;
     maps.forEach((unit, i) => {
       if (unit.posx === toX && unit.posy === toY) {
@@ -68,18 +68,18 @@ class Board extends Component {
     });
     maps[id].posx = toX;
     maps[id].posy = toY;
-    this.setState({ maps: maps });*/
+    this.setState({ displayPieces: maps });
   }
 
   createPiece(x, y) {
-    const newData = this.props.maps.slice();
+    const newData = this.state.displayPieces.slice();
     newData.push({
       unit: this.props.unitDragged,
       board: this.props.board_id,
       posx: x,
       posy: y
     });
-    this.props.updateMap(newData);
+    this.setState({ displayPieces: newData });
   }
 
   canMovePiece(toX, toY) {

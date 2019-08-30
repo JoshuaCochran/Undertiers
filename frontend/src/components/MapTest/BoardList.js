@@ -50,8 +50,6 @@ export default function BoardList(props) {
   const userContext = useContext(UserContext);
   const boardContext = useContext(BoardContext);
 
-  //console.log("I rendered boardlist!");
-
   useEffect(() => {
     if (showingAll) setDisplayData(boardContext.board.slice(0, page * 4 + 4));
     else

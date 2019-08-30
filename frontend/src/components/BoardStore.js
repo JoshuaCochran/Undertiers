@@ -29,12 +29,6 @@ export default function BoardStore({ children }) {
       });
     }
 
-    setBoardData(prevState => {
-      return { ...prevState, setTitle: setTitle };
-    });
-  }, [boardData.board]);
-
-  useEffect(() => {
     function setDescription(description, id) {
       setBoardData(prevState => {
         return {
@@ -48,7 +42,7 @@ export default function BoardStore({ children }) {
     }
 
     setBoardData(prevState => {
-      return { ...prevState, setDescription: setDescription };
+      return { ...prevState, setDescription: setDescription, setTitle: setTitle };
     });
   }, [boardData.board]);
 
@@ -108,7 +102,6 @@ export default function BoardStore({ children }) {
         url: "http://www.undertiers.com:8000/units/",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Token " + userContext.token
         }
       })
         .then(response => {
