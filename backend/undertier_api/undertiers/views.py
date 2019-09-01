@@ -8,7 +8,8 @@ from rest_framework.views import APIView
 from knox.views import LoginView as KnoxLoginView
 
 from .models import Unit, UnitLoc, Map, Alliance, Upvote
-from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer, UpvoteSerializer, BoardSerializer, DetailedBoardSerializer
+from .serializers import UnitSerializer, UnitLocSerializer, MapSerializer, AllianceSerializer, \
+    UpvoteSerializer, BoardSerializer, DetailedBoardSerializer, UnitLocAddSerializer
 
 class LoginView(KnoxLoginView):
     authentication_classes = [BasicAuthentication]
@@ -105,7 +106,7 @@ class AddUnitToBoard(generics.ListCreateAPIView):
         return null
 
     queryset = UnitLoc.objects.all()
-    serializer_class = UnitLocSerializer
+    serializer_class = UnitLocAddSerializer
 
 class DetailMap(generics.ListAPIView):
     permission_classes = [AllowAny,]

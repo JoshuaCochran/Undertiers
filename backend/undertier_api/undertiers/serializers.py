@@ -69,6 +69,11 @@ class UnitLocSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = UnitLoc
 
+class UnitLocAddSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = UnitLoc
+
 class UpvoteSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('user', 'board')
