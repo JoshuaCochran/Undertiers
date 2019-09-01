@@ -9,7 +9,7 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayPieces: this.props.maps,
+      displayPieces: this.props.pieces,
     }
     this.movePiece = this.movePiece.bind(this);
     this.canMovePiece = this.canMovePiece.bind(this);
@@ -35,7 +35,7 @@ class Board extends Component {
           canMovePiece={() => this.canMovePiece(x, y)}
           createPiece={() => this.createPiece(x, y)}
         >
-          {this.props.maps.length > 0 ? this.renderUnit(x, y) : null}
+          {this.props.pieces.length > 0 ? this.renderUnit(x, y) : null}
         </BoardSquare>
       </div>
     );
@@ -83,7 +83,7 @@ class Board extends Component {
   }
 
   canMovePiece(toX, toY) {
-    if (this.props.maps.filter(item => item.posy === toY && item.posx === toX).length)
+    if (this.props.pieces.filter(item => item.posy === toY && item.posx === toX).length)
       return false;
     return true;
   }
@@ -119,7 +119,7 @@ class Board extends Component {
           Exit
         </Button>
         <Button style={{ color: "white", textAlign: "center"}}>
-          Units on Board: {this.props.maps.length}
+          Units on Board: {this.props.pieces.length}
         </Button>
       </div>
     );

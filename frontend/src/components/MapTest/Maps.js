@@ -127,7 +127,7 @@ class Maps extends Component {
                 <Grid item xs={2} className={classes.board}>
                   <Board
                     board_id={this.props.board_id}
-                    maps={this.props.board.pieces}
+                    pieces={this.props.board.pieces}
                     unitDragged={this.state.unitDragged}
                     draggingPiece={this.draggingPiece}
                     draggingId={this.state.draggingId}
