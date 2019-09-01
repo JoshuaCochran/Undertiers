@@ -8,9 +8,6 @@ import { Link } from "react-router-dom";
 class Board extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      displayPieces: this.props.pieces,
-    }
     this.movePiece = this.movePiece.bind(this);
     this.canMovePiece = this.canMovePiece.bind(this);
     this.createPiece = this.createPiece.bind(this);
@@ -35,14 +32,14 @@ class Board extends Component {
           canMovePiece={() => this.canMovePiece(x, y)}
           createPiece={() => this.createPiece(x, y)}
         >
-          {this.state.displayPieces.length > 0 ? this.renderUnit(x, y) : null}
+          {this.props.pieces.length > 0 ? this.renderUnit(x, y) : null}
         </BoardSquare>
       </div>
     );
   }
 
   renderUnit(x, y) {
-      return this.state.displayPieces.map((item, i) => {
+      return this.props.pieces.map((item, i) => {
         if (x === item.posx && y === item.posy)
           return (
             <div key={i}>
@@ -58,7 +55,7 @@ class Board extends Component {
   }
 
   movePiece(toX, toY) {
-    const maps = this.state.displayPieces.slice();
+    const maps = this.props.pieces.slice();
     const id = this.props.draggingId;
     maps.forEach((unit, i) => {
       if (unit.posx === toX && unit.posy === toY) {
@@ -68,18 +65,18 @@ class Board extends Component {
     });
     maps[id].posx = toX;
     maps[id].posy = toY;
-    this.setState({ displayPieces: maps });
+    this.props.setBoardState(this.props.board_id, maps);
   }
 
   createPiece(x, y) {
-    const newData = this.state.displayPieces.slice();
+    const newData = this.props.pieces.slice();
     newData.push({
       unit: this.props.unitDragged,
       board: this.props.board_id,
       posx: x,
       posy: y
     });
-    this.setState({ displayPieces: newData });
+    this.props.setBoardState(this.props.board_id, newData);
   }
 
   canMovePiece(toX, toY) {
@@ -113,7 +110,7 @@ class Board extends Component {
         }}
       >
         {squareData}
-        <CustomButton name={"Save"} func={() => this.props.saveMap(this.state.displayPieces)} />
+        <CustomButton name={"Save"} func={() => this.props.saveMap(this.props.pieces)} />
         <CustomButton name={"Clear"} func={this.props.resetMap} />
         <Button style={{ color: "white" }} component={Link} to={url}>
           Exit

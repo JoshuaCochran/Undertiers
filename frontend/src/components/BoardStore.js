@@ -42,9 +42,15 @@ export default function BoardStore({ children }) {
       });
     }
 
-    function setBoardState(state) {
+    function setBoardState(id, state) {
+      var new_data = boardData.board.slice(0);
+      new_data.map(item => {
+        if (item.id == id)
+          item.pieces = state;
+        return item;
+      })
       setBoardData(prevState => {
-        return { ...prevState, board: state };
+        return { ...prevState, board: new_data };
       });
     }
 

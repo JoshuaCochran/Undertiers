@@ -109,7 +109,11 @@ class Maps extends Component {
     });
   }
 
-  deleteUnit(id) {}
+  deleteUnit(id) {
+    var newData = this.props.board.pieces;
+    delete newData[id];
+    this.props.setBoardState(this.props.board_id, newData);
+  }
 
   render() {
     const { classes } = this.props;
@@ -133,6 +137,7 @@ class Maps extends Component {
                     saveMap={this.saveMap}
                     resetMap={this.resetMap}
                     filterTier={this.filterTier}
+                    setBoardState={this.props.setBoardState}
                   />
                 </Grid>
               </Grid>
