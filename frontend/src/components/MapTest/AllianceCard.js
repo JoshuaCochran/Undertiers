@@ -19,7 +19,7 @@ export default function AllianceCard({ alliance }) {
       <CardContent>
         <img src={alliance.icon_url} alt={"Dota Underlords " + alliance.name + " icon"}/>
         <Typography style={{ textAlign: "center" }} variant="h5" component="h5">
-          ({alliance.count - (alliance.max_units % alliance.count)})
+          ({alliance.count})
         </Typography>
       </CardContent>
     </Card>
