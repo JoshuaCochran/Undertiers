@@ -35,7 +35,7 @@ class Board extends Component {
           canMovePiece={() => this.canMovePiece(x, y)}
           createPiece={() => this.createPiece(x, y)}
         >
-          {this.props.pieces.length > 0 ? this.renderUnit(x, y) : null}
+          {this.state.displayPieces.length > 0 ? this.renderUnit(x, y) : null}
         </BoardSquare>
       </div>
     );
@@ -113,7 +113,7 @@ class Board extends Component {
         }}
       >
         {squareData}
-        <CustomButton name={"Save"} func={this.props.saveMap} />
+        <CustomButton name={"Save"} func={() => this.props.saveMap(this.state.displayPieces)} />
         <CustomButton name={"Clear"} func={this.props.resetMap} />
         <Button style={{ color: "white" }} component={Link} to={url}>
           Exit

@@ -7,6 +7,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { MobileCheck } from "./MobileCheck";
 import FilterRadioButtons from "./FilterRadioButtons";
 import AllianceFilterRadioButtons from "./AllianceFilterRadioButtons";
+import axios from "axios";
 
 import Board from "./Board";
 import Units from "../Units";
@@ -76,11 +77,11 @@ class Maps extends Component {
     console.log("Called resetMap");
   }
 
-  async saveMap() {
+  async saveMap(data) {
     console.log("Called saveMap");
-    /*var new_data = [];
+    var new_data = [];
     var unit;
-    if (this.state.unitsOnMap.length === 0) {
+    if (data.length === 0) {
       unit = {
         posx: 0,
         posy: 0,
@@ -88,16 +89,13 @@ class Maps extends Component {
         board: this.props.board_id
       };
       new_data.push(unit);
-    } else
-      for (let i = 0; i < this.state.unitsOnMap.length; i++) {
-        unit = {
-          posx: this.state.unitsOnMap[i].posx,
-          posy: this.state.unitsOnMap[i].posy,
-          unit: this.state.unitsOnMap[i].unit.id,
-          board: this.props.board_id
-        };
-        new_data.push(unit);
-      }
+    } else {
+      new_data = data.map(item => {
+        item.unit = item.unit.id;
+        return item;
+      });
+      console.log(new_data);
+    }
     axios({
       method: "post",
       url: "http://www.undertiers.com:8000/boards/add/",
@@ -108,7 +106,7 @@ class Maps extends Component {
       data: JSON.stringify(new_data)
     }).catch(function(error) {
       console.log(error);
-    });*/
+    });
   }
 
   deleteUnit(id) {}

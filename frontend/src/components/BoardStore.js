@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { UserContext } from "./UserStore"
+import { UserContext } from "./UserStore";
 
 export const BoardContext = React.createContext();
 export default function BoardStore({ children }) {
@@ -9,6 +9,7 @@ export default function BoardStore({ children }) {
     units: [],
     setTitle: null,
     setDescription: null,
+    setBoardState: null,
     addUpvote: null,
     deleteUpvote: null
   });
@@ -41,8 +42,19 @@ export default function BoardStore({ children }) {
       });
     }
 
+    function setBoardState(state) {
+      setBoardData(prevState => {
+        return { ...prevState, board: state };
+      });
+    }
+
     setBoardData(prevState => {
-      return { ...prevState, setDescription: setDescription, setTitle: setTitle };
+      return {
+        ...prevState,
+        setDescription: setDescription,
+        setTitle: setTitle,
+        setBoardState: setBoardState
+      };
     });
   }, [boardData.board]);
 
@@ -97,21 +109,21 @@ export default function BoardStore({ children }) {
         console.log(error);
       });
 
-      axios({
-        method: "get",
-        url: "http://www.undertiers.com:8000/units/",
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
-        .then(response => {
-          setBoardData(prevState => {
-            return { ...prevState, units: response.data}
-          })
-        })
-        .catch(function(error) {
-          console.log(error);
+    axios({
+      method: "get",
+      url: "http://www.undertiers.com:8000/units/",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => {
+        setBoardData(prevState => {
+          return { ...prevState, units: response.data };
         });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }, []);
 
   if (Array.isArray(boardData.board) && boardData.board.length > 0 && !loaded) {

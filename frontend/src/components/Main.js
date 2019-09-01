@@ -51,6 +51,7 @@ function Main() {
                   )[0]
                 }
                 units={boardContext.units}
+                setBoardState={boardContext.setBoardState}
               />
             ) : (
               <Redirect to="/" />
