@@ -19,8 +19,8 @@ const useStyles = makeStyles({
   },
   card: {
     minWidth: 275,
-    height: "20vh",
-    marginTop: "2%",
+    height: "10vh",
+    marginTop: "1%",
     marginLeft: "10%",
     marginRight: "10%",
     backgroundColor: "rgba(12, 28, 37)",

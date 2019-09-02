@@ -49,23 +49,27 @@ export default function BoardList(props) {
   const [displayData, setDisplayData] = useState();
   const userContext = useContext(UserContext);
   const boardContext = useContext(BoardContext);
+  const boardsPerPage = 10;
 
   useEffect(() => {
-    if (showingAll) setDisplayData(boardContext.board.slice(0, page * 4 + 4));
+    if (showingAll)
+      setDisplayData(
+        boardContext.board.slice(0, page * boardsPerPage + boardsPerPage)
+      );
     else
       setDisplayData(
         boardContext.board
           .filter(item => userContext.user.id == item.user)
-          .slice(0, page * 4 + 4)
+          .slice(0, page * boardsPerPage + boardsPerPage)
       );
   }, [page, showingAll, boardContext.board]);
 
   function clickUpvote(id, alreadyUpvoted) {
     Upvote(id, !alreadyUpvoted);
     if (!alreadyUpvoted)
-      boardContext.addUpvote({user_id: userContext.user.id, board_id: id});
+      boardContext.addUpvote({ user_id: userContext.user.id, board_id: id });
     else
-      boardContext.deleteUpvote({user_id: userContext.user.id, board_id: id});
+      boardContext.deleteUpvote({ user_id: userContext.user.id, board_id: id });
   }
 
   function loadMore() {
