@@ -70,7 +70,10 @@ export default function UserStore({ children }) {
     setLoaded(true);
   }
 
-  return (
-    <UserContext.Provider value={userData}>{children}</UserContext.Provider>
-  );
+  if ((loaded && userData.loggedIn && userData.user.id) || (loaded && !userData.loggedIn))
+    return (
+      <UserContext.Provider value={userData}>{children}</UserContext.Provider>
+    );
+  else
+      return <p>Loading..</p>
 }

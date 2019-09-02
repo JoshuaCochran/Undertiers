@@ -59,7 +59,7 @@ export default function NavBar() {
   return (
     <div className={classes.root}>
       <AppBar position="sticky">
-        <Toolbar>
+        <Toolbar style={{   backgroundColor: "rgba(12, 28, 37)"}}>
           <Grid container direction="row">
             <Typography
               component={Link}

@@ -18,7 +18,7 @@ import { UserContext } from "../UserStore";
 const styles = theme => ({
   "@global": {
     body: {
-      backgroundColor: "rgba(35, 35, 35)",
+      backgroundColor: "rgba(13, 32, 43)",
       marginTop: "3%"
     }
   },

@@ -11,12 +11,20 @@ import PageviewIcon from "@material-ui/icons/Pageview";
 import { UserContext } from "../UserStore";
 
 const useStyles = makeStyles({
+  "@global": {
+    body: {
+      backgroundColor: "rgba(13, 32, 43)",
+      marginTop: "3%"
+    }
+  },
   card: {
     minWidth: 275,
     height: "20vh",
     marginTop: "2%",
     marginLeft: "10%",
-    marginRight: "10%"
+    marginRight: "10%",
+    backgroundColor: "rgba(12, 28, 37)",
+    color: "rgba(144, 151, 147)",
   },
   bullet: {
     display: "inline-block",
@@ -39,8 +47,6 @@ export default function BoardCard({ id, name, owner, description, upvoted, click
   const boardLink = "/boards/" + id;
   const [upvote, setUpvote] = useState(upvoted);
   const contextValue = useContext(UserContext);
-  var userId = null;
-  if (contextValue.user) userId = contextValue.user.id;
 
   if (upvoted !== upvote)
     setUpvote(upvoted);
@@ -48,10 +54,10 @@ export default function BoardCard({ id, name, owner, description, upvoted, click
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Typography variant="h5" component="h2">
+        <Typography variant="body2" component="p">
           {name}
         </Typography>
-        <Typography className={classes.pos} color="textSecondary">
+        <Typography  variant="body3" component="p" className={classes.pos} color="gray">
           Submitted by {owner}
         </Typography>
         <Typography variant="body2" component="p">
