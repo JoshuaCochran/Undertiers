@@ -8,7 +8,6 @@ import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import PageviewIcon from "@material-ui/icons/Pageview";
 import { UserContext } from "../UserStore";
-import { BoardContext } from "../BoardStore";
 import Grid from "@material-ui/core/Grid";
 import AllianceList from "./AllianceList";
 import UnitIconList from "./UnitIconList";
@@ -56,7 +55,6 @@ const BoardCard = props => {
   const boardLink = "/boards/" + props.id;
   const [upvote, setUpvote] = useState(props.upvoted);
   const userContext = useContext(UserContext);
-  const boardContext = useContext(BoardContext);
 
   if (props.upvoted !== upvote) setUpvote(props.upvoted);
 
