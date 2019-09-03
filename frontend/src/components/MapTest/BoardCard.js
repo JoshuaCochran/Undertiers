@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
@@ -9,6 +8,10 @@ import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import PageviewIcon from "@material-ui/icons/Pageview";
 import { UserContext } from "../UserStore";
+import { BoardContext } from "../BoardStore";
+import Grid from "@material-ui/core/Grid";
+import AllianceList from "./AllianceList";
+import UnitIconList from "./UnitIconList";
 
 const useStyles = makeStyles({
   "@global": {
@@ -24,7 +27,7 @@ const useStyles = makeStyles({
     marginLeft: "10%",
     marginRight: "10%",
     backgroundColor: "rgba(12, 28, 37)",
-    color: "rgba(144, 151, 147)",
+    color: "rgba(144, 151, 147)"
   },
   bullet: {
     display: "inline-block",
@@ -32,7 +35,10 @@ const useStyles = makeStyles({
     transform: "scale(0.8)"
   },
   title: {
-    fontSize: 14
+    color: "white"
+  },
+  description: {
+    color: "white"
   },
   pos: {
     marginBottom: 12
@@ -42,40 +48,60 @@ const useStyles = makeStyles({
   }
 });
 
-export default function BoardCard({ id, name, owner, description, upvoted, clickUpvote, numUpvotes }) {
+const BoardCard = props => {
   const classes = useStyles();
-  const boardLink = "/boards/" + id;
-  const [upvote, setUpvote] = useState(upvoted);
-  const contextValue = useContext(UserContext);
+  const boardLink = "/boards/" + props.id;
+  const [upvote, setUpvote] = useState(props.upvoted);
+  const userContext = useContext(UserContext);
+  const boardContext = useContext(BoardContext);
 
-  if (upvoted !== upvote)
-    setUpvote(upvoted);
+  if (props.upvoted !== upvote) setUpvote(props.upvoted);
 
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Typography variant="body2" component="p">
-          {name}
-        </Typography>
-        <Typography  variant="body3" component="p" className={classes.pos} color="gray">
-          Submitted by {owner}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {description}
-        </Typography>
+        <Grid container spacing={1} direction="row">
+          <Grid item xs={1}>
+            <IconButton
+              className={upvote ? classes.upvoted : null}
+              onClick={
+                userContext.loggedIn
+                  ? () => props.clickUpvote(props.id, upvote)
+                  : null
+              }
+            >
+              {props.numUpvotes}
+              <ThumbUpIcon />
+            </IconButton>
+          </Grid>
+          <Grid item xs={2}>
+            <Typography variant="body2" component="p" className={classes.title}>
+              {props.name}
+            </Typography>
+            <Typography variant="body2" component="p" className={classes.pos}>
+              By {props.owner}
+            </Typography>
+          </Grid>
+          <Grid item xs={2}>
+            <Typography variant="body2" component="p" className={classes.description}>
+              {props.description}
+            </Typography>
+          </Grid>
+          <Grid item xs={2}>
+            <AllianceList units={props.pieces} isSmall={true} />
+          </Grid>
+          <Grid item xs={4}>
+            <UnitIconList units={props.pieces} />
+          </Grid>
+          <Grid item xs={1}>
+            <IconButton component={Link} to={boardLink}>
+              <PageviewIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
       </CardContent>
-      <CardActions>
-        <IconButton
-          className={upvote ? classes.upvoted : null}
-          onClick={contextValue.loggedIn ? () => clickUpvote(id, upvote) : null}
-        >
-          {numUpvotes}
-          <ThumbUpIcon />
-        </IconButton>
-        <IconButton component={Link} to={boardLink}>
-          <PageviewIcon />
-        </IconButton>
-      </CardActions>
     </Card>
   );
-}
+};
+
+export default BoardCard;

@@ -161,7 +161,7 @@ class MapsViewMode extends Component {
                 />
               </Grid>
               <Grid item xs={4}>
-                <AllianceList units={this.props.board.pieces} />
+                <AllianceList units={this.props.board.pieces} isSmall={false} />
               </Grid>
             </Grid>
           </Grid>

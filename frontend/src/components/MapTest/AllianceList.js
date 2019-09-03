@@ -2,26 +2,35 @@ import React, { useState } from "react";
 import { getAllAlliances } from "../allianceCounting";
 import AllianceCard from "./AllianceCard";
 
-function renderAllianceCard(alliance) {
-  return (
-    <div key={alliance.name}>
-      <AllianceCard alliance={alliance} />
-    </div>
-  );
+function renderAllianceCard(alliance, isSmall) {
+  if (isSmall) {
+    return (
+      <img key={alliance.id}
+        src={alliance.icon_url}
+        alt={"Dota Underlords " + alliance.name + " icon"}
+        style={{width: "35px"}}
+      />
+    );
+  } else
+    return (
+      <div key={alliance.name}>
+        <AllianceCard alliance={alliance} />
+      </div>
+    );
 }
 
-export default function AllianceList({units}) {
+const AllianceList = props => {
   const [unitList, setUnitList] = useState([]);
   const [alliances, setAlliances] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
-  if (units !== unitList) {
+  if (props.units !== unitList) {
     setLoaded(false);
-    setUnitList(units);
+    setUnitList(props.units);
   }
 
   if (!loaded && unitList.length) {
-    setAlliances(getAllAlliances(units));
+    setAlliances(getAllAlliances(props.units));
     setLoaded(true);
     return <p>Loading..</p>;
   } else if (alliances.length) {
@@ -32,9 +41,11 @@ export default function AllianceList({units}) {
           ? alliance.count === alliance.min_units
           : alliance.count >= alliance.min_units
       )
-        allianceCards.push(renderAllianceCard(alliance));
+        allianceCards.push(renderAllianceCard(alliance, props.isSmall));
     });
     return allianceCards;
   }
   return null;
-}
+};
+
+export default AllianceList;

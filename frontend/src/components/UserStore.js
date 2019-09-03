@@ -62,15 +62,15 @@ export default function UserStore({ children }) {
         return {
           ...prevState,
           tokenExpire: cookies.get("token expire", { path: "/" }),
+          user: cookies.get("user", { path: "/" }),
           loggedIn: true
         };
       });
-      setUser(cookies.get("user", { path: "/" }));
     }
     setLoaded(true);
   }
 
-  if ((loaded && userData.loggedIn && userData.user.id) || (loaded && !userData.loggedIn))
+  if ((loaded && userData.loggedIn && userData.user) || (loaded && !userData.loggedIn))
     return (
       <UserContext.Provider value={userData}>{children}</UserContext.Provider>
     );

@@ -10,16 +10,19 @@ function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
     <div key={i}>
       <BoardCard
         id={item.id}
-        name={item.name}
+        name={
+          item.name.length > 40 ? item.name.substr(0, 40) + "..." : item.name
+        }
         owner={item.username}
         description={
-          item.description.length > 140
-            ? item.description.substr(0, 140) + "..."
+          item.description.length > 80
+            ? item.description.substr(0, 80) + "..."
             : item.description
         }
         upvoted={upvoted}
         clickUpvote={clickUpvote}
         numUpvotes={numUpvotes}
+        pieces={item.pieces}
       />
     </div>
   );
@@ -45,7 +48,7 @@ function renderBoardCards(boardData, clickUpvote, userId) {
 
 export default function BoardList(props) {
   const [showingAll, setShowingAll] = useState();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [displayData, setDisplayData] = useState();
   const userContext = useContext(UserContext);
   const boardContext = useContext(BoardContext);
@@ -54,13 +57,13 @@ export default function BoardList(props) {
   useEffect(() => {
     if (showingAll)
       setDisplayData(
-        boardContext.board.slice(0, page * boardsPerPage + boardsPerPage)
+        boardContext.board.slice(0, page * boardsPerPage)
       );
     else
       setDisplayData(
         boardContext.board
           .filter(item => userContext.user.id == item.user)
-          .slice(0, page * boardsPerPage + boardsPerPage)
+          .slice(0, page * boardsPerPage)
       );
   }, [page, showingAll, boardContext.board]);
 
