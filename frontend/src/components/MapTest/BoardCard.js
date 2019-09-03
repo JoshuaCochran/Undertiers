@@ -45,7 +45,10 @@ const useStyles = makeStyles({
   },
   upvoted: {
     color: "orange"
-  }
+  },
+  viewButton: {
+    color: "white",
+  },
 });
 
 const BoardCard = props => {
@@ -63,7 +66,7 @@ const BoardCard = props => {
         <Grid container spacing={1} direction="row">
           <Grid item xs={1}>
             <IconButton
-              className={upvote ? classes.upvoted : null}
+              className={upvote ? classes.upvoted : classes.viewButton}
               onClick={
                 userContext.loggedIn
                   ? () => props.clickUpvote(props.id, upvote)
@@ -87,14 +90,14 @@ const BoardCard = props => {
               {props.description}
             </Typography>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={1}>
             <AllianceList units={props.pieces} isSmall={true} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <UnitIconList units={props.pieces} />
           </Grid>
           <Grid item xs={1}>
-            <IconButton component={Link} to={boardLink}>
+            <IconButton component={Link} to={boardLink} className={classes.viewButton}>
               <PageviewIcon />
             </IconButton>
           </Grid>
