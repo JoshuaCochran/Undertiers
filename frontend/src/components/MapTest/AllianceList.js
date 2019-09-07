@@ -5,10 +5,11 @@ import AllianceCard from "./AllianceCard";
 function renderAllianceCard(alliance, isSmall) {
   if (isSmall) {
     return (
-      <img key={alliance.id}
+      <img
+        key={alliance.id}
         src={alliance.icon_url}
         alt={"Dota Underlords " + alliance.name + " icon"}
-        style={{width: "35px"}}
+        style={{ width: "35px" }}
       />
     );
   } else

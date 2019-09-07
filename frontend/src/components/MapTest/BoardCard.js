@@ -11,6 +11,8 @@ import { UserContext } from "../UserStore";
 import Grid from "@material-ui/core/Grid";
 import AllianceList from "./AllianceList";
 import UnitIconList from "./UnitIconList";
+import Paper from "@material-ui/core/Paper";
+import Collapse from "@material-ui/core/Collapse";
 
 const useStyles = makeStyles({
   "@global": {
@@ -20,13 +22,22 @@ const useStyles = makeStyles({
     }
   },
   card: {
-    minWidth: 275,
-    height: "10vh",
+    width: "80vw",
     marginTop: "1%",
     marginLeft: "10%",
     marginRight: "10%",
     backgroundColor: "rgba(12, 28, 37)",
     color: "rgba(144, 151, 147)"
+  },
+  cardClicked: {
+    width: "80vw",
+    marginTop: "1%",
+    marginLeft: "10%",
+    marginRight: "10%",
+    backgroundColor: "rgba(12, 28, 37)",
+    color: "rgba(144, 151, 147)",
+    border: "1px solid rgb(34, 122, 173)",
+    borderLeft: "5px solid rgb(34, 122, 173)"
   },
   bullet: {
     display: "inline-block",
@@ -42,29 +53,37 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12
   },
+  subheadings: {
+    marginBottom: 12,
+    fontWeight: 550
+  },
   upvoted: {
     color: "orange"
   },
-  viewButton: {
-    color: "white",
-  },
+  unpressedButton: {
+    color: "white"
+  }
 });
 
 const BoardCard = props => {
   const classes = useStyles();
   const boardLink = "/boards/" + props.id;
   const [upvote, setUpvote] = useState(props.upvoted);
+  const [clicked, setClicked] = useState(false);
   const userContext = useContext(UserContext);
 
   if (props.upvoted !== upvote) setUpvote(props.upvoted);
 
   return (
-    <Card className={classes.card}>
+    <Card
+      className={clicked ? classes.cardClicked : classes.card}
+      onClick={() => setClicked(!clicked)}
+    >
       <CardContent>
         <Grid container spacing={1} direction="row">
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             <IconButton
-              className={upvote ? classes.upvoted : classes.viewButton}
+              className={upvote ? classes.upvoted : classes.unpressedButton}
               onClick={
                 userContext.loggedIn
                   ? () => props.clickUpvote(props.id, upvote)
@@ -83,24 +102,66 @@ const BoardCard = props => {
               By {props.owner}
             </Typography>
           </Grid>
-          <Grid item xs={2}>
-            <Typography variant="body2" component="p" className={classes.description}>
-              {props.description}
-            </Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <AllianceList units={props.pieces} isSmall={true} />
-          </Grid>
           <Grid item xs={5}>
             <UnitIconList units={props.pieces} />
           </Grid>
           <Grid item xs={1}>
-            <IconButton component={Link} to={boardLink} className={classes.viewButton}>
+            <IconButton
+              component={Link}
+              to={boardLink}
+              className={classes.unpressedButton}
+            >
               <PageviewIcon />
             </IconButton>
           </Grid>
         </Grid>
       </CardContent>
+
+      <Collapse in={clicked}>
+        <CardContent>
+          <Grid container spacing={1} direction="row">
+            <Grid item xs={2}>
+              <UnitIconList units={props.pieces.slice(0, 3)} />
+              <Typography
+                variant="body2"
+                component="p"
+                className={classes.subheadings}
+              >
+                EARLY GAME
+              </Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <UnitIconList units={props.pieces.slice(3, 3 + 5 + 1)} />
+              <Typography
+                variant="body2"
+                component="p"
+                className={classes.subheadings}
+              >
+                MID GAME
+              </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <AllianceList units={props.pieces} isSmall={true} />
+              <Typography
+                variant="body2"
+                component="p"
+                className={classes.subheadings}
+              >
+                ALLIANCES
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+        <CardContent>
+          <Typography
+            variant="body2"
+            component="p"
+            className={classes.description}
+          >
+            {props.description}
+          </Typography>
+        </CardContent>
+      </Collapse>
     </Card>
   );
 };

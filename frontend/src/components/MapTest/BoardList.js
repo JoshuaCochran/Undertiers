@@ -14,11 +14,7 @@ function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
           item.name.length > 40 ? item.name.substr(0, 40) + "..." : item.name
         }
         owner={item.username}
-        description={
-          item.description.length > 80
-            ? item.description.substr(0, 80) + "..."
-            : item.description
-        }
+        description={item.description}
         upvoted={upvoted}
         clickUpvote={clickUpvote}
         numUpvotes={numUpvotes}
@@ -56,9 +52,7 @@ export default function BoardList(props) {
 
   useEffect(() => {
     if (showingAll)
-      setDisplayData(
-        boardContext.board.slice(0, page * boardsPerPage)
-      );
+      setDisplayData(boardContext.board.slice(0, page * boardsPerPage));
     else
       setDisplayData(
         boardContext.board
