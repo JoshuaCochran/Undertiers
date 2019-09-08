@@ -13,6 +13,8 @@ import AllianceList from "./AllianceList";
 import UnitIconList from "./UnitIconList";
 import Paper from "@material-ui/core/Paper";
 import Collapse from "@material-ui/core/Collapse";
+import BoardViewMode from "./BoardViewMode";
+import MiniBoard from "../MiniBoard/MiniBoard";
 
 const useStyles = makeStyles({
   "@global": {
@@ -22,7 +24,7 @@ const useStyles = makeStyles({
     }
   },
   card: {
-    width: "80vw",
+    width: "60vw",
     marginTop: "1%",
     marginLeft: "10%",
     marginRight: "10%",
@@ -30,7 +32,7 @@ const useStyles = makeStyles({
     color: "rgba(144, 151, 147)"
   },
   cardClicked: {
-    width: "80vw",
+    width: "60vw",
     marginTop: "1%",
     marginLeft: "10%",
     marginRight: "10%",
@@ -151,6 +153,16 @@ const BoardCard = props => {
               </Typography>
             </Grid>
           </Grid>
+        </CardContent>
+        <CardContent style={{ width: "20vw", height: "20vh" }}>
+          <MiniBoard pieces={props.pieces}/>
+          <Typography
+                variant="body2"
+                component="p"
+                className={classes.subheadings}
+              >
+                POSITIONING
+              </Typography>
         </CardContent>
         <CardContent>
           <Typography
