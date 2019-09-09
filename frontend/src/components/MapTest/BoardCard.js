@@ -122,7 +122,7 @@ const BoardCard = props => {
       <Collapse in={clicked}>
         <CardContent>
           <Grid container spacing={1} direction="row">
-            <Grid item xs={2}>
+            <Grid item xs={5}>
               <UnitIconList units={props.pieces.slice(0, 3)} />
               <Typography
                 variant="body2"
@@ -154,15 +154,16 @@ const BoardCard = props => {
             </Grid>
           </Grid>
         </CardContent>
-        <CardContent style={{ width: "20vw", height: "20vh" }}>
-          <MiniBoard pieces={props.pieces}/>
+        <CardContent style={{ width: "20vw", height: "20vh", marginLeft: "30%", marginRight: "30%" }}>
+          <MiniBoard pieces={props.pieces} />
           <Typography
-                variant="body2"
-                component="p"
-                className={classes.subheadings}
-              >
-                POSITIONING
-              </Typography>
+            variant="body2"
+            component="p"
+            className={classes.subheadings}
+            align="center"
+          >
+            POSITIONING
+          </Typography>
         </CardContent>
         <CardContent>
           <Typography

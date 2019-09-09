@@ -7,10 +7,15 @@ const MiniSquare = (props, children) => {
       style={{
         backgroundColor: background,
         width: "90%",
-        height: "90%",
+        height: "90%"
       }}
     >
-      {Array.isArray(props.piece) && props.piece[0] ? <img src={props.piece[0].unit.icon_url} style={{ width: "100%", height: "100%"}} /> : null}
+      {Array.isArray(props.piece) && props.piece[0] ? (
+        <img
+          src={props.piece[0].unit.icon_url}
+          style={{ width: "100%", height: "100%" }}
+        />
+      ) : null}
     </div>
   );
 };

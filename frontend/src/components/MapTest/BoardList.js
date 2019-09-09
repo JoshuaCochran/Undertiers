@@ -1,24 +1,32 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, Fragment } from "react";
 import { Upvote } from "../Login";
 import BoardCard from "./BoardCard";
 import { UserContext } from "../UserStore";
 import { BoardContext } from "../BoardStore";
 import Button from "@material-ui/core/Button";
 
-function renderBoardCard(item, i, upvoted, clickUpvote, numUpvotes) {
+function renderBoardCard(board, i, upvoted, clickUpvote, numUpvotes) {
+  const description = board.description.split("\n").map((item, key) => {
+    return (
+      <Fragment key={key}>
+        {item}
+        <br />
+      </Fragment>
+    );
+  });
   return (
     <div key={i}>
       <BoardCard
-        id={item.id}
+        id={board.id}
         name={
-          item.name.length > 40 ? item.name.substr(0, 40) + "..." : item.name
+          board.name.length > 40 ? board.name.substr(0, 40) + "..." : board.name
         }
-        owner={item.username}
-        description={item.description}
+        owner={board.username}
+        description={description}
         upvoted={upvoted}
         clickUpvote={clickUpvote}
         numUpvotes={numUpvotes}
-        pieces={item.pieces}
+        pieces={board.pieces}
       />
     </div>
   );

@@ -74,7 +74,7 @@ class Maps extends Component {
   }
 
   resetMap() {
-    console.log("Called resetMap");
+    this.props.setBoardState(this.props.board_id, []);
   }
 
   async saveMap(data) {
@@ -94,7 +94,6 @@ class Maps extends Component {
         item.unit = item.unit.id;
         return item;
       });
-      console.log(new_data);
     }
     axios({
       method: "post",
@@ -110,8 +109,9 @@ class Maps extends Component {
   }
 
   deleteUnit(id) {
-    var newData = this.props.board.pieces;
-    delete newData[id];
+    var newData = this.props.board.pieces.filter(item => {
+      if (item.id != this.props.board.pieces[id].id) return item;
+    });
     this.props.setBoardState(this.props.board_id, newData);
   }
 
