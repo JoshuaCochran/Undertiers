@@ -15,6 +15,7 @@ import Paper from "@material-ui/core/Paper";
 import Collapse from "@material-ui/core/Collapse";
 import BoardViewMode from "./BoardViewMode";
 import MiniBoard from "../MiniBoard/MiniBoard";
+import { borderColors } from "../borderColors";
 
 const useStyles = makeStyles({
   "@global": {
@@ -29,7 +30,9 @@ const useStyles = makeStyles({
     marginLeft: "10%",
     marginRight: "10%",
     backgroundColor: "rgba(12, 28, 37)",
-    color: "rgba(144, 151, 147)"
+    color: "rgba(144, 151, 147)",
+    border: "1px solid",
+    borderColor: borderColors["default"]
   },
   cardClicked: {
     width: "60vw",
@@ -154,7 +157,14 @@ const BoardCard = props => {
             </Grid>
           </Grid>
         </CardContent>
-        <CardContent style={{ width: "20vw", height: "20vh", marginLeft: "30%", marginRight: "30%" }}>
+        <CardContent
+          style={{
+            width: "20vw",
+            height: "20vh",
+            marginLeft: "30%",
+            marginRight: "30%"
+          }}
+        >
           <MiniBoard pieces={props.pieces} />
           <Typography
             variant="body2"

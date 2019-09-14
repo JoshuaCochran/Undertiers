@@ -2,30 +2,19 @@ import React, { useState, Fragment } from "react";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-
-const borderColors = {
-  "1": "rgb(33, 48, 66)",
-  "2": "rgb(21, 104, 49)",
-  "3": "rgb(16, 64, 124)",
-  "4": "rgb(137, 48, 136)",
-  "5": "rgb(184, 157, 39)",
-  hover: "rgb(212, 117, 89)",
-  popover: "rgb(27, 45, 51)",
-};
+import { borderColors } from "../borderColors";
 
 const useStyles = makeStyles(theme => ({
-  popoverContent: {
-
-  },
+  popoverContent: {},
   popover: {
-    pointerEvents: "none",
+    pointerEvents: "none"
   },
   paper: {
     padding: theme.spacing(1),
     color: "white",
     backgroundColor: "rgba(13, 32, 43)",
     border: "1px solid",
-    borderColor: borderColors["popover"],
+    borderColor: borderColors["default"]
   }
 }));
 
@@ -83,7 +72,9 @@ const UnitIcon = props => {
         disableRestoreFocus
         container={anchorEl ? anchorEl.parentNode : null}
       >
-        <Typography className={classes.popoverContent}>I am {props.unit.name}!</Typography>
+        <Typography className={classes.popoverContent}>
+          I am {props.unit.name}!
+        </Typography>
       </Popover>
     </Fragment>
   );
