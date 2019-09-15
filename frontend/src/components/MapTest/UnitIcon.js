@@ -3,6 +3,7 @@ import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { borderColors } from "../borderColors";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   popoverContent: {},
@@ -15,8 +16,33 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "rgba(13, 32, 43)",
     border: "1px solid",
     borderColor: borderColors["default"]
+  },
+  alliances: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    justifyContent: "flex-end"
   }
 }));
+
+const renderAlliance = (alliance, key) => {
+  return (
+    <Grid item xs={1} key={key}>
+      <img
+        src={alliance.icon_url}
+        alt={"Dota Underlords " + alliance.name + " icon"}
+      />
+    </Grid>
+  );
+};
+
+const renderAlliances = unit => {
+  const alliances = [];
+  unit.alliances.forEach((alliance, key) => {
+    alliances.push(renderAlliance(alliance, key));
+  });
+  return alliances;
+};
 
 const UnitIcon = props => {
   const classes = useStyles();
@@ -72,9 +98,31 @@ const UnitIcon = props => {
         disableRestoreFocus
         container={anchorEl ? anchorEl.parentNode : null}
       >
-        <Typography className={classes.popoverContent}>
-          I am {props.unit.name}!
-        </Typography>
+        <Grid container spacing={2} direction="row">
+          <Grid item xs={5}>
+            <img
+              src={props.unit.icon_url}
+              alt={"Dota Underlords " + props.unit.name + " icon"}
+            />
+            <Typography className={classes.popoverContent}>
+              {props.unit.name}
+            </Typography>
+          </Grid>
+          <Grid item direction="column">
+            {props.unit.alliances.map((alliance, key) => (
+              <Grid item xs={2} key={key} className={classes.alliances}>
+                <img
+                  src={alliance.icon_url}
+                  alt={"Dota Underlords " + alliance.name + " icon"}
+                />
+                {alliance.name}
+              </Grid>
+            ))}
+          </Grid>
+          <Grid item xs={1}>
+            ${props.unit.tier}
+          </Grid>
+        </Grid>
       </Popover>
     </Fragment>
   );
