@@ -15,34 +15,15 @@ const useStyles = makeStyles(theme => ({
     color: "white",
     backgroundColor: "rgba(13, 32, 43)",
     border: "1px solid",
-    borderColor: borderColors["default"]
+    borderColor: borderColors["default"],
   },
   alliances: {
     flex: 1,
     flexDirection: "row",
     flexWrap: "nowrap",
     justifyContent: "flex-end"
-  }
+  },
 }));
-
-const renderAlliance = (alliance, key) => {
-  return (
-    <Grid item xs={1} key={key}>
-      <img
-        src={alliance.icon_url}
-        alt={"Dota Underlords " + alliance.name + " icon"}
-      />
-    </Grid>
-  );
-};
-
-const renderAlliances = unit => {
-  const alliances = [];
-  unit.alliances.forEach((alliance, key) => {
-    alliances.push(renderAlliance(alliance, key));
-  });
-  return alliances;
-};
 
 const UnitIcon = props => {
   const classes = useStyles();
@@ -98,11 +79,18 @@ const UnitIcon = props => {
         disableRestoreFocus
         container={anchorEl ? anchorEl.parentNode : null}
       >
-        <Grid container spacing={2} direction="row">
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justify="flex-start"
+          alignItems="center"
+        >
           <Grid item xs={5}>
             <img
               src={props.unit.icon_url}
               alt={"Dota Underlords " + props.unit.name + " icon"}
+              style={{ width: "3vw" }}
             />
             <Typography className={classes.popoverContent}>
               {props.unit.name}
@@ -115,12 +103,11 @@ const UnitIcon = props => {
                   src={alliance.icon_url}
                   alt={"Dota Underlords " + alliance.name + " icon"}
                 />
-                {alliance.name}
               </Grid>
             ))}
           </Grid>
           <Grid item xs={1}>
-            ${props.unit.tier}
+            <Typography>${props.unit.tier}</Typography>
           </Grid>
         </Grid>
       </Popover>
