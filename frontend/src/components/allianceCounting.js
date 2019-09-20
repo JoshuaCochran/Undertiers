@@ -7,6 +7,18 @@ export function getUniqueAlliances(units) {
   return alliances;
 }
 
+export function getUniqueUnits(units) {
+  const result = units.filter((item, index) => {
+    return (
+      index ===
+      units.findIndex(obj => {
+        return JSON.stringify(obj.unit) === JSON.stringify(item.unit);
+      })
+    );
+  });
+  return result;
+}
+
 export function getAlliance(units, allianceToGet) {
   const alliances = getUniqueAlliances(units);
   const result = alliances.filter(alliance => alliance.name === allianceToGet);
@@ -17,12 +29,13 @@ export function getAlliance(units, allianceToGet) {
 
 export function getAllAlliances(units) {
   var alliances = [];
-  units.forEach(piece => {
+  const uniqueUnits = getUniqueUnits(units);
+  uniqueUnits.forEach(piece => {
     piece.unit.alliances.forEach(alliance => {
       if (!alliances.includes(alliance.name)) alliances.push(alliance.name);
     });
   });
   var result = [];
-  alliances.forEach(alliance => result.push(getAlliance(units, alliance)));
+  alliances.forEach(alliance => result.push(getAlliance(uniqueUnits, alliance)));
   return result;
 }

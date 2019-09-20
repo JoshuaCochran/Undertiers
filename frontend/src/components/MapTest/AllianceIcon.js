@@ -23,39 +23,30 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "nowrap",
     justifyContent: "flex-end"
   },
-  border: {
-  }
+  border: {}
 }));
 
-const UnitIcon = props => {
+const AllianceIcon = props => {
   const classes = useStyles();
-  const [borderColor, setBorderColor] = useState(borderColors[props.unit.tier]);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
 
   function handleMouseEnter(event) {
-    setBorderColor(borderColors["hover"]);
     setAnchorEl(event.currentTarget);
   }
 
   function handleMouseLeave() {
-    setBorderColor(borderColors[props.unit.tier]);
     setAnchorEl(null);
   }
 
   return (
     <Fragment>
       <img
-        key={props.key}
-        src={props.unit.icon_url}
-        alt={"Dota Underlords " + props.unit.name + " icon"}
-        style={{
-          width: "5vh",
-          margin: "3px",
-          border: "1px solid",
-          borderColor: borderColor
-        }}
+        key={props.alliance.id}
+        src={props.alliance.icon_url}
+        alt={"Dota Underlords " + props.alliance.name + " icon"}
+        style={{ width: "35px" }}
         aria-owns={open ? "mouse-over-popover" : undefined}
         aria-haspopup="true"
         onMouseEnter={event => handleMouseEnter(event)}
@@ -81,35 +72,20 @@ const UnitIcon = props => {
         disableRestoreFocus
         container={anchorEl ? anchorEl.parentNode : null}
       >
-        <Grid
-          container
-          spacing={2}
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-        >
-          <Grid item xs className={classes.border}>
+        <Grid container spacing={2} direction="column" alignItems="center">
+          <Grid container item xs alignItems="center">
             <img
-              src={props.unit.icon_url}
-              alt={"Dota Underlords " + props.unit.name + " icon"}
-              style={{ width: "3vw" }}
+              src={props.alliance.icon_url}
+              alt={"Dota Underlords " + props.alliance.name + " icon"}
             />
-            <Typography className={classes.popoverContent}>
-              {props.unit.name}
-            </Typography>
+            {props.alliance.name}
           </Grid>
-          <Grid item direction="column">
-            {props.unit.alliances.map((alliance, key) => (
-              <Grid item xs key={key} className={classes.alliances}>
-                <img
-                  src={alliance.icon_url}
-                  alt={"Dota Underlords " + alliance.name + " icon"}
-                />
+          <Grid container item xs direction="column">
+            {props.alliance.synergies.map((item, key) => (
+              <Grid item xs style={{color: (props.alliance.count > (key * props.alliance.min_units)) ? "white" : "grey"}}>
+                {item}
               </Grid>
             ))}
-          </Grid>
-          <Grid item xs className={classes.border}>
-            <Typography>${props.unit.tier}</Typography>
           </Grid>
         </Grid>
       </Popover>
@@ -117,4 +93,4 @@ const UnitIcon = props => {
   );
 };
 
-export default UnitIcon;
+export default AllianceIcon;

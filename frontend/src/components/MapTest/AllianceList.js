@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { getAllAlliances } from "../allianceCounting";
 import AllianceCard from "./AllianceCard";
+import AllianceIcon from "./AllianceIcon";
 
 function renderAllianceCard(alliance, isSmall) {
   if (isSmall) {
     return (
-      <img
-        key={alliance.id}
-        src={alliance.icon_url}
-        alt={"Dota Underlords " + alliance.name + " icon"}
-        style={{ width: "35px" }}
-      />
+      <AllianceIcon alliance={alliance}/>
     );
   } else
     return (
