@@ -1,4 +1,5 @@
 import React from "react";
+import UnitIcon from "../MapTest/UnitIcon";
 
 const MiniSquare = (props, children) => {
   const background = "rgb(27, 45, 51)";

@@ -16,7 +16,7 @@ const renderSquare = (i, pieces) => {
         height: "25%",
       }}
     >
-      <MiniSquare piece={piece} />
+      <MiniSquare piece={piece} key={i}/>
     </div>
   );
 };

@@ -82,8 +82,8 @@ const AllianceIcon = props => {
           </Grid>
           <Grid container item xs direction="column">
             {props.alliance.synergies.map((item, key) => (
-              <Grid item xs style={{color: (props.alliance.count > (key * props.alliance.min_units)) ? "white" : "grey"}}>
-                {item}
+              <Grid item xs style={{color: (props.alliance.count > (key * props.alliance.min_units)) ? "white" : "grey", whiteSpace: "pre-line"}}>
+                {JSON.stringify(item).replace("\\n", "\n").replace("\\", "")}
               </Grid>
             ))}
           </Grid>

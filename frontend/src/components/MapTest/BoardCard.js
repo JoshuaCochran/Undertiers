@@ -53,7 +53,8 @@ const useStyles = makeStyles({
     color: "white"
   },
   description: {
-    color: "white"
+    color: "white",
+    whiteSpace: "pre-line"
   },
   pos: {
     marginBottom: 12
@@ -126,7 +127,7 @@ const BoardCard = props => {
         <CardContent>
           <Grid container spacing={1} direction="row">
             <Grid item xs={5}>
-              <UnitIconList units={props.pieces.slice(0, 3)} />
+              <UnitIconList units={props.earlyGame} />
               <Typography
                 variant="body2"
                 component="p"
@@ -136,7 +137,7 @@ const BoardCard = props => {
               </Typography>
             </Grid>
             <Grid item xs={5}>
-              <UnitIconList units={props.pieces.slice(3, 3 + 5 + 1)} />
+              <UnitIconList units={props.midGame} />
               <Typography
                 variant="body2"
                 component="p"
@@ -181,7 +182,7 @@ const BoardCard = props => {
             component="p"
             className={classes.description}
           >
-            {props.description}
+            {props.description.replace("\\n", "\n")}
           </Typography>
         </CardContent>
       </Collapse>

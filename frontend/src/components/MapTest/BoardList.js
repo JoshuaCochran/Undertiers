@@ -6,14 +6,6 @@ import { BoardContext } from "../BoardStore";
 import Button from "@material-ui/core/Button";
 
 function renderBoardCard(board, i, upvoted, clickUpvote, numUpvotes) {
-  const description = board.description.split("\n").map((item, key) => {
-    return (
-      <Fragment key={key}>
-        {item}
-        <br />
-      </Fragment>
-    );
-  });
   return (
     <div key={i}>
       <BoardCard
@@ -22,11 +14,13 @@ function renderBoardCard(board, i, upvoted, clickUpvote, numUpvotes) {
           board.name.length > 40 ? board.name.substr(0, 40) + "..." : board.name
         }
         owner={board.username}
-        description={description}
+        description={board.description}
         upvoted={upvoted}
         clickUpvote={clickUpvote}
         numUpvotes={numUpvotes}
         pieces={board.pieces}
+        earlyGame={board.early_game}
+        midGame={board.mid_game}
       />
     </div>
   );
