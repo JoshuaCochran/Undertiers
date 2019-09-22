@@ -64,7 +64,7 @@ class Units extends Component {
             handlePopoverClose={this.handlePopoverClose}
             unit={this.state.unit}
           />
-          <GridList cellHeight={80} cols={15}>
+          <GridList cellHeight={80} cols={15} spacing={0}>
             {this.props.units.map((item, i) => (
               <UnitListItem
                 id={i}
@@ -75,6 +75,7 @@ class Units extends Component {
                 handlePopoverOpen={this.handlePopoverOpen}
                 handlePopoverClose={this.handlePopoverClose}
                 draggingUnit={this.props.draggingUnit}
+                style={{margin: 0, padding: 0}}
               />
             ))}
           </GridList>

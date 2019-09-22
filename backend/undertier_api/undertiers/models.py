@@ -26,8 +26,8 @@ class Map(models.Model):
     description = models.TextField(default="") # Map description given by user
     pieces = models.ManyToManyField(Unit, through='UnitLoc') # Join table representing the M:N relationship
                                                              # between maps and units
-    early_game = models.ManyToManyField(Unit, related_name='EarlyGame')
-    mid_game = models.ManyToManyField(Unit, related_name='MidGame')
+    early_game = models.ManyToManyField(Unit, related_name='EarlyGame', blank=True)
+    mid_game = models.ManyToManyField(Unit, related_name='MidGame', blank=True)
 
     def __str__(self):
         return self.name

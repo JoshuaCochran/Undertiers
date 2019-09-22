@@ -13,7 +13,7 @@ export default function UnitPiece({ id, image, draggingPiece }) {
 
   return (
     <>
-      <DragPreviewImage connect={preview} src={image} />
+      <DragPreviewImage connect={preview} src={image}/>
       <div
         ref={drag}
         style={{
@@ -31,6 +31,8 @@ export default function UnitPiece({ id, image, draggingPiece }) {
           src={image}
           alt="test"
           style={{
+            width: "100%",
+            height: "100%",
             maxWidth: "100%",
             maxHeight: "100%"
           }}

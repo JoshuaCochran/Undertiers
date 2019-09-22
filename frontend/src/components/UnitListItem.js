@@ -37,7 +37,9 @@ export default function UnitListItem({
           col={1}
           style={{
             opacity: isDragging ? 0.5 : 1,
-            cursor: "move"
+            cursor: "move",
+            margin: 0,
+            padding: 0,
           }}
           aria-owns={showPopover ? "mouse-over-popover" : undefined}
           aria-haspopup="true"
@@ -49,6 +51,7 @@ export default function UnitListItem({
             onClick={() => onClick(unit)}
             alt="{unit.name} icon"
             className={classes.tileImage}
+            style={{width: "70%", height: "auto"}}
           />
         </GridListTile>
       </>

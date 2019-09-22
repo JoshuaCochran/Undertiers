@@ -1,13 +1,9 @@
 import React from "react";
 
-export default function Square({ black, children }) {
-  const fill = black ? "black" : "white";
-  const stroke = black ? "white" : "black";
+export default function Square({ children }) {
   return (
     <div
       style={{
-        backgroundColor: fill,
-        color: stroke,
         width: "100%",
         height: "100%"
       }}

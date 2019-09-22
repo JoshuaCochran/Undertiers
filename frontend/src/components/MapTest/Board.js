@@ -39,19 +39,19 @@ class Board extends Component {
   }
 
   renderUnit(x, y) {
-      return this.props.pieces.map((item, i) => {
-        if (x === item.posx && y === item.posy)
-          return (
-            <div key={i}>
-              <UnitPiece
-                id={i}
-                image={item.unit.icon_url}
-                draggingPiece={id => this.props.draggingPiece(id)}
-              />
-            </div>
-          );
-        return null;
-      });
+    return this.props.pieces.map((item, i) => {
+      if (x === item.posx && y === item.posy)
+        return (
+          <div key={i}>
+            <UnitPiece
+              id={i}
+              image={item.unit.icon_url}
+              draggingPiece={id => this.props.draggingPiece(id)}
+            />
+          </div>
+        );
+      return null;
+    });
   }
 
   movePiece(toX, toY) {
@@ -80,7 +80,10 @@ class Board extends Component {
   }
 
   canMovePiece(toX, toY) {
-    if (this.props.pieces.filter(item => item.posy === toY && item.posx === toX).length)
+    if (
+      this.props.pieces.filter(item => item.posy === toY && item.posx === toX)
+        .length
+    )
       return false;
     return true;
   }
@@ -102,20 +105,23 @@ class Board extends Component {
           marginLeft: "30%",
           marginRight: "25%",
           marginTop: "3%",
-          width: "40%",
-          height: "40%",
+          width: "20vw",
+          height: "20vh",
           display: "flex",
           flexWrap: "wrap",
           position: "absolute"
         }}
       >
-        {squareData}
-        <CustomButton name={"Save"} func={() => this.props.saveMap(this.props.pieces)} />
+          {squareData}
+        <CustomButton
+          name={"Save"}
+          func={() => this.props.saveMap(this.props.pieces)}
+        />
         <CustomButton name={"Clear"} func={this.props.resetMap} />
         <Button style={{ color: "white" }} component={Link} to={url}>
           Exit
         </Button>
-        <Button style={{ color: "white", textAlign: "center"}}>
+        <Button style={{ color: "white", textAlign: "center" }}>
           Units on Board: {this.props.pieces.length}
         </Button>
       </div>

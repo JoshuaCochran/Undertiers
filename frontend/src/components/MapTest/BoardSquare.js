@@ -12,7 +12,6 @@ export default function BoardSquare({
   createPiece,
   children
 }) {
-  const black = (x + y) % 2 === 1;
   const [{ isOver, canDrop, itemType }, drop] = useDrop({
     accept: [ItemTypes.BOARD_PIECE, ItemTypes.LIST_PIECE],
     canDrop: () => itemType === ItemTypes.BOARD_PIECE ? true : canMovePiece(x, y),
@@ -27,16 +26,19 @@ export default function BoardSquare({
     })
   });
 
+  const background = "rgb(27, 45, 51)";
+
   return (
     <div
       ref={drop}
       style={{  
         position: "relative",
-        width: "100%",
-        height: "100%"
+        backgroundColor: background,
+        width: "90%",
+        height: "90%"
       }}
     >
-      <Square black={black}>{children}</Square>
+      <Square>{children}</Square>
       {isOver && canDrop && <Overlay color="blue" />}
       {isOver && !canDrop && <Overlay color="red" />}
     </div>
