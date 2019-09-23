@@ -14,6 +14,7 @@ import Units from "../Units";
 import { tierFilter, allianceFilter } from "../sorting";
 import Abyss from "./Abyss";
 import { UserContext } from "../UserStore";
+import UnitDropBox from "./UnitDropBox"
 
 const styles = theme => ({
   "@global": {
@@ -139,6 +140,9 @@ class Maps extends Component {
                     filterTier={this.filterTier}
                     setBoardState={this.props.setBoardState}
                   />
+                </Grid>
+                <Grid item xs={2} style={{marginLeft: "60vw"}}>
+                <UnitDropBox/>
                 </Grid>
               </Grid>
               <Grid container item spacing={3} direction="row">

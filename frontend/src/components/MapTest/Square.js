@@ -1,14 +1,17 @@
 import React from "react";
 
-export default function Square({ children }) {
+const Square = (props) => {
   return (
     <div
       style={{
         width: "100%",
-        height: "100%"
+        height: "100%",
+        border: props.border ? "2px solid grey" : null
       }}
     >
-      {children}
+      {props.children}
     </div>
   );
 }
+
+export default Square;

@@ -38,7 +38,7 @@ export default function BoardSquare({
         height: "90%"
       }}
     >
-      <Square>{children}</Square>
+      <Square border={false}>{children}</Square>
       {isOver && canDrop && <Overlay color="blue" />}
       {isOver && !canDrop && <Overlay color="red" />}
     </div>
