@@ -102,9 +102,6 @@ class Board extends Component {
     return (
       <div
         style={{
-          marginLeft: "30%",
-          marginRight: "25%",
-          marginTop: "3%",
           width: "20vw",
           height: "20vh",
           display: "flex",

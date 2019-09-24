@@ -8,13 +8,14 @@ import { MobileCheck } from "./MobileCheck";
 import FilterRadioButtons from "./FilterRadioButtons";
 import AllianceFilterRadioButtons from "./AllianceFilterRadioButtons";
 import axios from "axios";
+import Typography from "@material-ui/core/Typography";
 
 import Board from "./Board";
 import Units from "../Units";
 import { tierFilter, allianceFilter } from "../sorting";
 import Abyss from "./Abyss";
 import { UserContext } from "../UserStore";
-import UnitDropBox from "./UnitDropBox"
+import UnitDropBox from "./UnitDropBox";
 
 const styles = theme => ({
   "@global": {
@@ -27,12 +28,15 @@ const styles = theme => ({
     flexGrow: 1,
     height: "100vh"
   },
-  units: {
-    marginTop: "12vh"
-  },
+  units: {},
   title: {
     color: "white",
     textAlign: "center"
+  },
+  subheading: {
+    color: "white",
+    marginTop: "15%",
+    fontWeight: 550
   }
 });
 
@@ -122,41 +126,63 @@ class Maps extends Component {
       <DndProvider backend={MobileCheck() ? TouchBackend : HTML5Backend}>
         <Abyss draggingId={this.state.draggingId} deleteUnit={this.deleteUnit}>
           <div className={classes.root}>
-            <Grid container spacing={2} direction="column">
-              <Grid container item spacing={1} xs={1} direction="row">
-                <Grid item xs={4}>
-                  <FilterRadioButtons filterTier={this.filterTier} />
-                </Grid>
-                <Grid item xs={2} className={classes.board}>
-                  <Board
-                    board_id={this.props.board_id}
-                    pieces={this.props.board.pieces}
-                    unitDragged={this.state.unitDragged}
-                    draggingPiece={this.draggingPiece}
-                    draggingId={this.state.draggingId}
-                    updateMap={this.updateMap}
-                    saveMap={this.saveMap}
-                    resetMap={this.resetMap}
-                    filterTier={this.filterTier}
-                    setBoardState={this.props.setBoardState}
-                  />
-                </Grid>
-                <Grid item xs={2} style={{marginLeft: "60vw"}}>
-                <UnitDropBox/>
-                </Grid>
+            <Grid container spacing={1} direction="row">
+              <Grid item xs={2}>
+                <FilterRadioButtons filterTier={this.filterTier} />
               </Grid>
-              <Grid container item spacing={3} direction="row">
-                <Grid item xs={2}>
-                  <AllianceFilterRadioButtons
-                    filterAlliance={this.filterAlliance}
-                  />
-                </Grid>
-                <Grid item xs={10} className={classes.units}>
-                  <Units
-                    units={this.state.displayUnits}
-                    draggingUnit={this.draggingUnit}
-                  />
-                </Grid>
+              <Grid item xs={4} style={{ marginLeft: "20vw" }}>
+                <Board
+                  board_id={this.props.board_id}
+                  pieces={this.props.board.pieces}
+                  unitDragged={this.state.unitDragged}
+                  draggingPiece={this.draggingPiece}
+                  draggingId={this.state.draggingId}
+                  updateMap={this.updateMap}
+                  saveMap={this.saveMap}
+                  resetMap={this.resetMap}
+                  filterTier={this.filterTier}
+                  setBoardState={this.props.setBoardState}
+                />
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              spacing={1}
+              direction="row"
+              style={{ marginLeft: "35vw" }}
+            >
+              <Grid item xs={2}>
+                <UnitDropBox quantity={3} />
+                <Typography
+                  variant="body2"
+                  component="p"
+                  className={classes.subheading}
+                >
+                  EARLY GAME
+                </Typography>
+              </Grid>
+              <Grid item xs={2}>
+                <UnitDropBox quantity={5} />
+                <Typography
+                  variant="body2"
+                  component="p"
+                  className={classes.subheading}
+                >
+                  MID GAME
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid container spacing={3} direction="row">
+              <Grid item xs={2}>
+                <AllianceFilterRadioButtons
+                  filterAlliance={this.filterAlliance}
+                />
+              </Grid>
+              <Grid item xs={10} className={classes.units}>
+                <Units
+                  units={this.state.displayUnits}
+                  draggingUnit={this.draggingUnit}
+                />
               </Grid>
             </Grid>
           </div>
