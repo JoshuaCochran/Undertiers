@@ -11,9 +11,7 @@ import { UserContext } from "../UserStore";
 import Grid from "@material-ui/core/Grid";
 import AllianceList from "./AllianceList";
 import UnitIconList from "./UnitIconList";
-import Paper from "@material-ui/core/Paper";
 import Collapse from "@material-ui/core/Collapse";
-import BoardViewMode from "./BoardViewMode";
 import MiniBoard from "../MiniBoard/MiniBoard";
 import { borderColors } from "../borderColors";
 
@@ -108,7 +106,7 @@ const BoardCard = props => {
               By {props.owner}
             </Typography>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <UnitIconList units={props.pieces} />
           </Grid>
           <Grid item xs={1}>

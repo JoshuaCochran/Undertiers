@@ -1,47 +1,52 @@
 import React, { useState } from "react";
 import Square from "./Square";
+import { ItemTypes } from "./DragTypes";
+import { useDrop } from "react-dnd";
 
-const renderBoxes = quantity => {
-  const boxes = [];
-  const background = "rgb(27, 45, 51)";
-  for (let i = 0; i < quantity; i++) {
-    boxes.push(
-      <div
-        style={{
-          width: "12.5%",
-          height: "25%",
-        }}
-      >
-        <div
-          style={{
-            position: "relative",
-            backgroundColor: background,
-            width: "80%",
-            height: "80%",
-          }}
-        >
-          <Square border={true}></Square>
-        </div>
-      </div>
-    );
-  }
-  return boxes;
+const movePiece = (x, draggingId, units, setUnits) => {
+  const temp = units.slice();
+  const id = draggingId;
 };
 
+const createPiece = (x, unitDragged, units, setUnits) => {
+  const temp = units;
+  units[x] = unitDragged;
+  setUnits(units);
+}
+
 const UnitDropBox = props => {
-  const [units, setUnits] = useState(null);
-  const boxes = renderBoxes(props.quantity);
+  const [{ isOver, canDrop, itemType }, drop] = useDrop({
+    accept: [ItemTypes.BOARD_PIECE, ItemTypes.LIST_PIECE],
+    canDrop: () => itemType === ItemTypes.LIST_PIECE ? true : false,
+    drop: () =>
+      itemType === ItemTypes.BOARD_PIECE
+        ? movePiece(props.x, props.draggingId, props.units, props.setUnits)
+        : createPiece(props.x, props.unitDragged, props.units, props.setUnits),
+    collect: monitor => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+      itemType: monitor.getItemType()
+    })
+  });
+
   return (
     <div
       style={{
-        position: "absolute",
-        display: "flex",
-        flexDirection: "row",
-        width: "20vw",
-        height: "20vh",
+        width: "12.5%",
+        height: "25%"
       }}
     >
-      {boxes}
+      <div
+        ref={drop}
+        style={{
+          position: "relative",
+          backgroundColor: props.background,
+          width: "80%",
+          height: "80%"
+        }}
+      >
+        <Square border={true}>{props.children}</Square>
+      </div>
     </div>
   );
 };

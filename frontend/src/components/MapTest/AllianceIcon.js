@@ -1,6 +1,5 @@
 import React, { useState, Fragment } from "react";
 import Popover from "@material-ui/core/Popover";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { borderColors } from "../borderColors";
 import Grid from "@material-ui/core/Grid";

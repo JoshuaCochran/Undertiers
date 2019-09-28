@@ -15,7 +15,7 @@ import Units from "../Units";
 import { tierFilter, allianceFilter } from "../sorting";
 import Abyss from "./Abyss";
 import { UserContext } from "../UserStore";
-import UnitDropBox from "./UnitDropBox";
+import UnitDropBoxes from "./UnitDropBoxes";
 
 const styles = theme => ({
   "@global": {
@@ -130,7 +130,7 @@ class Maps extends Component {
               <Grid item xs={2}>
                 <FilterRadioButtons filterTier={this.filterTier} />
               </Grid>
-              <Grid item xs={4} style={{ marginLeft: "20vw" }}>
+              <Grid item xs={4} style={{ marginLeft: "22vw" }}>
                 <Board
                   board_id={this.props.board_id}
                   pieces={this.props.board.pieces}
@@ -152,7 +152,14 @@ class Maps extends Component {
               style={{ marginLeft: "35vw" }}
             >
               <Grid item xs={2}>
-                <UnitDropBox quantity={3} />
+                <UnitDropBoxes
+                  quantity={3}
+                  units={this.props.board.early_game}
+                  board_id={this.props.board_id}
+                  unitDragged={this.state.unitDragged}
+                  draggingPiece={this.draggingPiece}
+                  draggingId={this.state.draggingId}
+                />
                 <Typography
                   variant="body2"
                   component="p"
@@ -162,7 +169,14 @@ class Maps extends Component {
                 </Typography>
               </Grid>
               <Grid item xs={2}>
-                <UnitDropBox quantity={5} />
+                <UnitDropBoxes
+                  quantity={5}
+                  units={this.props.board.mid_game}
+                  board_id={this.props.board_id}
+                  unitDragged={this.state.unitDragged}
+                  draggingPiece={this.draggingPiece}
+                  draggingId={this.state.draggingId}
+                />
                 <Typography
                   variant="body2"
                   component="p"
