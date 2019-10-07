@@ -54,6 +54,11 @@ export default function BoardStore({ children }) {
           if (item.id == id) item.early_game = state;
           return item;
         });
+      } else if (location === "MID_GAME") {
+        new_data.map(item => {
+          if (item.id == id) item.mid_game = state;
+          return item;
+        });
       }
       setBoardData(prevState => {
         return { ...prevState, board: new_data };

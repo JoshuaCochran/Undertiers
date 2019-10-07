@@ -13,7 +13,6 @@ const renderBoxes = (
 ) => {
   const boxes = [];
   const background = "rgb(27, 45, 51)";
-  console.log("rendered");
   for (let i = 0; i < quantity; i++) {
     boxes.push(
       <UnitDropBox
