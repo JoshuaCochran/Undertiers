@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import UnitDropBox from "./UnitDropBox";
 import UnitPiece from "./UnitPiece";
 
-const renderBoxes = (quantity, units, setUnits, draggingId, unitDragged, draggingPiece) => {
+const renderBoxes = (
+  quantity,
+  units,
+  setUnits,
+  draggingId,
+  unitDragged,
+  draggingPiece,
+  location
+) => {
   const boxes = [];
   const background = "rgb(27, 45, 51)";
   console.log("rendered");
@@ -20,7 +28,8 @@ const renderBoxes = (quantity, units, setUnits, draggingId, unitDragged, draggin
           <UnitPiece
             id={i}
             image={units[i].icon_url}
-            draggingPiece={id => draggingPiece(id)}
+            location={location}
+            draggingPiece={(id, location) => draggingPiece(id, location)}
           />
         ) : null}
       </UnitDropBox>
@@ -37,8 +46,11 @@ const UnitDropBoxes = props => {
     setUnits,
     props.draggingId,
     props.unitDragged,
-    props.draggingPiece
+    props.draggingPiece,
+    props.location
   );
+
+  if (units !== props.units) setUnits(props.units);
   return (
     <div
       style={{

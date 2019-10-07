@@ -42,13 +42,19 @@ export default function BoardStore({ children }) {
       });
     }
 
-    function setBoardState(id, state) {
+    function setBoardState(id, state, location) {
       var new_data = boardData.board.slice(0);
-      new_data.map(item => {
-        if (item.id == id)
-          item.pieces = state;
-        return item;
-      })
+      if (location === "BOARD") {
+        new_data.map(item => {
+          if (item.id == id) item.pieces = state;
+          return item;
+        });
+      } else if (location === "EARLY_GAME") {
+        new_data.map(item => {
+          if (item.id == id) item.early_game = state;
+          return item;
+        });
+      }
       setBoardData(prevState => {
         return { ...prevState, board: new_data };
       });

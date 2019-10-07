@@ -46,7 +46,8 @@ class Board extends Component {
             <UnitPiece
               id={i}
               image={item.unit.icon_url}
-              draggingPiece={id => this.props.draggingPiece(id)}
+              location="BOARD"
+              draggingPiece={(id, location) => this.props.draggingPiece(id, location)}
             />
           </div>
         );

@@ -46,7 +46,8 @@ class Maps extends Component {
     this.state = {
       displayUnits: this.props.units,
       unitDragged: null,
-      draggingId: null
+      draggingId: null,
+      draggingLocation: null
     };
     this.filterTier = this.filterTier.bind(this);
     this.filterAlliance = this.filterAlliance.bind(this);
@@ -70,8 +71,8 @@ class Maps extends Component {
     this.setState({ unitDragged: unit });
   }
 
-  draggingPiece(id) {
-    this.setState({ draggingId: id });
+  draggingPiece(id, location) {
+    this.setState({ draggingId: id, draggingLocation: location });
   }
 
   updateMap(maps) {
@@ -113,18 +114,33 @@ class Maps extends Component {
     });
   }
 
-  deleteUnit(id) {
-    var newData = this.props.board.pieces.filter(item => {
-      if (item.id != this.props.board.pieces[id].id) return item;
-    });
-    this.props.setBoardState(this.props.board_id, newData);
+  deleteUnit(id, location) {
+    if (location === "BOARD") {
+      var newData = this.props.board.pieces.filter(item => {
+        if (item.id != this.props.board.pieces[id].id) return item;
+      });
+      this.props.setBoardState(this.props.board_id, newData, location);
+    }
+    else if (location === "EARLY_GAME") {
+      var newData = this.props.board.early_game.filter(item => {
+        if (item.id != this.props.board.early_game[id].id) return item;
+      })
+      this.props.setBoardState(this.props.board_id, newData, location);
+      console.log(newData);
+    }
+    else if (location === "MID_GAME")  
+      console.log("Tried to delete " + this.props.board.early_game[id].name + " from " + location)
   }
 
   render() {
     const { classes } = this.props;
     return (
       <DndProvider backend={MobileCheck() ? TouchBackend : HTML5Backend}>
-        <Abyss draggingId={this.state.draggingId} deleteUnit={this.deleteUnit}>
+        <Abyss
+          draggingId={this.state.draggingId}
+          draggingLocation={this.state.draggingLocation}
+          deleteUnit={this.deleteUnit}
+        >
           <div className={classes.root}>
             <Grid container spacing={1} direction="row">
               <Grid item xs={2}>
@@ -159,6 +175,7 @@ class Maps extends Component {
                   unitDragged={this.state.unitDragged}
                   draggingPiece={this.draggingPiece}
                   draggingId={this.state.draggingId}
+                  location="EARLY_GAME"
                 />
                 <Typography
                   variant="body2"
@@ -176,6 +193,7 @@ class Maps extends Component {
                   unitDragged={this.state.unitDragged}
                   draggingPiece={this.draggingPiece}
                   draggingId={this.state.draggingId}
+                  location="MID_GAME"
                 />
                 <Typography
                   variant="body2"
