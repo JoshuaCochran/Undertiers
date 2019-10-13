@@ -23,7 +23,7 @@ class Map(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     ) # ID of user who saved the map
-    description = models.TextField(default="") # Map description given by user
+    description = models.TextField(default="", blank=True) # Map description given by user
     pieces = models.ManyToManyField(Unit, through='UnitLoc') # Join table representing the M:N relationship
                                                              # between maps and units
     early_game = models.ManyToManyField(Unit, related_name='EarlyGame', blank=True)

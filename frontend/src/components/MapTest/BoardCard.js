@@ -71,7 +71,7 @@ const useStyles = makeStyles({
 
 const BoardCard = props => {
   const classes = useStyles();
-  const boardLink = "/boards/" + props.id;
+  const boardLink = "/boards/edit/" + props.id;
   const [upvote, setUpvote] = useState(props.upvoted);
   const [clicked, setClicked] = useState(false);
   const userContext = useContext(UserContext);

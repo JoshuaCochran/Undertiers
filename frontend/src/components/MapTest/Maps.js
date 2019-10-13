@@ -87,7 +87,8 @@ class Maps extends Component {
     console.log("Called saveMap");
     var new_data = [];
     var unit;
-    if (data.length === 0) {
+    var temp = data.slice(0);
+    if (temp.length === 0) {
       unit = {
         posx: 0,
         posy: 0,
@@ -96,7 +97,7 @@ class Maps extends Component {
       };
       new_data.push(unit);
     } else {
-      new_data = data.map(item => {
+      new_data = temp.map(item => {
         item.unit = item.unit.id;
         return item;
       });
@@ -112,6 +113,36 @@ class Maps extends Component {
     }).catch(function(error) {
       console.log(error);
     });
+
+    new_data = this.props.board;
+    new_data.early_game.map(item => {
+      item = item.id;
+    });
+    new_data.mid_game.map(item => {
+      item = item.id;
+    });
+
+    axios({
+      method: "put",
+      url:
+        "http://www.undertiers.com:8000/boards/update/" +
+        this.props.board_id +
+        "/",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + this.context.token
+      },
+      data: JSON.stringify({
+        pk: this.props.board_id,
+        name: new_data.name,
+        user: new_data.user,
+        description: new_data.description,
+        early_game: new_data.early_game,
+        mid_game: new_data.mid_game
+      })
+    }).catch(function(error) {
+      console.log(error);
+    });
   }
 
   deleteUnit(id, location) {
@@ -120,18 +151,16 @@ class Maps extends Component {
         if (item.id != this.props.board.pieces[id].id) return item;
       });
       this.props.setBoardState(this.props.board_id, newData, location);
-    }
-    else if (location === "EARLY_GAME") {
+    } else if (location === "EARLY_GAME") {
       var newData = this.props.board.early_game.filter(item => {
         if (item.id != this.props.board.early_game[id].id) return item;
-      })
+      });
       this.props.setBoardState(this.props.board_id, newData, location);
       console.log(newData);
-    }
-    else if (location === "MID_GAME") {
+    } else if (location === "MID_GAME") {
       var newData = this.props.board.mid_game.filter(item => {
         if (item.id != this.props.board.mid_game[id].id) return item;
-      })
+      });
       this.props.setBoardState(this.props.board_id, newData, location);
       console.log(newData);
     }

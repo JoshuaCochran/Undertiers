@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from .models import Unit, UnitLoc, Map, Alliance, Upvote
+from drf_writable_nested import WritableNestedModelSerializer
 
 # Serializer for alliance model
 class AllianceSerializer(serializers.ModelSerializer):
@@ -41,8 +42,11 @@ class UnitPieceSerializer(serializers.ModelSerializer):
         model = Unit
 
 # Serializer for maps.
-class MapSerializer(serializers.ModelSerializer):
+class MapSerializer(WritableNestedModelSerializer):
     username = serializers.SerializerMethodField()
+
+    early_game = UnitSerializer(many=True)
+    mid_game = UnitSerializer(many=True)
 
     def get_username(self, obj):
         return obj.user.username
@@ -53,6 +57,8 @@ class MapSerializer(serializers.ModelSerializer):
             'name',
             'username',
             'description',
+            'early_game',
+            'mid_game',
         )
 
         model = Map

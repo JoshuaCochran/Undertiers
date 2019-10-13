@@ -47,7 +47,9 @@ class Board extends Component {
               id={i}
               image={item.unit.icon_url}
               location="BOARD"
-              draggingPiece={(id, location) => this.props.draggingPiece(id, location)}
+              draggingPiece={(id, location) =>
+                this.props.draggingPiece(id, location)
+              }
             />
           </div>
         );
@@ -66,7 +68,8 @@ class Board extends Component {
     });
     maps[id].posx = toX;
     maps[id].posy = toY;
-    this.props.setBoardState(this.props.board_id, maps);
+    var location = "BOARD";
+    this.props.setBoardState(this.props.board_id, maps, location);
   }
 
   createPiece(x, y) {
@@ -77,7 +80,8 @@ class Board extends Component {
       posx: x,
       posy: y
     });
-    this.props.setBoardState(this.props.board_id, newData);
+    var location = "BOARD";
+    this.props.setBoardState(this.props.board_id, newData, location);
   }
 
   canMovePiece(toX, toY) {
@@ -110,7 +114,7 @@ class Board extends Component {
           position: "absolute"
         }}
       >
-          {squareData}
+        {squareData}
         <CustomButton
           name={"Save"}
           func={() => this.props.saveMap(this.props.pieces)}

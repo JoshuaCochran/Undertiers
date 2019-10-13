@@ -10,8 +10,8 @@ const movePiece = (x, draggingId, units, setUnits) => {
 
 const createPiece = (x, unitDragged, units, setUnits) => {
   const temp = units;
-  units[x] = unitDragged;
-  setUnits(units);
+  temp.push(unitDragged);
+  setUnits(temp);
 }
 
 const UnitDropBox = props => {
