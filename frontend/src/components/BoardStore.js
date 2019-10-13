@@ -59,6 +59,16 @@ export default function BoardStore({ children }) {
           if (item.id == id) item.mid_game = state;
           return item;
         });
+      } else if (location === "TITLE") {
+        new_data.map(item => {
+          if (item.id == id) item.name = state;
+          return item;
+        })
+      } else if (location === "DESCRIPTION") {
+        new_data.map(item => {
+          if (item.id == id) item.description = state;
+          return item;
+        })
       }
       setBoardData(prevState => {
         return { ...prevState, board: new_data };

@@ -42,8 +42,15 @@ export default function BoardTextFields({ input, submit, long }) {
 
   const onFormSubmit = event => {
     event.preventDefault();
+    var location;
     if (values.title === "" || values.multiline === "") setError(true);
-    else long ? submit(values.multiline) : submit(values.title);
+    else if (long) {
+      location = "DESCRIPTION";
+      submit(values.multiline, location);
+    } else {
+      location = "TITLE";
+      submit(values.title, location);
+    }
   };
 
   return (
@@ -76,7 +83,6 @@ export default function BoardTextFields({ input, submit, long }) {
                   shrink: true
                 }}
               />
-              <Button onClick={onFormSubmit}>Submit</Button>
             </>
           ) : (
             <>
@@ -92,7 +98,6 @@ export default function BoardTextFields({ input, submit, long }) {
                 variant="outlined"
                 helperText={error ? "Title cannot be blank!" : ""}
               />
-              <Button onClick={onFormSubmit}>Submit</Button>{" "}
             </>
           )}
         </form>

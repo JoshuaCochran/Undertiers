@@ -16,6 +16,7 @@ import { tierFilter, allianceFilter } from "../sorting";
 import Abyss from "./Abyss";
 import { UserContext } from "../UserStore";
 import UnitDropBoxes from "./UnitDropBoxes";
+import BoardTextField from "./BoardTextField";
 
 const styles = theme => ({
   "@global": {
@@ -176,11 +177,29 @@ class Maps extends Component {
           deleteUnit={this.deleteUnit}
         >
           <div className={classes.root}>
+            <Grid
+              container
+              spacing={1}
+              direction="row"
+              style={{ marginLeft: "30vw" }}
+            >
+              <BoardTextField
+                input={this.props.board.name}
+                submit={(title, location) =>
+                  this.props.setBoardState(this.props.board_id, title, location)
+                }
+                long={false}
+              />
+            </Grid>
             <Grid container spacing={1} direction="row">
               <Grid item xs={2}>
                 <FilterRadioButtons filterTier={this.filterTier} />
               </Grid>
-              <Grid item xs={4} style={{ marginLeft: "22vw" }}>
+              <Grid
+                item
+                xs={4}
+                style={{ marginLeft: "22vw", marginTop: "1vh" }}
+              >
                 <Board
                   board_id={this.props.board_id}
                   pieces={this.props.board.pieces}
@@ -250,6 +269,19 @@ class Maps extends Component {
                   draggingUnit={this.draggingUnit}
                 />
               </Grid>
+            </Grid>
+            <Grid
+              container
+              spacing={1}
+              xs={6}
+              direction="row"
+              style={{ marginLeft: "30vw" }}
+            >
+              <BoardTextField
+                input={this.props.board.description}
+                submit={description => this.changeDescription(description)}
+                long={true}
+              />
             </Grid>
           </div>
         </Abyss>
