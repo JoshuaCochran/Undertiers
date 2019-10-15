@@ -22,6 +22,7 @@ const renderBoxes = (
         units={units}
         setUnits={setUnits}
         unitDragged={unitDragged}
+        key={i * quantity}
       >
         {units && units[i] ? (
           <UnitPiece
@@ -39,6 +40,9 @@ const renderBoxes = (
 
 const UnitDropBoxes = props => {
   const [units, setUnits] = useState(props.units);
+
+  if (units !== props.units) setUnits(props.units);
+
   const boxes = renderBoxes(
     props.quantity,
     units,
@@ -48,10 +52,9 @@ const UnitDropBoxes = props => {
     props.draggingPiece,
     props.location
   );
-
-  if (units !== props.units) setUnits(props.units);
   return (
     <div
+      key={props.quantity}
       style={{
         position: "absolute",
         display: "flex",

@@ -4,13 +4,12 @@ import { ItemTypes } from "./DragTypes";
 import { useDrop } from "react-dnd";
 
 const movePiece = (x, draggingId, units, setUnits) => {
-  const temp = units.slice();
-  const id = draggingId;
 };
 
 const createPiece = (x, unitDragged, units, setUnits) => {
   const temp = units;
   temp.push(unitDragged);
+  setUnits(null);
   setUnits(temp);
 }
 
