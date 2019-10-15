@@ -167,7 +167,7 @@ class Maps extends Component {
   }
 
   updateOptions(state, location) {
-      this.props.setBoardState(this.props.board_id, state, location)
+    this.props.setBoardState(this.props.board_id, state, location);
   }
 
   render() {
@@ -187,11 +187,13 @@ class Maps extends Component {
               style={{ marginLeft: "30vw" }}
             >
               <BoardTextField
+                board_id={this.props.board_id}
                 input={this.props.board.name}
                 submit={(title, location) =>
                   this.props.setBoardState(this.props.board_id, title, location)
                 }
                 long={false}
+                setBoardState={this.props.setBoardState}
               />
             </Grid>
             <Grid container spacing={1} direction="row">
@@ -270,25 +272,30 @@ class Maps extends Component {
                   filterAlliance={this.filterAlliance}
                 />
               </Grid>
-              <Grid item xs={10} className={classes.units}>
-                <Units
-                  units={this.state.displayUnits}
-                  draggingUnit={this.draggingUnit}
-                />
+              <Grid
+                container
+                item
+                xs={9}
+                spacing={1}
+                className={classes.units}
+                direction="column"
+              >
+                <Grid item xs={5} style={{ minWidth: 1500, width: "100%", height: "auto"}}>
+                  <BoardTextField
+                    board_id={this.props.board_id}
+                    input={this.props.board.description}
+                    submit={description => this.changeDescription(description)}
+                    long={true}
+                    setBoardState={this.props.setBoardState}
+                  />
+                </Grid>
+                <Grid item xs={5}>
+                  <Units
+                    units={this.state.displayUnits}
+                    draggingUnit={this.draggingUnit}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid
-              container
-              spacing={1}
-              xs={6}
-              direction="row"
-              style={{ marginLeft: "30vw" }}
-            >
-              <BoardTextField
-                input={this.props.board.description}
-                submit={description => this.changeDescription(description)}
-                long={true}
-              />
             </Grid>
           </div>
         </Abyss>

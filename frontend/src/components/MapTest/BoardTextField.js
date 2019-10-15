@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 
@@ -28,25 +27,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function BoardTextFields({ input, submit, long }) {
+export default function BoardTextFields({ board_id, input, submit, long, setBoardState }) {
   const classes = useStyles();
   const [values, setValues] = React.useState({
-    multiline: JSON.stringify(input).replace(/"/g, ""),
+    description: JSON.stringify(input).replace(/"/g, ""),
     title: JSON.stringify(input).replace(/"/g, "")
   });
   const [error, setError] = React.useState(false);
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
+    setBoardState(board_id, event.target.value, name.toUpperCase())
   };
 
   const onFormSubmit = event => {
     event.preventDefault();
     var location;
-    if (values.title === "" || values.multiline === "") setError(true);
+    if (values.title === "" || values.description === "") setError(true);
     else if (long) {
       location = "DESCRIPTION";
-      submit(values.multiline, location);
+      submit(values.description, location);
     } else {
       location = "TITLE";
       submit(values.title, location);
@@ -73,8 +73,8 @@ export default function BoardTextFields({ input, submit, long }) {
                 fullWidth
                 rows="4"
                 className={classes.textField}
-                value={values.multiline}
-                onChange={handleChange("multiline")}
+                value={values.description}
+                onChange={handleChange("description")}
                 margin="normal"
                 variant="outlined"
                 placeholder="Enter description here"
