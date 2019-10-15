@@ -58,6 +58,7 @@ class Maps extends Component {
     this.saveMap = this.saveMap.bind(this);
     this.resetMap = this.resetMap.bind(this);
     this.deleteUnit = this.deleteUnit.bind(this);
+    this.updateOptions = this.updateOptions.bind(this);
   }
 
   filterTier(tier) {
@@ -154,17 +155,19 @@ class Maps extends Component {
       this.props.setBoardState(this.props.board_id, newData, location);
     } else if (location === "EARLY_GAME") {
       var newData = this.props.board.early_game.filter(item => {
-        if (item.id != this.props.board.early_game[id].id) return item;
+        if (item && item.id != this.props.board.early_game[id].id) return item;
       });
       this.props.setBoardState(this.props.board_id, newData, location);
-      console.log(newData);
     } else if (location === "MID_GAME") {
       var newData = this.props.board.mid_game.filter(item => {
-        if (item.id != this.props.board.mid_game[id].id) return item;
+        if (item && item.id != this.props.board.mid_game[id].id) return item;
       });
       this.props.setBoardState(this.props.board_id, newData, location);
-      console.log(newData);
     }
+  }
+
+  updateOptions(state, location) {
+      this.props.setBoardState(this.props.board_id, state, location)
   }
 
   render() {
@@ -226,8 +229,10 @@ class Maps extends Component {
                   units={this.props.board.early_game}
                   board_id={this.props.board_id}
                   unitDragged={this.state.unitDragged}
+                  draggingUnit={this.draggingUnit}
                   draggingPiece={this.draggingPiece}
                   draggingId={this.state.draggingId}
+                  updateOptions={this.updateOptions}
                   location="EARLY_GAME"
                 />
                 <Typography
@@ -244,8 +249,10 @@ class Maps extends Component {
                   units={this.props.board.mid_game}
                   board_id={this.props.board_id}
                   unitDragged={this.state.unitDragged}
+                  draggingUnit={this.draggingUnit}
                   draggingPiece={this.draggingPiece}
                   draggingId={this.state.draggingId}
+                  updateOptions={this.updateOptions}
                   location="MID_GAME"
                 />
                 <Typography

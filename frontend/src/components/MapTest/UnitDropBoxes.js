@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import UnitDropBox from "./UnitDropBox";
 import UnitPiece from "./UnitPiece";
 
 const renderBoxes = (
   quantity,
   units,
-  setUnits,
   draggingId,
   unitDragged,
   draggingPiece,
-  location
+  location,
+  updateOptions,
+  draggingUnit
 ) => {
   const boxes = [];
   const background = "rgb(27, 45, 51)";
@@ -20,9 +21,11 @@ const renderBoxes = (
         background={background}
         draggingId={draggingId}
         units={units}
-        setUnits={setUnits}
         unitDragged={unitDragged}
         key={i * quantity}
+        quantity={quantity}
+        updateOptions={updateOptions}
+        location={location}
       >
         {units && units[i] ? (
           <UnitPiece
@@ -30,6 +33,8 @@ const renderBoxes = (
             image={units[i].icon_url}
             location={location}
             draggingPiece={(id, location) => draggingPiece(id, location)}
+            draggingUnit={(unit) => draggingUnit(unit)}
+            unit={units[i]}
           />
         ) : null}
       </UnitDropBox>
@@ -39,18 +44,16 @@ const renderBoxes = (
 };
 
 const UnitDropBoxes = props => {
-  const [units, setUnits] = useState(props.units);
-
-  if (units !== props.units) setUnits(props.units);
 
   const boxes = renderBoxes(
     props.quantity,
-    units,
-    setUnits,
+    props.units,
     props.draggingId,
     props.unitDragged,
     props.draggingPiece,
-    props.location
+    props.location,
+    props.updateOptions,
+    props.draggingUnit
   );
   return (
     <div

@@ -1,26 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import Square from "./Square";
 import { ItemTypes } from "./DragTypes";
 import { useDrop } from "react-dnd";
 
-const movePiece = (x, draggingId, units, setUnits) => {
+const movePiece = (x, draggingId, unitDragged, units, quantity, location, updateOptions) => {
+  let temp = units;
+  temp[draggingId] = temp[x];
+  temp[x] = unitDragged;
+  updateOptions(temp, location);
 };
 
-const createPiece = (x, unitDragged, units, setUnits) => {
-  const temp = units;
-  temp.push(unitDragged);
-  setUnits(null);
-  setUnits(temp);
+const createPiece = (x, unitDragged, units, quantity, location, updateOptions) => {
+  let temp = units;
+  temp[x] = unitDragged;
+  updateOptions(temp, location);
 }
 
 const UnitDropBox = props => {
   const [{ isOver, canDrop, itemType }, drop] = useDrop({
     accept: [ItemTypes.BOARD_PIECE, ItemTypes.LIST_PIECE],
-    canDrop: () => itemType === ItemTypes.LIST_PIECE ? true : false,
+    canDrop: () => itemType === ItemTypes.LIST_PIECE ? true : true,
     drop: () =>
       itemType === ItemTypes.BOARD_PIECE
-        ? movePiece(props.x, props.draggingId, props.units, props.setUnits)
-        : createPiece(props.x, props.unitDragged, props.units, props.setUnits),
+        ? movePiece(props.x, props.draggingId, props.unitDragged, props.units, props.quantity, props.location, props.updateOptions)
+        : createPiece(props.x, props.unitDragged, props.units, props.quantity, props.location, props.updateOptions),
     collect: monitor => ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop(),

@@ -2,10 +2,13 @@ import React from "react";
 import { ItemTypes } from "./DragTypes";
 import { useDrag, DragPreviewImage } from "react-dnd";
 
-export default function UnitPiece({ id, image, draggingPiece, location }) {
+export default function UnitPiece({ id, image, draggingPiece, location, draggingUnit, unit}) {
   const [{ isDragging }, drag, preview] = useDrag({
     item: { type: ItemTypes.BOARD_PIECE },
-    begin: () => draggingPiece(id, location),
+    begin: () => { 
+      draggingPiece(id, location);
+      if (location === "EARLY_GAME" || "MID_GAME") draggingUnit(unit);
+    },
     collect: monitor => ({
       isDragging: !!monitor.isDragging()
     })
