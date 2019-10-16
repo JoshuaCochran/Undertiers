@@ -85,7 +85,7 @@ export function Upvote(id, upvote) {
   }
 }
 
-export async function CreateBoard(userId, name, description, setRedirect){
+export async function CreateBoard(userId, name, description, setRedirect, setBoardState){
   const axios = require('axios');
   const cookies = new Cookies();
   await axios({
@@ -102,6 +102,7 @@ export async function CreateBoard(userId, name, description, setRedirect){
     }
   }).then(function(response){
     const id = JSON.stringify(response.data.id);
+    setBoardState(0, response, "NEW_BOARD");
     setRedirect({isRedirecting: true, to: "/boards/edit/" + id});
   }).catch(function(error){
     console.log(error);

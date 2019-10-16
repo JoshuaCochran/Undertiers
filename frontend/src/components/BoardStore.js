@@ -69,6 +69,8 @@ export default function BoardStore({ children }) {
           if (item.id == id) item.description = state;
           return item;
         })
+      } else if (location === "NEW_BOARD") {
+        new_data.push(state.data);
       }
       setBoardData(prevState => {
         return { ...prevState, board: new_data };

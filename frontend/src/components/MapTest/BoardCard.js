@@ -109,15 +109,17 @@ const BoardCard = props => {
           <Grid item xs={6}>
             <UnitIconList units={props.pieces} />
           </Grid>
-          <Grid item xs={1}>
-            <IconButton
-              component={Link}
-              to={boardLink}
-              className={classes.unpressedButton}
-            >
-              <PageviewIcon />
-            </IconButton>
-          </Grid>
+          {userContext.loggedIn && userContext.user ? (
+            <Grid item xs={1}>
+              <IconButton
+                component={Link}
+                to={boardLink}
+                className={classes.unpressedButton}
+              >
+                <PageviewIcon />
+              </IconButton>
+            </Grid>
+          ) : null}
         </Grid>
       </CardContent>
 

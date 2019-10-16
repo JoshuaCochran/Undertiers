@@ -7,7 +7,7 @@ export default function UnitPiece({ id, image, draggingPiece, location, dragging
     item: { type: ItemTypes.BOARD_PIECE },
     begin: () => { 
       draggingPiece(id, location);
-      if (location === "EARLY_GAME" || "MID_GAME") draggingUnit(unit);
+      if (location === "EARLY_GAME" || location === "MID_GAME") draggingUnit(unit);
     },
     collect: monitor => ({
       isDragging: !!monitor.isDragging()
