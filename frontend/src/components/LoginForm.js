@@ -131,7 +131,7 @@ export default function SignIn() {
             }}
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="white" />}
+            control={<Checkbox value="remember"/>}
             label="Remember me"
             style={{color: "white"}}
           />

@@ -6,7 +6,7 @@ import AllianceIcon from "./AllianceIcon";
 function renderAllianceCard(alliance, isSmall) {
   if (isSmall) {
     return (
-      <AllianceIcon alliance={alliance}/>
+      <AllianceIcon key={alliance.name} alliance={alliance}/>
     );
   } else
     return (

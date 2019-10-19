@@ -47,7 +47,6 @@ const UnitIcon = props => {
   return (
     <Fragment>
       <img
-        key={props.key}
         src={props.unit.icon_url}
         alt={"Dota Underlords " + props.unit.name + " icon"}
         style={{
@@ -98,7 +97,7 @@ const UnitIcon = props => {
               {props.unit.name}
             </Typography>
           </Grid>
-          <Grid item direction="column">
+          <Grid item>
             {props.unit.alliances.map((alliance, key) => (
               <Grid item xs key={key} className={classes.alliances}>
                 <img
