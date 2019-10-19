@@ -109,7 +109,7 @@ const BoardCard = props => {
           <Grid item xs={6}>
             <UnitIconList units={props.pieces} />
           </Grid>
-          {userContext.loggedIn && userContext.user ? (
+          {userContext.loggedIn && userContext.user && props.owner === userContext.user.username ? (
             <Grid item xs={1}>
               <IconButton
                 component={Link}

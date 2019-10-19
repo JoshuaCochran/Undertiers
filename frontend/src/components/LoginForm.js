@@ -8,7 +8,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,22 +15,11 @@ import Container from "@material-ui/core/Container";
 import { LogIn } from "./Login";
 import { UserContext } from "./UserStore";
 
-function MadeWithLove() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Built with love by the "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Material-UI
-      </Link>
-      {" team."}
-    </Typography>
-  );
-}
-
 const useStyles = makeStyles(theme => ({
   "@global": {
     body: {
-      backgroundColor: theme.palette.common.white
+      backgroundColor: "rgba(13, 32, 43)",
+      marginTop: "3%"
     }
   },
   paper: {
@@ -50,6 +38,13 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  textbox: {
+    backgroundColor: "rgba(12, 28, 37)",
+    color: "white"
+  },
+  input: {
+    color: "white"
   }
 }));
 
@@ -91,7 +86,7 @@ export default function SignIn() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" style={{color: "white"}}>
           Sign in
         </Typography>
         <form className={classes.form} noValidate onSubmit={onFormSubmit}>
@@ -107,6 +102,13 @@ export default function SignIn() {
             autoFocus
             onChange={setUserValue}
             error={errors.username}
+            className={classes.textbox}
+            InputProps={{
+              className: classes.input
+            }}
+            InputLabelProps={{
+              className: classes.input
+            }}
           />
           <TextField
             variant="outlined"
@@ -120,10 +122,18 @@ export default function SignIn() {
             autoComplete="current-password"
             onChange={setPassValue}
             error={errors.password}
+            className={classes.textbox}
+            InputProps={{
+              className: classes.input
+            }}
+            InputLabelProps={{
+              className: classes.input
+            }}
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={<Checkbox value="remember" color="white" />}
             label="Remember me"
+            style={{color: "white"}}
           />
           <Button
             fullWidth
@@ -149,9 +159,6 @@ export default function SignIn() {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-        <MadeWithLove />
-      </Box>
     </Container>
   );
 }

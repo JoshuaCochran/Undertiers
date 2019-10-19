@@ -14,22 +14,11 @@ import Container from "@material-ui/core/Container";
 import { Register } from "./Login";
 import { UserContext } from "./UserStore";
 
-function MadeWithLove() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Built with love by the "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Material-UI
-      </Link>
-      {" team."}
-    </Typography>
-  );
-}
-
 const useStyles = makeStyles(theme => ({
   "@global": {
     body: {
-      backgroundColor: theme.palette.common.white
+      backgroundColor: "rgba(13, 32, 43)",
+      marginTop: "3%"
     }
   },
   paper: {
@@ -48,6 +37,13 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  textbox: {
+    backgroundColor: "rgba(12, 28, 37)",
+    color: "white"
+  },
+  input: {
+    color: "white"
   }
 }));
 
@@ -99,7 +95,7 @@ export default function SignUp() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" style={{color: "white"}}>
           Sign up
         </Typography>
         <form className={classes.form} noValidate onSubmit={onFormSubmit}>
@@ -116,6 +112,12 @@ export default function SignUp() {
                 autoFocus
                 onChange={setUserValue}
                 error={errors.username}
+                InputProps={{
+                  className: classes.input
+                }}
+                InputLabelProps={{
+                  className: classes.input
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -129,6 +131,12 @@ export default function SignUp() {
                 autoComplete="email"
                 onChange={setEmailValue}
                 error={errors.email}
+                InputProps={{
+                  className: classes.input
+                }}
+                InputLabelProps={{
+                  className: classes.input
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -143,6 +151,12 @@ export default function SignUp() {
                 autoComplete="current-password"
                 onChange={setPassValue}
                 error={errors.password}
+                InputProps={{
+                  className: classes.input
+                }}
+                InputLabelProps={{
+                  className: classes.input
+                }}
               />
             </Grid>
           </Grid>
@@ -165,9 +179,6 @@ export default function SignUp() {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-        <MadeWithLove />
-      </Box>
     </Container>
   );
 }

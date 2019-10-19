@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { UserContext } from "./UserStore";
 
 export const BoardContext = React.createContext();
 export default function BoardStore({ children }) {
@@ -15,7 +14,6 @@ export default function BoardStore({ children }) {
   });
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const userContext = useContext(UserContext);
 
   useEffect(() => {
     function setTitle(title, id) {

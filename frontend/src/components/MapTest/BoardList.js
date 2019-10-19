@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, Fragment } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Upvote } from "../Login";
 import BoardCard from "./BoardCard";
 import { UserContext } from "../UserStore";
