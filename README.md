@@ -8,5 +8,5 @@ By simply clicking on any of the listed builds, that build will expand giving a 
 ![logged in](/images/loggedinhome.PNG)
 Once a user is logged in they are able to vote on builds to raise their rankings and positioning on the site. They are also given options of creating their own builds, viewing only their builds, and editing their already submitted builds.
 ![user boards](/images/myboards.PNG)
-Users can create and submit boards using a filter-able list of pieces that are able to be dragged and dropped onto the board or onto the early and/or mid-game units lists.
+Users can create and submit boards using a filterable list of pieces that are able to be dragged and dropped onto the board or onto the early and/or mid-game units lists.
 ![edit board](/images/editboard.PNG)
