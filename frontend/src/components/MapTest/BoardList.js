@@ -88,7 +88,7 @@ export default function BoardList(props) {
     return (
       <>
         {boardCards}
-        <Button fullWidth onClick={loadMore}>
+        <Button fullWidth onClick={loadMore} style={{color: "white"}}>
           Load more
         </Button>
       </>
