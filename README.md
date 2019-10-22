@@ -4,7 +4,7 @@ Users can create an account, submit their own builds, and view and vote on other
 ![home](/images/home.PNG)
 From the home page users can quickly view top rated builds submitted by other players. 
 ![home expanded](/images/homeexpanded.PNG)
-By simply clicking on any of the listed builds, that build will expand giving a detailed unit list complete with active alliances, a positioning grid, and description. 
+By simply clicking on any of the listed builds, that build will expand giving a detailed unit list complete with active alliances, early and mid-game unit choices, a positioning grid, and description. 
 ![logged in](/images/loggedinhome.PNG)
 Once a user is logged in they are able to vote on builds to raise their rankings and positioning on the site. They are also given options of creating their own builds, viewing only their builds, and editing their already submitted builds.
 ![user boards](/images/myboards.PNG)
