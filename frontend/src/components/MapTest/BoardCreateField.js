@@ -10,11 +10,17 @@ import { CreateBoard } from "../Login";
 import { Redirect } from "react-router";
 
 const useStyles = makeStyles(theme => ({
+  "@global": {
+    body: {
+      backgroundColor: "rgba(13, 32, 43)",
+      marginTop: "3%"
+    }
+  },
   card: {
     minWidth: 275,
     marginTop: "2%",
     marginLeft: "10%",
-    marginRight: "10%"
+    marginRight: "10%",
   },
   container: {
     display: "flex",
@@ -22,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   textField: {
     marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
   dense: {
     marginTop: theme.spacing(2)

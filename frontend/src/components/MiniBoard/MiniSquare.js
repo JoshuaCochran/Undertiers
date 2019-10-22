@@ -1,5 +1,4 @@
 import React from "react";
-import UnitIcon from "../MapTest/UnitIcon";
 
 const MiniSquare = (props, children) => {
   const background = "rgb(27, 45, 51)";
@@ -15,6 +14,7 @@ const MiniSquare = (props, children) => {
         <img
           src={props.piece[0].unit.icon_url}
           style={{ width: "100%", height: "100%" }}
+          alt={"Dota Underlords " + props.piece[0].unit.name + " icon"}
         />
       ) : null}
     </div>

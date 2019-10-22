@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import PageviewIcon from "@material-ui/icons/Pageview";
+import CreateIcon from "@material-ui/icons/Create";
 import { UserContext } from "../UserStore";
 import Grid from "@material-ui/core/Grid";
 import AllianceList from "./AllianceList";
@@ -116,7 +116,7 @@ const BoardCard = props => {
                 to={boardLink}
                 className={classes.unpressedButton}
               >
-                <PageviewIcon />
+                <CreateIcon />
               </IconButton>
             </Grid>
           ) : null}

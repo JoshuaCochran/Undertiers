@@ -17,7 +17,7 @@ const createPiece = (x, unitDragged, units, quantity, location, updateOptions) =
 }
 
 const UnitDropBox = props => {
-  const [{ isOver, canDrop, itemType }, drop] = useDrop({
+  const [{ itemType }, drop] = useDrop({
     accept: [ItemTypes.BOARD_PIECE, ItemTypes.LIST_PIECE],
     canDrop: () => itemType === ItemTypes.LIST_PIECE ? true : true,
     drop: () =>
